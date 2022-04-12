@@ -22,10 +22,10 @@ public final class CommandProvider {
         commands.put(CommandType.DEFAULT, new DefaultCommand());
     }
 
-    public static Command getCommand(String commandName) {
+    public static Command defineCommand(String commandName) {
         Command currentCommand;
         try {
-            currentCommand = commands.get(CommandType.define(commandName));
+            currentCommand = commands.get(CommandType.valueOf(commandName.toUpperCase()));
         } catch (IllegalArgumentException e) {
             logger.error("Command " + commandName + " is not present.", e);
             currentCommand = new DefaultCommand();

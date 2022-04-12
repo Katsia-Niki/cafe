@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -21,10 +22,10 @@ public class ConnectionPool {
     private static final String DB_URL_KEY = "url";
     private static final String DB_USER_KEY = "user";
     private static final String DB_PASSWORD_KEY = "password";
-    private static String DB_DRIVER;
-    private static String DB_URL;
-    private static String DB_USER;
-    private static String DB_PASSWORD;
+    private static final String DB_DRIVER;
+    private static final String DB_URL;
+    private static final String DB_USER;
+    private static final String DB_PASSWORD;
     private static ConnectionPool instance;
     private static AtomicBoolean instanceIsExist = new AtomicBoolean(false);
     private static Lock instanceLocker = new ReentrantLock();
@@ -40,8 +41,12 @@ public class ConnectionPool {
             DB_PASSWORD = bundle.getString(DB_PASSWORD_KEY);
             DB_DRIVER = bundle.getString(DB_DRIVER_KEY);
             Class.forName(DB_DRIVER);
+        } catch (MissingResourceException e) {
+            logger.fatal("Property file not found or has incorrect data " + DB_PROPERTY, e);
+            throw new RuntimeException("Property file not found or has incorrect data" + DB_PROPERTY, e);
         } catch (ClassNotFoundException e) {
             logger.fatal("Driver have not been registered" + DB_PROPERTY, e);
+            throw new ExceptionInInitializerError();
         }
     }
 
@@ -88,19 +93,21 @@ public class ConnectionPool {
         return proxyConnection;
     }
 
-    public void releaseConnection(Connection connection) {
+    public boolean releaseConnection(Connection connection) {
+        boolean flag = false;
         if (connection instanceof ProxyConnection proxyConnection) {
             try {
                 usedConnections.remove(proxyConnection);
                 freeConnections.put(proxyConnection);
+                flag = true;
             } catch (InterruptedException e) {
                 logger.error("Try to release connection from pool was failed. ", e);
                 Thread.currentThread().interrupt();
             }
         } else {
-            logger.fatal("Unknown connection.");
-            throw new RuntimeException("Unknown connection.");
+            logger.error("Unknown connection.");
         }
+        return flag;
     }
     public void destroyPool() {
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {

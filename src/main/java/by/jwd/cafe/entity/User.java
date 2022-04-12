@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 public class User extends AbstractEntity {
+    private static final long serialVersionUID = 1L;
     private int userId;
     private String email;
     private String password;
@@ -16,18 +17,9 @@ public class User extends AbstractEntity {
     private Account account;
     private boolean active;
     private UserRole role;
-    private static final long serialVersionUID = 1L;
+
 
     public User() {
-        account = new Account();
-    }
-
-    public User(String email, String password, String firstName, String lastName, String phone) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
         account = new Account();
     }
 
@@ -73,6 +65,72 @@ public class User extends AbstractEntity {
             joiner.add("balance=" + balance);
             joiner.add("loyaltyPoints" + loyaltyPoints);
             return joiner.toString();
+        }
+    }
+
+    public static class UserBuilder {
+        private User newUser;
+
+        {
+            newUser = new User();
+        }
+
+        public UserBuilder() {
+
+        }
+
+        public UserBuilder withUserId(int userId) {
+            newUser.userId = userId;
+            return this;
+        }
+
+        public UserBuilder withEmail(String email) {
+            newUser.email = email;
+            return this;
+        }
+
+        public UserBuilder withPassword(String password) {
+            newUser.password = password;
+            return this;
+        }
+
+        public UserBuilder withFirstName(String firstName) {
+            newUser.firstName = firstName;
+            return this;
+        }
+
+        public UserBuilder withLastName(String lastName) {
+            newUser.lastName = lastName;
+            return this;
+        }
+
+        public UserBuilder withCreateDate(Date createDate) {
+            newUser.createDate = createDate;
+            return this;
+        }
+
+        public UserBuilder withPhone(String phone) {
+            newUser.phone = phone;
+            return this;
+        }
+
+        public UserBuilder withAccount(Account account) {
+            newUser.account = account;
+            return this;
+        }
+
+        public UserBuilder withIsActive(boolean isActive) {
+            newUser.active = isActive;
+            return this;
+        }
+
+        public UserBuilder withUserRole(UserRole role) {
+            newUser.role = role;
+            return this;
+        }
+
+        public User build() {
+            return newUser;
         }
     }
 
@@ -157,6 +215,16 @@ public class User extends AbstractEntity {
     }
 
     @Override
+    public User clone() throws CloneNotSupportedException {
+        User copy = (User) this.clone();
+        copy.account = (Account) account.clone();
+        if (createDate != null) {
+            copy.createDate = (Date) createDate.clone();
+        }
+        return copy;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -175,7 +243,7 @@ public class User extends AbstractEntity {
         joiner.add("userId=" + userId);
         joiner.add("email=" + email);
         joiner.add("password=" + password);
-        joiner.add("firstName=" + firstName );
+        joiner.add("firstName=" + firstName);
         joiner.add("lastName=" + lastName);
         joiner.add("phone=" + phone);
         joiner.add("createDate=" + createDate);

@@ -14,13 +14,13 @@ public class ServletContextListenerImpl implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ConnectionPool.getInstance();
+        //ConnectionPool.getInstance();
         logger.log(Level.INFO, "++++++contextInitialized: " + sce.getServletContext().getServerInfo());
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        ConnectionPool.getInstance().destroyPool();
+       // ConnectionPool.getInstance().destroyPool();
         logger.log(Level.INFO, "----------contextDestroyed: " + sce.getServletContext().getContextPath());
     }
 }

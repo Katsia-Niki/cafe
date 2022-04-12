@@ -3,7 +3,6 @@ package by.jwd.cafe.controller;
 import java.io.IOException;
 
 import by.jwd.cafe.command.Command;
-import by.jwd.cafe.command.CommandType;
 import by.jwd.cafe.command.RequestParameter;
 import by.jwd.cafe.command.Router;
 import by.jwd.cafe.exception.CommandException;
@@ -14,13 +13,14 @@ import jakarta.servlet.http.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-@WebServlet(name = "controller", urlPatterns = {"/controller", "*.do "})
+//                                                              пользоваться
+@WebServlet(name = "controller", urlPatterns = {"/controller", "*.do"})
 public class Controller extends HttpServlet {
     static Logger logger = LogManager.getLogger();
 
     public void init() {
         logger.log(Level.INFO, "-------Servlet init: " + this.getServletInfo());
+        ConnectionPool.getInstance();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -33,9 +33,9 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+        response.setContentType("text/html"); // убрать в фильтр
         String commandName = request.getParameter(RequestParameter.COMMAND);
-        Command command = CommandProvider.getCommand(commandName);
+        Command command = CommandProvider.defineCommand(commandName);
         try {
             Router router = command.execute(request);
             String toPage = router.getPage();
@@ -43,8 +43,10 @@ public class Controller extends HttpServlet {
             switch (router.getType()) {
                 case FORWARD:
                     request.getRequestDispatcher(toPage).forward(request, response);
+                    break;
                 case REDIRECT:
                     response.sendRedirect(toPage);
+                    break;
                 default:
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
@@ -55,6 +57,7 @@ public class Controller extends HttpServlet {
     }
 
     public void destroy() {
+        ConnectionPool.getInstance().destroyPool();
         logger.log(Level.INFO, "-------Servlet destroyed: " + this.getServletName());
     }
 }
