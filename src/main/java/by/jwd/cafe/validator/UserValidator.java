@@ -1,7 +1,7 @@
 package by.jwd.cafe.validator;
 
 public interface UserValidator {
-    boolean validateLoginForm(String email, String password);
+    boolean validateEmail(String email);
 
     boolean validatePassword(String password);
 

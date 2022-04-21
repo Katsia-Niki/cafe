@@ -33,7 +33,7 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html"); // убрать в фильтр
+        response.setContentType("text/html"); // todo убрать в фильтр
         String commandName = request.getParameter(RequestParameter.COMMAND);
         Command command = CommandProvider.defineCommand(commandName);
         try {

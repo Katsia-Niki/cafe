@@ -9,65 +9,18 @@ public class User extends AbstractEntity {
     private static final long serialVersionUID = 1L;
     private int userId;
     private String email;
+    private String login;
     private String password;
     private String firstName;
     private String lastName;
-    private String phone;
-    private Date createDate;
-    private Account account;
+    private BigDecimal balance;
+    private BigDecimal loyaltyPoints;
     private boolean active;
     private UserRole role;
 
 
     public User() {
-        account = new Account();
     }
-
-    public class Account extends AbstractEntity {
-        private BigDecimal balance;
-        private BigDecimal loyaltyPoints;
-
-        public Account() {
-        }
-
-        public BigDecimal getBalance() {
-            return balance;
-        }
-
-        public void setBalance(BigDecimal balance) {
-            this.balance = balance;
-        }
-
-        public BigDecimal getLoyaltyPoints() {
-            return loyaltyPoints;
-        }
-
-        public void setLoyaltyPoints(BigDecimal loyaltyPoints) {
-            this.loyaltyPoints = loyaltyPoints;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Account account = (Account) o;
-            return Objects.equals(balance, account.balance) && Objects.equals(loyaltyPoints, account.loyaltyPoints);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(balance, loyaltyPoints);
-        }
-
-        @Override
-        public String toString() {
-            StringJoiner joiner = new StringJoiner(", ", "Account{", "}");
-            joiner.add("balance=" + balance);
-            joiner.add("loyaltyPoints" + loyaltyPoints);
-            return joiner.toString();
-        }
-    }
-
     public static class UserBuilder {
         private User newUser;
 
@@ -81,6 +34,11 @@ public class User extends AbstractEntity {
 
         public UserBuilder withUserId(int userId) {
             newUser.userId = userId;
+            return this;
+        }
+
+        public UserBuilder withLogin(String login) {
+            newUser.login = login;
             return this;
         }
 
@@ -104,28 +62,31 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public UserBuilder withCreateDate(Date createDate) {
-            newUser.createDate = createDate;
+        public UserBuilder withBalance(BigDecimal balance) {
+            newUser.balance = balance;
             return this;
         }
 
-        public UserBuilder withPhone(String phone) {
-            newUser.phone = phone;
+        public UserBuilder withLoyaltyPoints(BigDecimal loyaltyPoints) {
+            newUser.loyaltyPoints = loyaltyPoints;
             return this;
         }
-
-        public UserBuilder withAccount(Account account) {
-            newUser.account = account;
-            return this;
-        }
-
         public UserBuilder withIsActive(boolean isActive) {
             newUser.active = isActive;
             return this;
         }
 
-        public UserBuilder withUserRole(UserRole role) {
-            newUser.role = role;
+        public UserBuilder withUserRole(int roleId) {
+            switch (roleId) {
+                case 1:
+                    newUser.role = UserRole.ADMIN;
+                    break;
+                case 2:
+                    newUser.role = UserRole.CUSTOMER;
+                    break;
+                default:
+                    newUser.role = UserRole.UNSUPPORTED;
+            }
             return this;
         }
 
@@ -140,6 +101,14 @@ public class User extends AbstractEntity {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getEmail() {
@@ -174,28 +143,20 @@ public class User extends AbstractEntity {
         this.lastName = lastName;
     }
 
-    public String getPhone() {
-        return phone;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public BigDecimal getLoyaltyPoints() {
+        return loyaltyPoints;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setLoyaltyPoints(BigDecimal loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
     }
 
     public boolean isActive() {
@@ -210,17 +171,22 @@ public class User extends AbstractEntity {
         return role;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setRole(int roleId) {
+        switch (roleId) {
+            case 1:
+                this.role = UserRole.ADMIN;
+                break;
+            case 2:
+                this.role = UserRole.CUSTOMER;
+                break;
+            default:
+                this.role = UserRole.UNSUPPORTED;
+        }
     }
 
     @Override
     public User clone() throws CloneNotSupportedException {
         User copy = (User) this.clone();
-        copy.account = (Account) account.clone();
-        if (createDate != null) {
-            copy.createDate = (Date) createDate.clone();
-        }
         return copy;
     }
 
@@ -228,26 +194,48 @@ public class User extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         User user = (User) o;
-        return userId == user.userId && active == user.active && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(phone, user.phone) && Objects.equals(createDate, user.createDate) && Objects.equals(account, user.account) && role == user.role;
+
+        if (userId != user.userId) return false;
+        if (active != user.active) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (balance != null ? !balance.equals(user.balance) : user.balance != null) return false;
+        if (loyaltyPoints != null ? !loyaltyPoints.equals(user.loyaltyPoints) : user.loyaltyPoints != null)
+            return false;
+        return role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, email, password, firstName, lastName, phone, createDate, account, active, role);
+        int result = userId;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (balance != null ? balance.hashCode() : 0);
+        result = 31 * result + (loyaltyPoints != null ? loyaltyPoints.hashCode() : 0);
+        result = 31 * result + (active ? 1 : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        StringJoiner joiner = new StringJoiner(", ");
+        StringJoiner joiner = new StringJoiner(", ", "User{", "}");
         joiner.add("userId=" + userId);
+        joiner.add("login=" + login);
         joiner.add("email=" + email);
         joiner.add("password=" + password);
         joiner.add("firstName=" + firstName);
         joiner.add("lastName=" + lastName);
-        joiner.add("phone=" + phone);
-        joiner.add("createDate=" + createDate);
-        joiner.add("account=" + account);
+        joiner.add("balance=" + balance);
+        joiner.add("loyaltyPoints=" + loyaltyPoints);
         joiner.add("active=" + active);
         joiner.add("role=" + role);
         return joiner.toString();
