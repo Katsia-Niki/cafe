@@ -13,8 +13,8 @@ import jakarta.servlet.http.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-//                                                              пользоваться
-@WebServlet(name = "controller", urlPatterns = {"/controller", "*.do"})
+
+@WebServlet(name = "controller", urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
     static Logger logger = LogManager.getLogger();
 

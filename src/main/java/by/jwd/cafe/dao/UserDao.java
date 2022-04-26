@@ -6,7 +6,7 @@ import by.jwd.cafe.exception.DaoException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-public interface UserDao {
+public interface UserDao extends BaseDao<User> {
     boolean authenticate(String login, String password) throws DaoException;
     Optional<User> findUserByLoginAndPassword(String login, String Password) throws DaoException;
     Optional<User> findUserByLogin(String login) throws DaoException;

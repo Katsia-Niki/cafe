@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDaoImpl implements BaseDao<User>, UserDao {
+public class UserDaoImpl implements UserDao {
     static Logger logger = LogManager.getLogger();
     private static final String INSERT_USER = """
             INSERT INTO cafe.users (login, first_name, last_name, email, balance, loyalty_points, is_active,
@@ -39,13 +39,13 @@ public class UserDaoImpl implements BaseDao<User>, UserDao {
             SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
             is_active, role_name 
             FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
-            WHERE login=?""";
+            WHERE login=?"""; //todo убрать пароль
     private static final String SELECT_USER_BY_EMAIL = """
             SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
             is_active, role_name 
-            FROM cafe.users WHERE email=?""";
+            FROM cafe.users WHERE email=?"""; //todo убрать пароль
     private static final String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE login = ?";
-    private static String SELECT_ALL_USERS = "SELECT * FROM cafe.users";
+    private static String SELECT_ALL_USERS = "SELECT * FROM cafe.users"; //todo write all columns (instead of *)
     private static UserDaoImpl instance = new UserDaoImpl();
 
     private UserDaoImpl() {
@@ -153,7 +153,7 @@ public class UserDaoImpl implements BaseDao<User>, UserDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
-            statement.setString(1, login);
+            statement.setString(1, login); //заменяем вопросики
             statement.setString(2, password);
             try (ResultSet resultSet = statement.executeQuery()) {
                 optionalUser = mapper.map(resultSet);

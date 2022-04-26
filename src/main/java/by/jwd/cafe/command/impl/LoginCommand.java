@@ -18,9 +18,9 @@ public class LoginCommand implements Command {
         HttpSession session = request.getSession();
         try {
             if(userService.authenticate(login, password)) {
-                 request.setAttribute(RequestAttribute.USER, login); //todo переделать на first_name, last_name
+                 request.setAttribute(RequestAttribute.USER, login);
 
-                 session.setAttribute(SessionAttribute.USER_NAME, login);
+                 session.setAttribute(SessionAttribute.LOGIN_SES, login);
 
                  page = PagePath.MAIN;
             } else {
