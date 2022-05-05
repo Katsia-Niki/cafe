@@ -1,10 +1,16 @@
 package by.jwd.cafe.command;
 
 public final class RequestParameter {
-    public final static String COMMAND = "command";
-    public final static String LOGIN = "login";
-    public final static String PASS = "pass";
-    public final static String WRONG_DATA_MARKER = "wrong_data";
+    public static final String COMMAND = "command";
+    public static final String LOGIN = "login";
+    public static final String EMAIL = "email";
+    public static final String FIRST_NAME = "first_name";
+    public static final String LAST_NAME = "last_name";
+    public static final String PASS = "pass";
+    public static final String NEW_PASS = "new_pass";
+    public static final String REPEAT_PASSWORD = "repeat_password";
+    public static final String USER_ID = "user_id";
+    public static final String WRONG_DATA_MARKER = "wrong_data";
 
     private RequestParameter(){}
 }

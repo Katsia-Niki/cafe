@@ -12,6 +12,7 @@ public final class ColumnName {
     public static final String LOYALTY_POINTS = "loyalty_points";
     public static final String IS_ACTIVE = "is_active";
     public static final String ROLE_ID = "role_id";
+    public static final String ROLE_NAME = "role_name";
 
     private ColumnName() {}
 }

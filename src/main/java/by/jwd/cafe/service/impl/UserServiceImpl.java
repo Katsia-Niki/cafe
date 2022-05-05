@@ -3,6 +3,7 @@ package by.jwd.cafe.service.impl;
 import by.jwd.cafe.dao.UserDao;
 import by.jwd.cafe.dao.impl.UserDaoImpl;
 import by.jwd.cafe.entity.User;
+import by.jwd.cafe.entity.UserRole;
 import by.jwd.cafe.exception.DaoException;
 import by.jwd.cafe.exception.ServiceException;
 import by.jwd.cafe.service.UserService;
@@ -12,10 +13,12 @@ import by.jwd.cafe.validator.impl.UserValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static by.jwd.cafe.command.RequestParameter.LOGIN;
 import static by.jwd.cafe.command.RequestParameter.WRONG_DATA_MARKER;
 import static by.jwd.cafe.command.SessionAttribute.*;
 
@@ -32,21 +35,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean authenticate(String login, String password) throws ServiceException {
+    public Optional<User> authenticate(Map<String, String> userData) throws ServiceException {
+        Optional<User> optionalUser = Optional.empty();
+        String login = userData.get(LOGIN_SES);
+        String password = userData.get(PASSWORD_SES);
         UserValidator validator = UserValidatorImpl.getInstance();
         if (!validator.validateLogin(login) || !validator.validatePassword(password)) {
-            return false;
+            userData.put(WRONG_EMAIL_OR_PASSWORD_SES, WRONG_DATA_MARKER);
+            return optionalUser;
         }
-        boolean match;
         try {
             String secretPassword = PasswordEncryptor.md5Apache(password);
-            match = userDao.authenticate(login, secretPassword);
+            optionalUser = userDao.findUserByLoginAndPassword(login, secretPassword);
+            if (optionalUser.isEmpty()) {
+                logger.info("User " + login + " was not found in cafe.users.");
+                userData.put(NOT_FOUND_SES, WRONG_DATA_MARKER);
+            }
         } catch (DaoException e) {
             logger.error("Try to authenticate user " + login + password + " was failed.", e);
             throw new ServiceException("Try to authenticate user " + login + password + " was failed.", e);
         }
-
-        return match;
+        return optionalUser;
     }
 
     @Override
@@ -56,7 +65,7 @@ public class UserServiceImpl implements UserService {
         if (!validator.validateUserDataCreate(userData)) {
             return isCreated;
         }
-        String login = userData.get(LOGIN_MSG);
+        String login = userData.get(LOGIN_SES);
         String password = userData.get(PASSWORD_SES);
         String firstName = userData.get(FIRST_NAME_SES);
         String lastName = userData.get(LAST_NAME_SES);
@@ -73,6 +82,10 @@ public class UserServiceImpl implements UserService {
                     .withFirstName(firstName)
                     .withLastName(lastName)
                     .withEmail(email)
+                    .withBalance(BigDecimal.ZERO)
+                    .withLoyaltyPoints(BigDecimal.ZERO)
+                    .withIsActive(true)
+                    .withUserRole(UserRole.CUSTOMER)
                     .build();
             isCreated = userDao.add(newUser);
         } catch (DaoException e) {
@@ -103,7 +116,7 @@ public class UserServiceImpl implements UserService {
         String oldSecretPassword = PasswordEncryptor.md5Apache(oldPassword);
         try {
             Optional<User> userCheck = userDao.findUserByLoginAndPassword(login, oldSecretPassword);
-            if(userCheck.isEmpty()) {
+            if (userCheck.isEmpty()) {
                 logger.info("Wrong password.");
                 passwordData.put(WRONG_PASSWORD_SES, WRONG_DATA_MARKER);
                 return isChanged;
@@ -115,6 +128,21 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Try to change password was failed.", e);
         }
         return isChanged;
+    }
+
+    @Override
+    public Optional<User> findUserById(String userId) throws ServiceException {
+        Optional<User> optionalUser = Optional.empty();
+        try {
+            int id = Integer.parseInt(userId);
+            optionalUser = userDao.findEntityById(id);
+        } catch (NumberFormatException e) {
+            logger.info("Invalid user id");
+        } catch (DaoException e) {
+            logger.error("Try to find user by id "+ userId + " was failed.", e);
+            throw new ServiceException("Try to find user by id "+ userId + " was failed.", e);
+        }
+        return optionalUser;
     }
 
     @Override

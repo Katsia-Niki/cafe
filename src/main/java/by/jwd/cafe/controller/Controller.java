@@ -19,7 +19,7 @@ public class Controller extends HttpServlet {
     static Logger logger = LogManager.getLogger();
 
     public void init() {
-        logger.log(Level.INFO, "-------Servlet init: " + this.getServletInfo());
+        logger.log(Level.INFO, "Servlet init: " + this.getServletInfo());
         ConnectionPool.getInstance();
     }
 

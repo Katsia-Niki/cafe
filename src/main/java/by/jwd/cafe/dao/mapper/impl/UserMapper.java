@@ -10,8 +10,10 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 import static by.jwd.cafe.dao.ColumnName.*;
+
 public class UserMapper implements Mapper<User> {
     private static final UserMapper instance = new UserMapper();
+
     private UserMapper() {
 
     }
@@ -35,10 +37,11 @@ public class UserMapper implements Mapper<User> {
                     .withBalance(resultSet.getBigDecimal(BALANCE))
                     .withLoyaltyPoints(resultSet.getBigDecimal(LOYALTY_POINTS))
                     .withIsActive(resultSet.getBoolean(IS_ACTIVE))
-                    .withUserRole(resultSet.getInt(ROLE_ID))
+                    .withUserRoleById(resultSet.getInt(ROLE_ID))
                     .build();
             optionalUser = Optional.of(user);
         } catch (SQLException e) {
+            System.out.println(e);
             optionalUser = Optional.empty();
         }
         return optionalUser;

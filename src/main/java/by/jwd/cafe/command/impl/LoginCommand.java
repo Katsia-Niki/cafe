@@ -1,6 +1,7 @@
 package by.jwd.cafe.command.impl;
 
 import by.jwd.cafe.command.*;
+import by.jwd.cafe.entity.User;
 import by.jwd.cafe.exception.CommandException;
 import by.jwd.cafe.exception.ServiceException;
 import by.jwd.cafe.service.UserService;
@@ -8,29 +9,51 @@ import by.jwd.cafe.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.Map;
+import java.util.Optional;
+
+import static by.jwd.cafe.command.RequestParameter.*;
+import static by.jwd.cafe.command.SessionAttribute.*;
+
 public class LoginCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String login = request.getParameter(RequestParameter.LOGIN);
-        String password = request.getParameter(RequestParameter.PASS);
-        UserService userService = UserServiceImpl.getInstance();
-        String page;
         HttpSession session = request.getSession();
+        Map<String, String> userData = (Map<String, String>) session.getAttribute(USER_DATA_SES);
+        removeWrongMessage(userData);
+        updateUserDataFromRequest(request, userData);
+        UserService userService = UserServiceImpl.getInstance();
+        Router router;
         try {
-            if(userService.authenticate(login, password)) {
-                 request.setAttribute(RequestAttribute.USER, login);
-
-                 session.setAttribute(SessionAttribute.LOGIN_SES, login);
-
-                 page = PagePath.MAIN;
+            Optional<User> optionalUser = userService.authenticate(userData);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                session.removeAttribute(USER_DATA_SES);
+                session.setAttribute(USER_ID_SES, user.getUserId());
+                session.setAttribute(LOGIN_SES, user.getLogin());
+                session.setAttribute(CURRENT_ROLE, user.getRole().toString());
+                session.setAttribute(CURRENT_PAGE, PagePath.LOGIN);
+                request.setAttribute(RequestAttribute.USER, user.getFirstName());
+                router = new Router(PagePath.CUSTOMER_ACCOUNT);
             } else {
-                request.setAttribute(SessionAttribute.LOGIN_MSG, "incorrect login or password");
-                page = PagePath.INDEX;
+                System.out.println("User was not found-------------"); //fixme
+                session.setAttribute(USER_DATA_SES, userData);
+                session.setAttribute(CURRENT_PAGE, PagePath.LOGIN);
+                router = new Router(PagePath.LOGIN);
             }
-            session.setAttribute(SessionAttribute.CURRENT_PAGE, page);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return new Router(page);
+        return router;
+    }
+
+    private void removeWrongMessage(Map<String, String> userData) {
+        userData.remove(WRONG_EMAIL_OR_PASSWORD_SES);
+        userData.remove(NOT_FOUND_SES);
+    }
+
+    private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> userData) {
+        userData.put(LOGIN_SES, request.getParameter(LOGIN));
+        userData.put(PASSWORD_SES, request.getParameter(PASS));
     }
 }

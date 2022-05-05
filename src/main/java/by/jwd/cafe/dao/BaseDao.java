@@ -6,9 +6,10 @@ import by.jwd.cafe.exception.DaoException;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseDao <T extends AbstractEntity>{
+public interface BaseDao <K, T extends AbstractEntity>{
     List<T> findAll() throws DaoException;
     boolean add(T t) throws DaoException;
     boolean delete(T t) throws DaoException;
     boolean update(T t) throws DaoException;
+    Optional<T> findEntityById(K userId) throws DaoException;
 }

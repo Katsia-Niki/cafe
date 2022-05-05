@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: Lenovo
-  Date: 29.03.2022
-  Time: 21:25
+  Date: 03.05.2022
+  Time: 20:28
   To change this template use File | Settings | File Templates.
 --%>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>Index</title>
+    <title>Title</title>
 </head>
 <body>
-<jsp:forward page="controller?command=go_to_main_page"></jsp:forward>
+It's contact page.
 </body>
 </html>

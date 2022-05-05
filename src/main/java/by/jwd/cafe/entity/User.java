@@ -1,8 +1,6 @@
 package by.jwd.cafe.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
 import java.util.StringJoiner;
 
 public class User extends AbstractEntity {
@@ -21,6 +19,7 @@ public class User extends AbstractEntity {
 
     public User() {
     }
+
     public static class UserBuilder {
         private User newUser;
 
@@ -71,22 +70,28 @@ public class User extends AbstractEntity {
             newUser.loyaltyPoints = loyaltyPoints;
             return this;
         }
+
         public UserBuilder withIsActive(boolean isActive) {
             newUser.active = isActive;
             return this;
         }
 
-        public UserBuilder withUserRole(int roleId) {
+        public UserBuilder withUserRoleById(int roleId) {
             switch (roleId) {
                 case 1:
-                    newUser.role = UserRole.ADMIN;
+                    newUser.role = UserRole.CUSTOMER;
                     break;
                 case 2:
-                    newUser.role = UserRole.CUSTOMER;
+                    newUser.role = UserRole.ADMIN;
                     break;
                 default:
                     newUser.role = UserRole.UNSUPPORTED;
             }
+            return this;
+        }
+
+        public UserBuilder withUserRole(UserRole role) {
+            newUser.role = role;
             return this;
         }
 
@@ -174,10 +179,10 @@ public class User extends AbstractEntity {
     public void setRole(int roleId) {
         switch (roleId) {
             case 1:
-                this.role = UserRole.ADMIN;
+                this.role = UserRole.CUSTOMER;
                 break;
             case 2:
-                this.role = UserRole.CUSTOMER;
+                this.role = UserRole.ADMIN;
                 break;
             default:
                 this.role = UserRole.UNSUPPORTED;

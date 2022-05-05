@@ -1,10 +1,8 @@
 package by.jwd.cafe.dao.impl;
 
-import by.jwd.cafe.dao.BaseDao;
 import by.jwd.cafe.dao.UserDao;
 import by.jwd.cafe.dao.mapper.Mapper;
 import by.jwd.cafe.dao.mapper.impl.UserMapper;
-import by.jwd.cafe.entity.AbstractEntity;
 import by.jwd.cafe.entity.User;
 import by.jwd.cafe.exception.DaoException;
 import by.jwd.cafe.pool.ConnectionPool;
@@ -21,8 +19,8 @@ import java.util.Optional;
 public class UserDaoImpl implements UserDao {
     static Logger logger = LogManager.getLogger();
     private static final String INSERT_USER = """
-            INSERT INTO cafe.users (login, first_name, last_name, email, balance, loyalty_points, is_active,
-            role_id, password) values (?,?,?,?,?,?,?,?,?)""";
+            INSERT INTO cafe.users (login, password, first_name, last_name, email, balance, loyalty_points, is_active,
+            role_id) values (?,?,?,?,?,?,?,?,?)""";
     private static final String UPDATE_BALANCE = """
             UPDATE cafe.users SET balance=balance+? WHERE user_id=?""";
     private static final String CHANGE_PASSWORD = """
@@ -32,18 +30,24 @@ public class UserDaoImpl implements UserDao {
             role_id=? WHERE user_id=?""";
     private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = """
             SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
-            is_active, role_name 
-            FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
+            is_active, role_id 
+            FROM cafe.users 
             WHERE login=? AND password=?""";
-    private static final String SELECT_USER_BY_LOGIN = """
-            SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
+    private static final String SELECT_USER_BY_ID = """
+            SELECT user_id, login, first_name, last_name, email, balance, loyalty_points, 
             is_active, role_name 
             FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
-            WHERE login=?"""; //todo убрать пароль
-    private static final String SELECT_USER_BY_EMAIL = """
-            SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
+            WHERE user_id=?""";
+    private static final String SELECT_USER_BY_LOGIN = """
+            SELECT user_id, login, first_name, last_name, email, balance, loyalty_points, 
             is_active, role_name 
-            FROM cafe.users WHERE email=?"""; //todo убрать пароль
+            FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
+            WHERE login=?"""; //todo убирала пароль
+    private static final String SELECT_USER_BY_EMAIL = """
+            SELECT user_id, login, first_name, last_name, email, balance, loyalty_points, 
+            is_active, role_name 
+            FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
+            WHERE email=?"""; //todo убирала пароль
     private static final String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE login = ?";
     private static String SELECT_ALL_USERS = "SELECT * FROM cafe.users"; //todo write all columns (instead of *)
     private static UserDaoImpl instance = new UserDaoImpl();
@@ -91,7 +95,7 @@ public class UserDaoImpl implements UserDao {
             statement.setBigDecimal(6, user.getBalance());
             statement.setBigDecimal(7, user.getLoyaltyPoints());
             statement.setBoolean(8, user.isActive());
-            statement.setString(9, user.getRole().toString());
+            statement.setInt(9, user.getRole().ordinal());
             rows = statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("SQL request add user to cafe.users was failed.", e);
@@ -127,36 +131,35 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean authenticate(String login, String password) throws DaoException {
-        boolean match = false;
-        try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_LOGIN_PASSWORD)) {
-            statement.setString(1, login);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                String passFromDb;
-                if (resultSet.next()) {
-                    passFromDb = resultSet.getString(1);
-                    match = password.equals(passFromDb);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error("SQL request authenticate from cafe was failed.", e);
-            throw new DaoException("SQL request authenticate from cafe was failed.", e);
-        }
-        return match;
-    }
-
-    @Override
-    public Optional<User> findUserByLoginAndPassword(String login, String password) throws DaoException {
+    public Optional<User> findEntityById(Integer userId) throws DaoException {
         Optional<User> optionalUser;
         Mapper<User> mapper = UserMapper.getInstance();
         ConnectionPool pool = ConnectionPool.getInstance();
         try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()){
+                optionalUser = mapper.map(resultSet);
+            }
+        } catch (SQLException e) {
+            logger.error("SQL request findUserById from cafe was failed.", e);
+            throw new DaoException("SQL request findUserById from cafe was failed.", e);
+        }
+        return optionalUser;
+    }
+
+    @Override
+    public Optional<User> findUserByLoginAndPassword(String login, String password) throws DaoException {
+        Optional<User> optionalUser = Optional.empty();
+        Mapper<User> mapper = UserMapper.getInstance();
+        ConnectionPool pool = ConnectionPool.getInstance();
+        try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
-            statement.setString(1, login); //заменяем вопросики
+            statement.setString(1, login);
             statement.setString(2, password);
             try (ResultSet resultSet = statement.executeQuery()) {
-                optionalUser = mapper.map(resultSet);
+                resultSet.next();
+                optionalUser = mapper.map(resultSet).stream().findFirst();
             }
         } catch (SQLException e) {
             logger.error("SQL request findUserByLoginAndPassword from cafe was failed.", e);
@@ -165,8 +168,9 @@ public class UserDaoImpl implements UserDao {
         return optionalUser;
     }
 
+
     @Override
-    public Optional<User> findUserByLogin(String login) throws DaoException {
+    public Optional<User> findUserByLogin(String login) throws DaoException {//fixme check whether I need this method
         Optional<User> optionalUser;
         Mapper<User> mapper = UserMapper.getInstance();
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -220,10 +224,10 @@ public class UserDaoImpl implements UserDao {
         boolean isExist = false;
         ConnectionPool pool = ConnectionPool.getInstance();
         try (Connection connection = pool.getConnection();
-        PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_EMAIL)){
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_EMAIL)) {
             statement.setString(1, email);
-            try (ResultSet resultSet = statement.executeQuery()){
-                if(resultSet.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
                     isExist = true;
                 }
             }
@@ -239,10 +243,10 @@ public class UserDaoImpl implements UserDao {
         boolean isExist = false;
         ConnectionPool pool = ConnectionPool.getInstance();
         try (Connection connection = pool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN)){
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN)) {
             statement.setString(1, login);
-            try (ResultSet resultSet = statement.executeQuery()){
-                if(resultSet.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
                     isExist = true;
                 }
             }

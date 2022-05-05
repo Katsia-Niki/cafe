@@ -52,7 +52,7 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public boolean validateUserDataCreate(Map<String, String> userData) {
-        String login = userData.get(LOGIN_MSG);
+        String login = userData.get(LOGIN_SES);
         String password = userData.get(PASSWORD_SES);
         String repeatPassword = userData.get(REPEAT_PASSWORD_SES);
         String firstName = userData.get(FIRST_NAME_SES);
