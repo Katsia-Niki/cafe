@@ -19,6 +19,7 @@ import static by.jwd.cafe.command.RequestParameter.*;
 
 public class RegistrationCommand implements Command {
     static Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -27,33 +28,33 @@ public class RegistrationCommand implements Command {
         updateUserDataFromRequest(request, userData);
         UserService service = UserServiceImpl.getInstance();
         Router router;
-        try{
-            int sizeBefore = userData.size();
-            boolean result = service.createNewAccount(userData);
-            int sizeAfter = userData.size();
-            if (sizeBefore == sizeAfter) {
+        try {
+            if (service.createNewAccount(userData)) {
                 session.removeAttribute(USER_DATA_SES);
-                session.setAttribute(REGISTRATION_RESULT, result);
+                session.setAttribute(REGISTRATION_RESULT, true);
+                router = new Router(PagePath.LOGIN);
             } else {
                 session.setAttribute(USER_DATA_SES, userData);
+                router = new Router(PagePath.REGISTRATION);
             }
             session.setAttribute(CURRENT_PAGE, PagePath.REGISTRATION);
-            router = new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
         } catch (ServiceException e) {
             logger.error("Try to create new account was failed.", e);
             throw new CommandException("Try to create new account was failed.", e);
         }
         return router;
     }
+
     private void removeWrongMessage(Map<String, String> userData) {
-        userData.remove(WRONG_LOGIN_SES);
-        userData.remove(WRONG_EMAIL_SES);
-        userData.remove(WRONG_PASSWORD_SES);
-        userData.remove(WRONG_FIRST_NAME_SES);
-        userData.remove(WRONG_LAST_NAME_SES);
+//        userData.remove(WRONG_LOGIN_SES);
+//        userData.remove(WRONG_EMAIL_SES);
+//        userData.remove(WRONG_PASSWORD_SES);
+//        userData.remove(WRONG_FIRST_NAME_SES);
+//        userData.remove(WRONG_LAST_NAME_SES);
         userData.remove(MISMATCH_PASSWORDS_SES);
         userData.remove(WRONG_EMAIL_EXISTS_SES);
     }
+
     private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> userData) {
         userData.put(EMAIL_SES, request.getParameter(EMAIL));
         userData.put(LOGIN_SES, request.getParameter(LOGIN));

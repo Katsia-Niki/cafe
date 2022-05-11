@@ -13,7 +13,9 @@ public class Router {
 
     public Router(String page, Type type) {
         this.page = page;
-        this.type = type;
+        if (type != null) {
+            this.type = type;
+        }
     }
 
     public String getPage() {

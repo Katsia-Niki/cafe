@@ -8,6 +8,8 @@ import by.jwd.cafe.service.UserService;
 import by.jwd.cafe.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 import java.util.Optional;
@@ -16,6 +18,7 @@ import static by.jwd.cafe.command.RequestParameter.*;
 import static by.jwd.cafe.command.SessionAttribute.*;
 
 public class LoginCommand implements Command {
+    static Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
@@ -36,7 +39,8 @@ public class LoginCommand implements Command {
                 request.setAttribute(RequestAttribute.USER, user.getFirstName());
                 router = new Router(PagePath.CUSTOMER_ACCOUNT);
             } else {
-                System.out.println("User was not found-------------"); //fixme
+                logger.info("User was not found."); //fixme
+                request.setAttribute(RequestAttribute.LOGIN_MSG, "Incorrect login or password.");//fixme
                 session.setAttribute(USER_DATA_SES, userData);
                 session.setAttribute(CURRENT_PAGE, PagePath.LOGIN);
                 router = new Router(PagePath.LOGIN);

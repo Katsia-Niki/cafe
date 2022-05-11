@@ -40,8 +40,12 @@ public class UserServiceImpl implements UserService {
         String login = userData.get(LOGIN_SES);
         String password = userData.get(PASSWORD_SES);
         UserValidator validator = UserValidatorImpl.getInstance();
-        if (!validator.validateLogin(login) || !validator.validatePassword(password)) {
-            userData.put(WRONG_EMAIL_OR_PASSWORD_SES, WRONG_DATA_MARKER);
+        if (!validator.validateLogin(login)) {
+            userData.put(LOGIN_SES, WRONG_DATA_MARKER);
+            return optionalUser;
+        }
+        if (!validator.validatePassword(password)) {
+            userData.put(PASSWORD_SES, WRONG_DATA_MARKER);
             return optionalUser;
         }
         try {
