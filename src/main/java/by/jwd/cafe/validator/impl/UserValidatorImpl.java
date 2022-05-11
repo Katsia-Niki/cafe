@@ -115,47 +115,4 @@ public class UserValidatorImpl implements UserValidator {
         }
         return isValid;
     }
-
-//    @Override
-//    public boolean validateUserDataCreate(Map<String, String> userData) {
-//        String login = userData.get(LOGIN_SES);
-//        String password = userData.get(PASSWORD_SES);
-//        String repeatPassword = userData.get(REPEAT_PASSWORD_SES);
-//        String firstName = userData.get(FIRST_NAME_SES);
-//        String lastName = userData.get(LAST_NAME_SES);
-//        String email = userData.get(EMAIL_SES);
-//
-//        boolean isValid = true;
-//        if (!validateLogin(login)) {
-//            userData.put(WRONG_LOGIN_SES, WRONG_DATA_MARKER);
-//            logger.info("Invalid login.");
-//            isValid = false;
-//        }
-//        if (!validatePassword(password)) {
-//            userData.put(WRONG_PASSWORD_SES, WRONG_DATA_MARKER);
-//            logger.info("Invalid password.");
-//            isValid = false;
-//        }
-//        if (!password.equals(repeatPassword)) {
-//            userData.put(MISMATCH_PASSWORDS_SES, WRONG_DATA_MARKER);
-//            logger.info("Mismatch passwords.");
-//            isValid = false;
-//        }
-//        if (!validateName(firstName)) {
-//            userData.put(WRONG_FIRST_NAME_SES, WRONG_DATA_MARKER);
-//            logger.info("Invalid first name.");
-//            isValid = false;
-//        }
-//        if (!validateName(lastName)) {
-//            userData.put(WRONG_LAST_NAME_SES, WRONG_DATA_MARKER);
-//            logger.info("Invalid last name.");
-//            isValid = false;
-//        }
-//        if (!validateEmail(email)) {
-//            userData.put(WRONG_EMAIL_SES, WRONG_DATA_MARKER);
-//            logger.info("Invalid email.");
-//            isValid = false;
-//        }
-//        return isValid;
-//    }
 }
