@@ -46,11 +46,6 @@ public class RegistrationCommand implements Command {
     }
 
     private void removeWrongMessage(Map<String, String> userData) {
-//        userData.remove(WRONG_LOGIN_SES);
-//        userData.remove(WRONG_EMAIL_SES);
-//        userData.remove(WRONG_PASSWORD_SES);
-//        userData.remove(WRONG_FIRST_NAME_SES);
-//        userData.remove(WRONG_LAST_NAME_SES);
         userData.remove(MISMATCH_PASSWORDS_SES);
         userData.remove(WRONG_EMAIL_EXISTS_SES);
     }
