@@ -9,6 +9,7 @@ public final class SessionAttribute {
     public static final String CURRENT_USER_ID = "current_user_id";
     public static final String EMAIL_SES = "email_ses";
     public static final String IS_ACTIVE_SES = "is_active_ses";
+    public static final String LOCALE = "locale";
     public static final String LOGIN_SES = "login_ses";
     public static final String LOYALTY_POINTS_SES = "loyalty_points_ses";
     public static final String NEW_PASSWORD_SES = "new_password_ses";
@@ -26,6 +27,7 @@ public final class SessionAttribute {
     public static final String WRONG_EMAIL_EXISTS_SES = "wrong_email_exists_ses";
     public static final String WRONG_EMAIL_OR_PASSWORD_SES = "wrong_email_or_password_ses";
     public static final String WRONG_LOGIN_SES = "wrong_login_ses";
+    public static final String WRONG_LOGIN_EXISTS_SES = "wrong_login_exists_ses";
     public static final String WRONG_FIRST_NAME_SES = "wrong_first_name_ses";
     public static final String WRONG_LAST_NAME_SES = "wrong_last_name_ses";
     public static final String WRONG_PASSWORD_SES = "wrong_password_ses";

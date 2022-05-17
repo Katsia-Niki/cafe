@@ -7,7 +7,8 @@ import java.util.EnumSet;
 import static by.jwd.cafe.entity.UserRole.*;
 
 public enum CommandType {
-    CHANGE_PASSWORD_COMMAND("change_password_command",EnumSet.of(CUSTOMER, ADMIN)),
+    CHANGE_PASSWORD("change_password",EnumSet.of(CUSTOMER, ADMIN)),
+    CHANGE_LANGUAGE("change_language", EnumSet.of(GUEST, CUSTOMER, ADMIN)),
     GO_TO_ACCOUNT_PAGE("go_to_account_page", EnumSet.of(CUSTOMER, ADMIN)),
     GO_TO_CONTACT_PAGE("go_to_contact_page", EnumSet.of(GUEST, CUSTOMER, ADMIN)),
     GO_TO_LOGIN_PAGE("go_to_login_page", EnumSet.of(GUEST)),

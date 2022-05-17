@@ -20,7 +20,6 @@ public class Controller extends HttpServlet {
 
     public void init() {
         logger.log(Level.INFO, "Servlet init: " + this.getServletInfo());
-        ConnectionPool.getInstance();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -57,7 +56,6 @@ public class Controller extends HttpServlet {
     }
 
     public void destroy() {
-        ConnectionPool.getInstance().destroyPool();
         logger.log(Level.INFO, "-------Servlet destroyed: " + this.getServletName());
     }
 }

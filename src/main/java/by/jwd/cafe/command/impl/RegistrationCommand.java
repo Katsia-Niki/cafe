@@ -24,15 +24,18 @@ public class RegistrationCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         Map<String, String> userData = (Map<String, String>) session.getAttribute(USER_DATA_SES);
-        removeWrongMessage(userData);
+        removeTempData(userData);
         updateUserDataFromRequest(request, userData);
         UserService service = UserServiceImpl.getInstance();
         Router router;
         try {
-            if (service.createNewAccount(userData)) {
+            int sizeBefore = userData.size();
+            boolean result = service.createNewAccount(userData);
+            int sizeAfter = userData.size();
+            if (sizeBefore == sizeAfter) {
                 session.removeAttribute(USER_DATA_SES);
-                session.setAttribute(REGISTRATION_RESULT, true);
-                router = new Router(PagePath.LOGIN);
+                session.setAttribute(REGISTRATION_RESULT, result);
+                router = new Router(PagePath.REGISTRATION);
             } else {
                 session.setAttribute(USER_DATA_SES, userData);
                 router = new Router(PagePath.REGISTRATION);
@@ -45,7 +48,12 @@ public class RegistrationCommand implements Command {
         return router;
     }
 
-    private void removeWrongMessage(Map<String, String> userData) {
+    private void removeTempData(Map<String, String> userData) {
+        userData.remove(WRONG_LOGIN_SES);
+        userData.remove(WRONG_EMAIL_SES);
+        userData.remove(WRONG_PASSWORD_SES);
+        userData.remove(WRONG_FIRST_NAME_SES);
+        userData.remove(WRONG_LAST_NAME_SES);
         userData.remove(MISMATCH_PASSWORDS_SES);
         userData.remove(WRONG_EMAIL_EXISTS_SES);
     }

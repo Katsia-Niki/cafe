@@ -37,7 +37,6 @@ public class PreControllerFilter implements Filter {
                     ? UserRole.GUEST
                     : UserRole.valueOf(session.getAttribute(CURRENT_ROLE).toString());
             EnumSet<UserRole> roles = command.getAcceptableRole();
-            System.out.println(session.getAttribute(CURRENT_ROLE)); //fixme
             if (roles.contains(userRole)) {
                 chain.doFilter(request, response);
             } else {

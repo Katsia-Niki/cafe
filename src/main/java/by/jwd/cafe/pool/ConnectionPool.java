@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
     static Logger logger = LogManager.getLogger();
-    private static final int DEFAULT_POOL_SIZE = 8; //todo убрать в property
+    private static final int DEFAULT_POOL_SIZE = 8;
     private static final String DB_PROPERTY = "properties.db";
     private static final String DB_DRIVER_KEY = "driver";
     private static final String DB_URL_KEY = "url";

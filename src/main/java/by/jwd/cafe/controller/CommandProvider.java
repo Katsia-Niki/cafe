@@ -16,7 +16,8 @@ public final class CommandProvider {
     private static EnumMap<CommandType, Command> commands = new EnumMap<>(CommandType.class);
 
     static {
-        commands.put(CHANGE_PASSWORD_COMMAND, new ChangePasswordCommand());
+        commands.put(CHANGE_PASSWORD, new ChangePasswordCommand());
+        commands.put(CHANGE_LANGUAGE, new ChangeLanguageCommand());
         commands.put(GO_TO_ACCOUNT_PAGE, new GoToAccountPageCommand());
         commands.put(GO_TO_CONTACT_PAGE, new GoToContactPageCommand());
         commands.put(GO_TO_LOGIN_PAGE, new GoToLoginPageCommand());

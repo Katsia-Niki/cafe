@@ -79,6 +79,10 @@ public class UserServiceImpl implements UserService {
                 userData.put(WRONG_EMAIL_EXISTS_SES, WRONG_DATA_MARKER);
                 return isCreated;
             }
+            if (userDao.isLoginExist(login)) {
+                userData.put(WRONG_LOGIN_EXISTS_SES, WRONG_DATA_MARKER);
+                return isCreated;
+            }
             String secretPassword = PasswordEncryptor.md5Apache(password);
             User newUser = new User.UserBuilder()
                     .withLogin(login)
