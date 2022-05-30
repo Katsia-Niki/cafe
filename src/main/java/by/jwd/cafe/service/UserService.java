@@ -13,5 +13,7 @@ public interface UserService {
     List<User> findAllUsers() throws ServiceException;
     boolean changePassword(Map<String, String> passwordData) throws ServiceException;
     Optional<User> findUserById(String userId) throws ServiceException;
+    boolean updatePersonalData(Map<String, String> userData) throws ServiceException;
+    boolean updateUserStatus(int userId, int newUserStatus) throws ServiceException;
     boolean refillBalance(Map<String, String> balanceData) throws ServiceException;
 }

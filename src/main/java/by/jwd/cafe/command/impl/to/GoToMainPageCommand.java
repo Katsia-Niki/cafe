@@ -15,7 +15,7 @@ public class GoToMainPageCommand implements Command {
         HttpSession session = request.getSession();
         String currentPage = CurrentPageExtractor.extract(request);
         session.setAttribute(SessionAttribute.CURRENT_PAGE, currentPage);
-        return session.getAttribute(SessionAttribute.CURRENT_EMAIL_SES) != null
+        return session.getAttribute(SessionAttribute.CURRENT_LOGIN_SESSION) != null
                 ? new Router(PagePath.HOME) //fixme check page
                 : new Router(PagePath.MAIN);
     }

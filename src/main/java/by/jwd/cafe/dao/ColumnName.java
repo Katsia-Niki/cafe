@@ -13,6 +13,14 @@ public final class ColumnName {
     public static final String IS_ACTIVE = "is_active";
     public static final String ROLE_ID = "role_id";
     public static final String ROLE_NAME = "role_name";
+    //table cafe.menu_item
+    public static final String MENU_ITEM_ID = "menu_item_id";
+    public static final String MENU_ITEM_TYPE_ID = "menu_item_type_id";
+    public static final String MENU_ITEM_NAME = "menu_item_name";
+    public static final String DESCRIPTION = "description";
+    public static final String PRICE = "price";
+    public static final String AVAILABLE = "available";
+    public static final String PICTURE = "picture";
 
     private ColumnName() {}
 }

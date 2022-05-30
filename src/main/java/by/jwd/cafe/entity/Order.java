@@ -1,7 +1,7 @@
 package by.jwd.cafe.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.StringJoiner;
 
 public class Order extends AbstractEntity {
@@ -9,11 +9,11 @@ public class Order extends AbstractEntity {
     private int orderId;
     private int userId;
     private PaymentType paymentType;
-    private Date pickUpTime;
+    private LocalDate pickUpTime;
     private BigDecimal orderCost;
     private Order.Status status;
     private boolean isPaid;
-    private Date creationDate;
+    private LocalDate creationDate;
 
     public enum Status {
         ACTIVE, FINISHED, CANCELLED
@@ -41,7 +41,7 @@ public class Order extends AbstractEntity {
             return this;
         }
 
-        public OrderBuilder withPickUpTime(Date pickUpTime) {
+        public OrderBuilder withPickUpTime(LocalDate pickUpTime) {
             newOrder.pickUpTime = pickUpTime;
             return this;
         }
@@ -61,7 +61,7 @@ public class Order extends AbstractEntity {
             return this;
         }
 
-        public OrderBuilder withCreationDate(Date creationDate) {
+        public OrderBuilder withCreationDate(LocalDate creationDate) {
             newOrder.creationDate = creationDate;
             return this;
         }
@@ -95,11 +95,11 @@ public class Order extends AbstractEntity {
         this.paymentType = paymentType;
     }
 
-    public Date getPickUpTime() {
+    public LocalDate getPickUpTime() {
         return pickUpTime;
     }
 
-    public void setPickUpTime(Date pickUpTime) {
+    public void setPickUpTime(LocalDate pickUpTime) {
         this.pickUpTime = pickUpTime;
     }
 
@@ -127,11 +127,11 @@ public class Order extends AbstractEntity {
         isPaid = paid;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 

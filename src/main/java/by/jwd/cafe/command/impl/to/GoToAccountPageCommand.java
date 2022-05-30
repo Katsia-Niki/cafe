@@ -29,7 +29,7 @@ public class GoToAccountPageCommand implements Command {
         HttpSession session = request.getSession();
         session.removeAttribute(UPDATE_PERSONAL_DATA_RESULT);
         UserService service = UserServiceImpl.getInstance();
-        String roleName = request.getAttribute(CURRENT_ROLE).toString();
+        String roleName = session.getAttribute(CURRENT_ROLE).toString();
         UserRole userRole = UserRole.valueOf(roleName);
         String userId = userRole == UserRole.ADMIN
                 ? request.getParameter(RequestParameter.USER_ID)
@@ -40,19 +40,19 @@ public class GoToAccountPageCommand implements Command {
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 Map<String, String> userData = new HashMap<>();
-                userData.put(USER_ID_SES, userId);
-                userData.put(LOGIN_SES, user.getLogin());
-                userData.put(FIRST_NAME_SES, user.getFirstName());
-                userData.put(LAST_NAME_SES, user.getLastName());
-                userData.put(EMAIL_SES, user.getEmail());
-                userData.put(BALANCE_SES, user.getBalance().toString());
-                userData.put(LOYALTY_POINTS_SES, user.getLoyaltyPoints().toString());
-                userData.put(IS_ACTIVE_SES, String.valueOf(user.isActive()));
-                userData.put(ROLE_NAME_SES, user.getRole().toString());
-                session.setAttribute(USER_DATA_SES, userData);
+                userData.put(USER_ID_SESSION, userId);
+                userData.put(LOGIN_SESSION, user.getLogin());
+                userData.put(FIRST_NAME_SESSION, user.getFirstName());
+                userData.put(LAST_NAME_SESSION, user.getLastName());
+                userData.put(EMAIL_SESSION, user.getEmail());
+                userData.put(BALANCE_SESSION, user.getBalance().toString());
+                userData.put(LOYALTY_POINTS_SESSION, user.getLoyaltyPoints().toString());
+                userData.put(IS_ACTIVE_SESSION, String.valueOf(user.isActive()));
+                userData.put(ROLE_NAME_SESSION, user.getRole().toString());
+                session.setAttribute(USER_DATA_SESSION, userData);
                 session.setAttribute(CURRENT_PAGE, CurrentPageExtractor.extract(request));
             } else {
-                session.setAttribute(NOT_FOUND_SES, true);
+                session.setAttribute(NOT_FOUND_SESSION, true);
             }
             router = userRole == UserRole.ADMIN
                     ? new Router(PagePath.ADMIN_ACCOUNT, Router.Type.REDIRECT)

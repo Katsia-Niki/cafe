@@ -16,21 +16,14 @@ import java.util.Map;
 
 import static by.jwd.cafe.command.RequestParameter.PASS;
 import static by.jwd.cafe.command.RequestParameter.NEW_PASS;
-import static by.jwd.cafe.command.SessionAttribute.CURRENT_PAGE;
-import static by.jwd.cafe.command.SessionAttribute.PASSWORD_SES;
-import static by.jwd.cafe.command.SessionAttribute.NEW_PASSWORD_SES;
-import static by.jwd.cafe.command.SessionAttribute.USER_DATA_SES;
-import static by.jwd.cafe.command.SessionAttribute.CHANGE_PASSWORD_RESULT;
-import static by.jwd.cafe.command.SessionAttribute.WRONG_PASSWORD_SES;
-import static by.jwd.cafe.command.SessionAttribute.WRONG_OLD_PASSWORD_SES;
-import static by.jwd.cafe.command.SessionAttribute.WRONG_NEW_PASSWORD_SES;
+import static by.jwd.cafe.command.SessionAttribute.*;
 
 public class ChangePasswordCommand implements Command {
     static Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
-        Map<String, String> userData = (Map<String, String>) session.getAttribute(USER_DATA_SES);
+        Map<String, String> userData = (Map<String, String>) session.getAttribute(USER_DATA_SESSION);
         removeWrongMessage(userData);
         updateUserDataFromRequest(request, userData);
         UserService service = UserServiceImpl.getInstance();
@@ -40,10 +33,10 @@ public class ChangePasswordCommand implements Command {
             boolean result = service.changePassword(userData);
             int sizeAfter = userData.size();
             if (sizeBefore == sizeAfter) {
-                session.removeAttribute(USER_DATA_SES);
+                session.removeAttribute(USER_DATA_SESSION);
                 session.setAttribute(CHANGE_PASSWORD_RESULT, result);
             } else {
-                session.setAttribute(USER_DATA_SES, userData);
+                session.setAttribute(USER_DATA_SESSION, userData);
             }
             session.setAttribute(CURRENT_PAGE, PagePath.CHANGE_PASSWORD);
             router = new Router(PagePath.CHANGE_PASSWORD, Router.Type.REDIRECT);
@@ -54,12 +47,12 @@ public class ChangePasswordCommand implements Command {
         return router;
     }
     private void removeWrongMessage(Map<String, String> userData) {
-        userData.remove(WRONG_PASSWORD_SES);
-        userData.remove(WRONG_NEW_PASSWORD_SES);
-        userData.remove(WRONG_OLD_PASSWORD_SES);
+        userData.remove(WRONG_PASSWORD_SESSION);
+        userData.remove(WRONG_NEW_PASSWORD_SESSION);
+        userData.remove(WRONG_OLD_PASSWORD_SESSION);
     }
     private void updateUserDataFromRequest(HttpServletRequest request, Map<String, String> userData) {
-        userData.put(PASSWORD_SES, request.getParameter(PASS));
-        userData.put(NEW_PASSWORD_SES, request.getParameter(NEW_PASS));
+        userData.put(PASSWORD_SESSION, request.getParameter(PASS));
+        userData.put(NEW_PASSWORD_SESSION, request.getParameter(NEW_PASS));
     }
 }

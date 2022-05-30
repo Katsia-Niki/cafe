@@ -11,5 +11,5 @@ public interface BaseDao <K, T extends AbstractEntity>{
     boolean add(T t) throws DaoException;
     boolean delete(T t) throws DaoException;
     boolean update(T t) throws DaoException;
-    Optional<T> findEntityById(K userId) throws DaoException;
+    Optional<T> findEntityById(K entityId) throws DaoException;
 }

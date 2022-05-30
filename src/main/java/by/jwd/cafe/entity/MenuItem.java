@@ -1,9 +1,10 @@
 package by.jwd.cafe.entity;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 
 public class MenuItem extends AbstractEntity {
-
+    @Serial
     private static final long serialVersionUID  = 1L;
     private int menuItemId;
     private MenuItemType menuItemType;
@@ -11,6 +12,7 @@ public class MenuItem extends AbstractEntity {
     private String description;
     private BigDecimal price;
     private boolean isAvailable;
+    private String picture;
 
     public MenuItem() {
     }
@@ -70,6 +72,14 @@ public class MenuItem extends AbstractEntity {
         isAvailable = available;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     public static class MenuItemBuilder {
         private MenuItem newMenuItem;
 
@@ -82,8 +92,26 @@ public class MenuItem extends AbstractEntity {
             return this;
         }
 
-        public MenuItemBuilder withMenuItemType (MenuItemType menuItemType) {
-            newMenuItem.menuItemType = menuItemType;
+        public MenuItemBuilder withMenuItemTypeById (int menuItemTypeId) {
+            switch (menuItemTypeId) {
+                case 1:
+                    newMenuItem.menuItemType = MenuItemType.APPETIZER;
+                    break;
+                case 2:
+                    newMenuItem.menuItemType = MenuItemType.MAIN_COURSE;
+                    break;
+                case 3:
+                    newMenuItem.menuItemType = MenuItemType.SOUP;
+                    break;
+                case 4:
+                    newMenuItem.menuItemType =  MenuItemType.DESSERT;
+                    break;
+                case 5:
+                    newMenuItem.menuItemType = MenuItemType.DRINK;
+                    break;
+                default:
+                    newMenuItem.menuItemType = MenuItemType.UNSUPPORTED;
+            }
             return this;
         }
 
@@ -104,6 +132,11 @@ public class MenuItem extends AbstractEntity {
 
         public MenuItemBuilder withIsAvailable (boolean isAvailable) {
             newMenuItem.isAvailable = isAvailable;
+            return this;
+        }
+
+        public MenuItemBuilder withPicture (String picture) {
+            newMenuItem.picture = picture;
             return this;
         }
 
@@ -130,7 +163,8 @@ public class MenuItem extends AbstractEntity {
         if (name != null ? !name.equals(menuItem.name) : menuItem.name != null) return false;
         if (description != null ? !description.equals(menuItem.description) : menuItem.description != null)
             return false;
-        return price != null ? price.equals(menuItem.price) : menuItem.price == null;
+        if (price != null ? !price.equals(menuItem.price) : menuItem.price != null) return false;
+        return picture != null ? picture.equals(menuItem.picture) : menuItem.picture == null;
     }
 
     @Override
@@ -141,6 +175,7 @@ public class MenuItem extends AbstractEntity {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (isAvailable ? 1 : 0);
+        result = 31 * result + (picture != null ? picture.hashCode() : 0);
         return result;
     }
 }

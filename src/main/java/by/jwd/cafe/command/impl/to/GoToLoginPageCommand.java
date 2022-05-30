@@ -17,7 +17,7 @@ public class GoToLoginPageCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         Map<String, String> userData = new HashMap<>();
-        session.setAttribute(SessionAttribute.USER_DATA_SES, userData);
+        session.setAttribute(SessionAttribute.USER_DATA_SESSION, userData);
         String currentPage = CurrentPageExtractor.extract(request);
         session.setAttribute(SessionAttribute.CURRENT_PAGE, currentPage);
         return new Router(PagePath.LOGIN);

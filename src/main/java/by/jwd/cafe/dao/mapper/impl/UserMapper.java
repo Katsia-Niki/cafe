@@ -2,9 +2,9 @@ package by.jwd.cafe.dao.mapper.impl;
 
 import by.jwd.cafe.dao.mapper.Mapper;
 import by.jwd.cafe.entity.User;
-import by.jwd.cafe.entity.UserRole;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -12,6 +12,7 @@ import java.util.Optional;
 import static by.jwd.cafe.dao.ColumnName.*;
 
 public class UserMapper implements Mapper<User> {
+    static Logger logger = LogManager.getLogger();
     private static final UserMapper instance = new UserMapper();
 
     private UserMapper() {
@@ -41,7 +42,7 @@ public class UserMapper implements Mapper<User> {
                     .build();
             optionalUser = Optional.of(user);
         } catch (SQLException e) {
-            System.out.println(e);
+            logger.info("SQL exception while map User resultSet", e);
             optionalUser = Optional.empty();
         }
         return optionalUser;

@@ -1,9 +1,11 @@
 package by.jwd.cafe.entity;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.StringJoiner;
 
 public class User extends AbstractEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
     private int userId;
     private String email;

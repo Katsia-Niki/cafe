@@ -24,32 +24,37 @@ public class UserDaoImpl implements UserDao {
     private static final String UPDATE_BALANCE = """
             UPDATE cafe.users SET balance=balance+? WHERE user_id=?""";
     private static final String CHANGE_PASSWORD = """
-            UPDATE cafe.users SET password=password? WHERE user_id=?""";
+            UPDATE cafe.users SET password=? WHERE user_id=?""";
     private static final String UPDATE_USER = """
-            UPDATE cafe.users SET first_name=?, last_name=?, balance=?, loyalty_points=?, is_active=?, 
+            UPDATE cafe.users SET first_name=?, last_name=?, email=?, balance=?, loyalty_points=?, is_active=?, 
             role_id=? WHERE user_id=?""";
+    private static final String UPDATE_USER_STATUS = """
+            UPDATE cafe.users SET is_active=?
+            WHERE user_id=?""";
     private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = """
             SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
             is_active, role_id 
             FROM cafe.users 
             WHERE login=? AND password=?""";
     private static final String SELECT_USER_BY_ID = """
-            SELECT user_id, login, first_name, last_name, email, balance, loyalty_points, 
-            is_active, role_name 
-            FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
+            SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
+            is_active, role_id 
+            FROM cafe.users 
             WHERE user_id=?""";
     private static final String SELECT_USER_BY_LOGIN = """
-            SELECT user_id, login, first_name, last_name, email, balance, loyalty_points, 
+            SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
             is_active, role_name 
             FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
-            WHERE login=?"""; //todo убирала пароль
+            WHERE login=?""";
     private static final String SELECT_USER_BY_EMAIL = """
-            SELECT user_id, login, first_name, last_name, email, balance, loyalty_points, 
+            SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points, 
             is_active, role_name 
             FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
-            WHERE email=?"""; //todo убирала пароль
-    private static final String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE login = ?";
-    private static String SELECT_ALL_USERS = "SELECT * FROM cafe.users"; //todo write all columns (instead of *)
+            WHERE email=?""";
+    private static String SELECT_ALL_USERS = """
+             SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points,
+             is_active, role_id 
+             FROM cafe.users""";
     private static UserDaoImpl instance = new UserDaoImpl();
 
     private UserDaoImpl() {
@@ -117,11 +122,12 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
-            statement.setBigDecimal(3, user.getBalance());
-            statement.setBigDecimal(4, user.getLoyaltyPoints());
-            statement.setBoolean(5, user.isActive());
-            statement.setString(6, user.getRole().toString());
-            statement.setInt(7, user.getUserId());
+            statement.setString(3, user.getEmail());
+            statement.setBigDecimal(4, user.getBalance());
+            statement.setBigDecimal(5, user.getLoyaltyPoints());
+            statement.setBoolean(6, user.isActive());
+            statement.setInt(7, user.getRole().ordinal());
+            statement.setInt(8, user.getUserId());
             rows = statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("SQL request changePassword from table cafe.users was failed.", e);
@@ -131,14 +137,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findEntityById(Integer userId) throws DaoException {
+    public Optional<User> findEntityById(Integer entityId) throws DaoException {
         Optional<User> optionalUser;
         Mapper<User> mapper = UserMapper.getInstance();
         ConnectionPool pool = ConnectionPool.getInstance();
         try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)) {
-            statement.setInt(1, userId);
+            statement.setInt(1, entityId);
             try (ResultSet resultSet = statement.executeQuery()){
+                resultSet.next();
                 optionalUser = mapper.map(resultSet);
             }
         } catch (SQLException e) {
@@ -170,7 +177,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public Optional<User> findUserByLogin(String login) throws DaoException {//fixme check whether I need this method
+    public Optional<User> findUserByLogin(String login) throws DaoException { //fixme delete??
         Optional<User> optionalUser;
         Mapper<User> mapper = UserMapper.getInstance();
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -188,7 +195,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean changePassword(int userId, String newPassword) throws DaoException {
+    public boolean updatePassword(int userId, String newPassword) throws DaoException {
         int rows;
         ConnectionPool pool = ConnectionPool.getInstance();
         try (Connection connection = pool.getConnection();
@@ -199,6 +206,22 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             logger.error("SQL request changePassword from table cafe.users was failed.", e);
             throw new DaoException("SQL request changePassword from table cafe.users was failed.", e);
+        }
+        return rows == 1;
+    }
+
+    @Override
+    public boolean updateUserStatus(int userId, int newUserStatus) throws DaoException {
+        int rows;
+        ConnectionPool pool = ConnectionPool.getInstance();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_USER_STATUS)) {
+            statement.setInt(1,  newUserStatus);
+            statement.setInt(2, userId);
+            rows = statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("SQL request updateUserStatus from table cafe.users was failed.", e);
+            throw new DaoException("SQL request updateUserStatus from table cafe.users was failed.", e);
         }
         return rows == 1;
     }

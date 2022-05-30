@@ -30,6 +30,7 @@ public class PreControllerFilter implements Filter {
         String commandName = httpServletRequest.getParameter(RequestParameter.COMMAND);
         if (commandName == null) {
             httpServletResponse.sendRedirect(PagePath.INDEX);
+            return;
         }
         try {
             CommandType command = CommandType.valueOf(commandName.toUpperCase());

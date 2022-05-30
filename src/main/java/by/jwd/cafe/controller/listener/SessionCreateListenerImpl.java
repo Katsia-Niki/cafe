@@ -14,18 +14,12 @@ import org.apache.logging.log4j.Logger;
 public class SessionCreateListenerImpl implements HttpSessionListener {
     static Logger logger = LogManager.getLogger();
     private static String LOCAL_ATTRIBUTE = "local";
-    private static String DEFAULT_LOCAL = "en";
-      @Override
-    public void sessionCreated(HttpSessionEvent se) {
-            HttpSession session = se.getSession();
-            session.setAttribute(LOCAL_ATTRIBUTE, DEFAULT_LOCAL);
-            session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.INDEX);
-            logger.log(Level.INFO, "Session was created: " + se.getSession().getId());
-    }
+    private static String DEFAULT_LOCAL = "en_EN";
 
     @Override
-    public void sessionDestroyed(HttpSessionEvent se) {
-
-        logger.log(Level.INFO, "Session was destroyed: " + se.getSession().getId());
+    public void sessionCreated(HttpSessionEvent se) {
+        HttpSession session = se.getSession();
+        session.setAttribute(LOCAL_ATTRIBUTE, DEFAULT_LOCAL);
+        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.INDEX);
     }
 }
