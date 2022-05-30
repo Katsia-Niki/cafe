@@ -16,6 +16,7 @@
 <fmt:message key="language.en" var="en"/>
 <fmt:message key="language.ru" var="ru"/>
 <fmt:message key="reference.login" var="login"/>
+<fmt:message key="reference.logout" var="logout"/>
 <fmt:message key="reference.registration" var="registration"/>
 <fmt:message key="reference.menu" var="menu"/>
 <fmt:message key="reference.contact" var="contact"/>
@@ -53,21 +54,28 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
+                        <c:choose>
+                            <c:when test="${current_role eq 'ADMIN' or current_role eq 'CUSTOMER'}">
+                                <li class="nav-item">
+                                    <jsp:include page="header_navigation.jsp"/>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="nav-item"><a class="nav-link"
+                                                        href="${path}/controller?command=go_to_login_page">${login}</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link"
+                                                        href="${path}/controller?command=go_to_registration_page">${registration}</a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="${pageContext.request.contextPath}/controller?command=go_to_login_page">${login}</a>
+                               href="${path}/controller?command=go_to_menu_page">${menu}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="${pageContext.request.contextPath}/controller?command=go_to_registration_page">${registration}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="${pageContext.request.contextPath}/controller?command=go_to_contact_page">${contact}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               href="${pageContext.request.contextPath}/controller?command=go_to_menu_page">${menu}</a>
+                               href="${path}/controller?command=go_to_contact_page">${contact}</a>
                         </li>
                         <li class="submenu">
                             <button class="btn btn-secondary btn-sm" type="button"

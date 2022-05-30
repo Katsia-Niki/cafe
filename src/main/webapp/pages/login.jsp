@@ -15,10 +15,13 @@
 
 <fmt:message key="title.login_form" var="login_form"/>
 <fmt:message key="button.sign_in" var="sign_in"/>
+
 <fmt:message key="placeholder.login" var="login"/>
 <fmt:message key="placeholder.password" var="password"/>
 <fmt:message key="reference.registration" var="registration"/>
 <fmt:message key="reference.back_to_main" var="back_to_main"/>
+<fmt:message key="message.incorrect_login_or_password" var="incorrect_login_or_password"/>
+<fmt:message key="message.not_found" var="not_found"/>
 
 <!DOCTYPE html>
 <html>
@@ -62,7 +65,7 @@
 <body>
 <div class="container">
     <section id="content">
-        <form action="controller">
+        <form method="post" action="controller">
             <input type="hidden" name="command" value="login"/>
             <h1>${login_form}</h1>
             <div>
@@ -81,8 +84,16 @@
             <a class="link-secondary text-decoration-none" href="${path}/controller?command=go_to_main_page">
                 ${back_to_main}</a>
         </div>
+        <div class="mb-3 text-danger">
+
+        </div>
         <label class="form-label text-danger">
-            ${login_msg}
+            <c:if test="${not empty user_data_ses['wrong_email_or_password_ses']}">
+                ${incorrect_login_or_password}
+            </c:if>
+            <c:if test="${not empty user_data_ses['not_found_ses']}">
+                ${not_found}
+            </c:if>
         </label>
     </section><!-- content -->
 </div><!-- container -->

@@ -12,7 +12,6 @@
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="properties.pagecontent"/>
 
-<fmt:message key="message.user" var="user"/>
 <fmt:message key="reference.login" var="login"/>
 <fmt:message key="reference.menu" var="menu"/>
 <fmt:message key="reference.order_dish" var="order_dish"/>
@@ -114,96 +113,6 @@
 <!-- ***** About Area Ends ***** -->
 
 <!-- ***** Menu Area Starts ***** -->
-<section class="section" id="menu">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="section-heading">
-                    <h6>Our Menu</h6>
-                    <h2>Our selection of cakes with quality taste</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="menu-item-carousel">
-        <div class="col-lg-12">
-            <div class="owl-menu-item owl-carousel">
-                <div class="item">
-                    <div class='card card1'>
-                        <div class="price"><h6>$14</h6></div>
-                        <div class='info'>
-                            <h1 class='title'>Chocolate Cake</h1>
-                            <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                            <div class="main-text-button">
-                                <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class='card card2'>
-                        <div class="price"><h6>$22</h6></div>
-                        <div class='info'>
-                            <h1 class='title'>Yummy Pancake</h1>
-                            <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                            <div class="main-text-button">
-                                <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class='card card3'>
-                        <div class="price"><h6>$18</h6></div>
-                        <div class='info'>
-                            <h1 class='title'>Tall Yummy Bread</h1>
-                            <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                            <div class="main-text-button">
-                                <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class='card card4'>
-                        <div class="price"><h6>$10</h6></div>
-                        <div class='info'>
-                            <h1 class='title'>Blueberry CheeseCake</h1>
-                            <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                            <div class="main-text-button">
-                                <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class='card card5'>
-                        <div class="price"><h6>$8.50</h6></div>
-                        <div class='info'>
-                            <h1 class='title'>Yummy Cup Cake</h1>
-                            <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                            <div class="main-text-button">
-                                <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class='card card3'>
-                        <div class="price"><h6>$7.25</h6></div>
-                        <div class='info'>
-                            <h1 class='title'>Yummy Cake</h1>
-                            <p class='description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sedii do eiusmod teme.</p>
-                            <div class="main-text-button">
-                                <div class="scroll-to-section"><a href="#reservation">Make Reservation <i class="fa fa-angle-down"></i></a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 <!-- ***** Menu Area Ends ***** -->
 
 
@@ -214,27 +123,12 @@
         <div class="row">
             <div class="col-lg-4 offset-lg-4 text-center">
                 <div class="section-heading">
-                    <h6>Yummy Week</h6>
-                    <h2>This Week’s Special Meal Offers</h2>
+                    <h2>Our menu</h2>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="row" id="tabs">
-                    <div class="col-lg-12">
-                        <div class="heading-tabs">
-                            <div class="row">
-                                <div class="col-lg-6 offset-lg-3">
-                                    <ul>
-                                        <li><a href='#tabs-1'><img src="${pageContext.request.contextPath}/assets/images/tab-icon-01.png" alt="">Breakfast</a></li>
-                                        <li><a href='#tabs-2'><img src="${pageContext.request.contextPath}/assets/images/tab-icon-02.png" alt="">Lunch</a></li>
-                                        <li><a href='#tabs-3'><img src="${pageContext.request.contextPath}/assets/images/tab-icon-03.png" alt="">Dinner</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-lg-12">
                         <section class='tabs-content'>
                             <article id='tabs-1'>
@@ -475,7 +369,7 @@
 <!-- ***** Chefs Area Ends ***** -->
 
 <!-- ***** Footer Start ***** -->
-<<footer>
+<footer>
     <jsp:include page="footer/footer.jsp"/>
 </footer>
 
