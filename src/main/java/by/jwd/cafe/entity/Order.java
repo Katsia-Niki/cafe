@@ -18,14 +18,17 @@ public class Order extends AbstractEntity {
     public enum Status {
         ACTIVE, FINISHED, CANCELLED
     }
+
     public Order() {
     }
 
     public static class OrderBuilder {
         private Order newOrder;
+
         {
             newOrder = new Order();
         }
+
         public OrderBuilder withOrderId(int orderId) {
             newOrder.orderId = orderId;
             return this;

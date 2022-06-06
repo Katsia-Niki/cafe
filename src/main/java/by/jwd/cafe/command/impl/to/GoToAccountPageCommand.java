@@ -10,7 +10,6 @@ import by.jwd.cafe.exception.CommandException;
 import by.jwd.cafe.exception.ServiceException;
 import by.jwd.cafe.service.UserService;
 import by.jwd.cafe.service.impl.UserServiceImpl;
-import by.jwd.cafe.util.CurrentPageExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -50,7 +49,7 @@ public class GoToAccountPageCommand implements Command {
                 userData.put(IS_ACTIVE_SESSION, String.valueOf(user.isActive()));
                 userData.put(ROLE_NAME_SESSION, user.getRole().toString());
                 session.setAttribute(USER_DATA_SESSION, userData);
-                session.setAttribute(CURRENT_PAGE, CurrentPageExtractor.extract(request));
+                session.setAttribute(CURRENT_PAGE, Command.extract(request));
             } else {
                 session.setAttribute(NOT_FOUND_SESSION, true);
             }

@@ -31,10 +31,11 @@ public class LoginCommand implements Command {
             Optional<User> optionalUser = userService.authenticate(userData);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
-                //session.removeAttribute(USER_DATA_SESSION);
+                session.removeAttribute(USER_DATA_SESSION);
                 session.setAttribute(CURRENT_USER_ID, user.getUserId());
                 session.setAttribute(CURRENT_LOGIN_SESSION, user.getLogin());
                 session.setAttribute(CURRENT_ROLE, user.getRole().toString());
+                session.setAttribute(CURRENT_USER_IS_ACTIVE, user.isActive());
                 session.setAttribute(CURRENT_PAGE, PagePath.LOGIN);
                 request.setAttribute(RequestAttribute.USER, user.getFirstName());
                 router = new Router(PagePath.HOME);

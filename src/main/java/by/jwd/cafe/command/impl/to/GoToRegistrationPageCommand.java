@@ -5,7 +5,6 @@ import by.jwd.cafe.command.Router;
 import by.jwd.cafe.command.SessionAttribute;
 import by.jwd.cafe.command.PagePath;
 import by.jwd.cafe.exception.CommandException;
-import by.jwd.cafe.util.CurrentPageExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -19,7 +18,7 @@ public class GoToRegistrationPageCommand implements Command {
         session.removeAttribute(SessionAttribute.REGISTRATION_RESULT);
         Map<String, String> userData = new HashMap<>();
         session.setAttribute(SessionAttribute.USER_DATA_SESSION, userData);
-        String currentPage = CurrentPageExtractor.extract(request);
+        String currentPage = Command.extract(request);
         session.setAttribute(SessionAttribute.CURRENT_PAGE, currentPage);
         return new Router(PagePath.REGISTRATION);
     }

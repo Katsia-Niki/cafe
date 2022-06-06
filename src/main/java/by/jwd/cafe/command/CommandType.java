@@ -7,27 +7,33 @@ import java.util.EnumSet;
 import static by.jwd.cafe.entity.UserRole.*;
 
 public enum CommandType {
-    CHANGE_PASSWORD("change_password",EnumSet.of(CUSTOMER, ADMIN)),
-    CHANGE_LANGUAGE("change_language", EnumSet.of(GUEST, CUSTOMER, ADMIN)),
-    FIND_ALL_USERS("find_all_users", EnumSet.of(ADMIN)),
-    GO_TO_ACCOUNT_PAGE("go_to_account_page", EnumSet.of(CUSTOMER, ADMIN)),
-    GO_TO_CHANGE_PASSWORD_PAGE("go_to_change_password_page", EnumSet.of(CUSTOMER, ADMIN)),
-    GO_TO_CONTACT_PAGE("go_to_contact_page", EnumSet.of(GUEST, CUSTOMER, ADMIN)),
-    GO_TO_LOGIN_PAGE("go_to_login_page", EnumSet.of(GUEST)),
-    GO_TO_MAIN_PAGE("go_to_main_page", EnumSet.of(GUEST, CUSTOMER, ADMIN)),
-    GO_TO_REFILL_BALANCE_PAGE("go_to_refill_balance_page", EnumSet.of(CUSTOMER)),
-    GO_TO_REGISTRATION_PAGE("go_to_registration_page", EnumSet.of(GUEST)),
-    LOGIN("login", EnumSet.of(GUEST)),
-    LOGOUT("logout", EnumSet.of(CUSTOMER, ADMIN)),
-    REGISTRATION("registration", EnumSet.of(GUEST)),
-    REFILL_BALANCE("refill_balance", EnumSet.of(CUSTOMER)),
-    UPDATE_PERSONAL_DATA("update_personal_data", EnumSet.of(CUSTOMER, ADMIN)),
-    UPDATE_USER_STATUS("update_user_status", EnumSet.of(ADMIN));
-    private String webCommandName;
+    ADD_ITEM_TO_CART(EnumSet.of(CUSTOMER)),
+    CHANGE_PASSWORD(EnumSet.of(CUSTOMER, ADMIN)),
+    CHANGE_LANGUAGE(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    CONFIRM_ORDER(EnumSet.of(CUSTOMER)),
+    DEFAULT(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    FIND_ALL_USERS(EnumSet.of(ADMIN)),
+    FIND_ALL_AVAILABLE_MENU(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    GO_TO_ACCOUNT_PAGE(EnumSet.of(CUSTOMER, ADMIN)),
+    GO_TO_CART_PAGE(EnumSet.of(CUSTOMER)),
+    GO_TO_CHANGE_PASSWORD_PAGE(EnumSet.of(CUSTOMER, ADMIN)),
+    GO_TO_CONTACT_PAGE(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    GO_TO_LOGIN_PAGE(EnumSet.of(GUEST)),
+    GO_TO_MAIN_PAGE(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    GO_TO_MENU_PAGE(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    GO_TO_PLACE_ORDER(EnumSet.of(CUSTOMER)),
+    GO_TO_REFILL_BALANCE_PAGE(EnumSet.of(CUSTOMER)),
+    GO_TO_REGISTRATION_PAGE(EnumSet.of(GUEST)),
+    LOGIN(EnumSet.of(GUEST)),
+    LOGOUT(EnumSet.of(CUSTOMER, ADMIN)),
+    REGISTRATION(EnumSet.of(GUEST)),
+    REFILL_BALANCE(EnumSet.of(CUSTOMER)),
+    REMOVE_ITEM_FROM_CART(EnumSet.of(CUSTOMER)),
+    UPDATE_PERSONAL_DATA(EnumSet.of(CUSTOMER, ADMIN)),
+    UPDATE_USER_STATUS(EnumSet.of(ADMIN));
     private EnumSet<UserRole> acceptableRole;
 
-    CommandType(String webCommandName, EnumSet<UserRole> acceptableRole) {
-        this.webCommandName = webCommandName;
+    CommandType(EnumSet<UserRole> acceptableRole) {
         this.acceptableRole = acceptableRole;
     }
 

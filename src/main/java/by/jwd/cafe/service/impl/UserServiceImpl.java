@@ -2,6 +2,7 @@ package by.jwd.cafe.service.impl;
 
 import by.jwd.cafe.dao.UserDao;
 import by.jwd.cafe.dao.impl.UserDaoImpl;
+import by.jwd.cafe.entity.MenuItem;
 import by.jwd.cafe.entity.User;
 import by.jwd.cafe.entity.UserRole;
 import by.jwd.cafe.exception.DaoException;
@@ -106,7 +107,7 @@ public class UserServiceImpl implements UserService {
             users = userDao.findAll();
         } catch (DaoException e) {
             logger.error("Try to find all users was failed.", e);
-            throw new ServiceException("Try to find all users was failed.",e);
+            throw new ServiceException("Try to find all users was failed.", e);
         }
         return users;
     }
@@ -150,11 +151,12 @@ public class UserServiceImpl implements UserService {
         } catch (NumberFormatException e) {
             logger.info("Invalid user id");
         } catch (DaoException e) {
-            logger.error("Try to find user by id "+ userId + " was failed.", e);
-            throw new ServiceException("Try to find user by id "+ userId + " was failed.", e);
+            logger.error("Try to find user by id " + userId + " was failed.", e);
+            throw new ServiceException("Try to find user by id " + userId + " was failed.", e);
         }
         return optionalUser;
     }
+
     @Override
     public boolean updatePersonalData(Map<String, String> userData) throws ServiceException {
         boolean isUpdated = false;
@@ -176,7 +178,7 @@ public class UserServiceImpl implements UserService {
                     return isUpdated;
                 }
                 Optional<User> optionalUser = userDao.findUserByLoginAndPassword(login, secretPassword);
-                if(optionalUser.isEmpty()) {
+                if (optionalUser.isEmpty()) {
                     logger.info("Wrong password");
                     userData.put(WRONG_PASSWORD_SESSION, WRONG_DATA_MARKER);
                     return isUpdated;

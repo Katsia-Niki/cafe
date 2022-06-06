@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 public class MenuItem extends AbstractEntity {
     @Serial
-    private static final long serialVersionUID  = 1L;
+    private static final long serialVersionUID = 1L;
     private int menuItemId;
     private MenuItemType menuItemType;
     private String name;
@@ -81,18 +81,14 @@ public class MenuItem extends AbstractEntity {
     }
 
     public static class MenuItemBuilder {
-        private MenuItem newMenuItem;
+        private MenuItem newMenuItem = new MenuItem();
 
-        {
-            newMenuItem = new MenuItem();
-        }
-
-        public MenuItemBuilder withMenuItemId (int menuItemId) {
+        public MenuItemBuilder withMenuItemId(int menuItemId) {
             newMenuItem.menuItemId = menuItemId;
             return this;
         }
 
-        public MenuItemBuilder withMenuItemTypeById (int menuItemTypeId) {
+        public MenuItemBuilder withMenuItemTypeById(int menuItemTypeId) {
             switch (menuItemTypeId) {
                 case 1:
                     newMenuItem.menuItemType = MenuItemType.APPETIZER;
@@ -104,7 +100,7 @@ public class MenuItem extends AbstractEntity {
                     newMenuItem.menuItemType = MenuItemType.SOUP;
                     break;
                 case 4:
-                    newMenuItem.menuItemType =  MenuItemType.DESSERT;
+                    newMenuItem.menuItemType = MenuItemType.DESSERT;
                     break;
                 case 5:
                     newMenuItem.menuItemType = MenuItemType.DRINK;
@@ -114,28 +110,32 @@ public class MenuItem extends AbstractEntity {
             }
             return this;
         }
+        public MenuItemBuilder withMenuItemType(MenuItemType menuItemType){
+            newMenuItem.menuItemType = menuItemType;
+            return this;
+        }
 
-        public MenuItemBuilder withName (String name) {
+        public MenuItemBuilder withName(String name) {
             newMenuItem.name = name;
             return this;
         }
 
-        public MenuItemBuilder withDescription (String description) {
+        public MenuItemBuilder withDescription(String description) {
             newMenuItem.description = description;
             return this;
         }
 
-        public MenuItemBuilder withPrice (BigDecimal price) {
+        public MenuItemBuilder withPrice(BigDecimal price) {
             newMenuItem.price = price;
             return this;
         }
 
-        public MenuItemBuilder withIsAvailable (boolean isAvailable) {
+        public MenuItemBuilder withIsAvailable(boolean isAvailable) {
             newMenuItem.isAvailable = isAvailable;
             return this;
         }
 
-        public MenuItemBuilder withPicture (String picture) {
+        public MenuItemBuilder withPicture(String picture) {
             newMenuItem.picture = picture;
             return this;
         }
@@ -143,11 +143,6 @@ public class MenuItem extends AbstractEntity {
         public MenuItem build() {
             return newMenuItem;
         }
-    }
-
-    @Override
-    public MenuItem clone() throws CloneNotSupportedException {
-        return  (MenuItem) super.clone();
     }
 
     @Override
@@ -177,5 +172,18 @@ public class MenuItem extends AbstractEntity {
         result = 31 * result + (isAvailable ? 1 : 0);
         result = 31 * result + (picture != null ? picture.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("MenuItem{");
+        sb.append("menuItemId=").append(menuItemId);
+        sb.append(", menuItemType=").append(menuItemType);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", price=").append(price);
+        sb.append(", isAvailable=").append(isAvailable);
+        sb.append('}');
+        return sb.toString();
     }
 }

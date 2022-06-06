@@ -5,7 +5,8 @@ public enum PaymentType {
     CASH(10),
     LOYALTY_POINTS(0);
 
-    private int percentLoyaltyPoints; //percent of loyalty points that user can get from order
+    private int percentLoyaltyPoints;
+
     PaymentType(int percent) {
         percentLoyaltyPoints = percent;
     }

@@ -23,11 +23,7 @@ public class User extends AbstractEntity {
     }
 
     public static class UserBuilder {
-        private User newUser;
-
-        {
-            newUser = new User();
-        }
+        private User newUser = new User();
 
         public UserBuilder() {
 
@@ -189,12 +185,6 @@ public class User extends AbstractEntity {
             default:
                 this.role = UserRole.UNSUPPORTED;
         }
-    }
-
-    @Override
-    public User clone() throws CloneNotSupportedException {
-        User copy = (User) this.clone();
-        return copy;
     }
 
     @Override

@@ -1,10 +1,16 @@
 package by.jwd.cafe.entity;
 
 public enum MenuItemType {
-    UNSUPPORTED,
-    APPETIZER,
-    MAIN_COURSE,
-    SOUP,
-    DESSERT,
-    DRINK
+    UNSUPPORTED ("неподдерживается"),
+    APPETIZER ("закуска"),
+    MAIN_COURSE("основное блюдо"),
+    SOUP ("суп"),
+    DESSERT("десерт"),
+    DRINK("напиток");
+    String name;  //fixme проверить, нужен ли
+    MenuItemType(String name) {} //fixme проверить, нужен ли
+
+    public String getName() {  //fixme проверить, нужен ли
+        return name;
+    }
 }

@@ -1,19 +1,27 @@
 package by.jwd.cafe.command;
 
 public final class SessionAttribute {
+    public static final String ALL_SHEETS_SESSION = "all_sheets_ses";
     public static final String BALANCE_SESSION = "balance_ses";
     public static final String BALANCE_DATA_SESSION = "balance_data_ses";
+    public static final String CART = "cart";
+    public static final String CART_SUM = "cart_sum";
     public static final String CHANGE_PASSWORD_RESULT = "change_password_result";
     public static final String CURRENT_PAGE = "current_page";
     public static final String CURRENT_ROLE = "current_role";
     public static final String CURRENT_LOGIN_SESSION = "current_login_ses";
     public static final String CURRENT_USER_ID = "current_user_id";
+    public static final String CURRENT_USER_IS_ACTIVE = "current_user_is_active";
+    public static final String CURRENT_SHEET_SESSION = "current_sheet_ses";
+    public static final String FIRST_ID_SESSION = "first_id_ses";
+    public static final String LAST_ID_SESSION = "last_id_ses";
     public static final String EMAIL_SESSION = "email_ses";
     public static final String IS_ACTIVE_SESSION = "is_active_ses";
     public static final String LOCALE = "locale";
     public static final String LOGIN_SESSION = "login_ses";
     public static final String LOYALTY_POINTS_SESSION = "loyalty_points_ses";
     public static final String MENU_ITEM_NAME_SESSION = "menu_item_name_ses";
+    public static final String MESSAGE_ITEM_ADDED_TO_CART = "message_item_added_to_cart";
     public static final String MENU_ITEM_DESCRIPTION_SESSION = "menu_description_name_ses";
     public static final String MENU_ITEM_PRICE_SESSION = "menu_item_price_ses";
     public static final String MENU_ITEM_AVAILABLE_SESSION = "menu_item_available_ses";
@@ -23,8 +31,12 @@ public final class SessionAttribute {
     public static final String NOT_FOUND_SESSION = "not_found_ses";
     public static final String FIRST_NAME_SESSION = "first_name_ses";
     public static final String LAST_NAME_SESSION = "last_name_ses";
+    public static final String MIN_PICK_UP_TIME = "min_pick_up_time";
+    public static final String MAX_PICK_UP_TIME = "man_pick_up_time";
     public static final String PASSWORD_SESSION = "password_ses";
     public static final String PAGINATION_SESSION = "pagination_ses";
+    public static final String POINTS_FOR_ACCOUNT = "points_for_account";
+    public static final String POINTS_FOR_CASH = "points_for_cash";
     public static final String REPEAT_PASSWORD_SESSION = "repeat_password_ses";
     public static final String REFILL_BALANCE_RESULT = "refill_balance_result";
     public static final String REFILL_AMOUNT_SESSION = "refill_amount_ses";

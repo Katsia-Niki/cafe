@@ -2,6 +2,7 @@ package by.jwd.cafe.dao.mapper.impl;
 
 import by.jwd.cafe.dao.mapper.Mapper;
 import by.jwd.cafe.entity.MenuItem;
+import by.jwd.cafe.entity.MenuItemType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +26,7 @@ public class ItemMapper implements Mapper<MenuItem> {
         try {
             MenuItem menuItem = new MenuItem.MenuItemBuilder()
                     .withMenuItemId(resultSet.getInt(MENU_ITEM_ID))
-                    .withMenuItemTypeById(resultSet.getInt(MENU_ITEM_TYPE_ID))
+                    .withMenuItemType(MenuItemType.valueOf(resultSet.getString(TYPE_NAME).toUpperCase()))
                     .withName(resultSet.getString(MENU_ITEM_NAME))
                     .withDescription(resultSet.getString(DESCRIPTION))
                     .withPrice(resultSet.getBigDecimal(PRICE))
@@ -34,7 +35,7 @@ public class ItemMapper implements Mapper<MenuItem> {
                     .build();
             optionalMenuItem = Optional.of(menuItem);
         } catch (SQLException e) {
-            logger.info("SQL exception while map MenuItem resultSet", e);
+            logger.error("SQL exception while map MenuItem resultSet", e);
             optionalMenuItem = Optional.empty();
         }
         return optionalMenuItem;

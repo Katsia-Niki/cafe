@@ -1,25 +1,27 @@
 package by.jwd.cafe.controller.listener;
 
 import by.jwd.cafe.command.PagePath;
-import by.jwd.cafe.command.SessionAttribute;
-import by.jwd.cafe.pool.ConnectionPool;
-import jakarta.servlet.*;
+import by.jwd.cafe.entity.MenuItem;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static by.jwd.cafe.command.SessionAttribute.LOCALE;
+import static by.jwd.cafe.command.SessionAttribute.CURRENT_PAGE;
+import static by.jwd.cafe.command.SessionAttribute.CART;
 
 @WebListener
 public class SessionCreateListenerImpl implements HttpSessionListener {
-    static Logger logger = LogManager.getLogger();
-    private static String LOCAL_ATTRIBUTE = "local";
-    private static String DEFAULT_LOCAL = "en_EN";
+    private static String DEFAULT_LOCALE = "ru_RU";
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         HttpSession session = se.getSession();
-        session.setAttribute(LOCAL_ATTRIBUTE, DEFAULT_LOCAL);
-        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.INDEX);
+        Map<MenuItem, Integer> cart = new HashMap<>();
+        session.setAttribute(CART, cart);
+        session.setAttribute(LOCALE, DEFAULT_LOCALE);
+        session.setAttribute(CURRENT_PAGE, PagePath.INDEX);
     }
 }

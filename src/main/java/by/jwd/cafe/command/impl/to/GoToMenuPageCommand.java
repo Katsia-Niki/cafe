@@ -8,11 +8,11 @@ import by.jwd.cafe.exception.CommandException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-public class GoToContactPageCommand implements Command {
+public class GoToMenuPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         session.setAttribute(SessionAttribute.CURRENT_PAGE, Command.extract(request));
-        return new Router(PagePath.CONTACT);
+        return new Router(PagePath.MENU);
     }
 }

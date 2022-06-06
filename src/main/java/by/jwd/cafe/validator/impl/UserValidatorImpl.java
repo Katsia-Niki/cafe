@@ -30,7 +30,7 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public boolean validateEmail(String email) {
-        return  email != null && email.matches(EMAIL_REGEX);
+        return email != null && email.matches(EMAIL_REGEX);
     }
 
     @Override
@@ -39,7 +39,9 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     @Override
-    public boolean validatePassword(String password) { return password != null && password.matches(PASSWORD_REGEX); }
+    public boolean validatePassword(String password) {
+        return password != null && password.matches(PASSWORD_REGEX);
+    }
 
     @Override
     public boolean validateName(String name) {
@@ -50,6 +52,7 @@ public class UserValidatorImpl implements UserValidator {
     public boolean validateAmount(String amount) {
         return amount != null && amount.matches(AMOUNT_REGEX);
     }
+
     @Override
     public boolean validateUserDataCreate(Map<String, String> userData) {
         String login = userData.get(LOGIN_SESSION);

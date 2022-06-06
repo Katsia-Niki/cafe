@@ -42,7 +42,7 @@ public class UserMapper implements Mapper<User> {
                     .build();
             optionalUser = Optional.of(user);
         } catch (SQLException e) {
-            logger.info("SQL exception while map User resultSet", e);
+            logger.error("SQL exception while map User resultSet", e);
             optionalUser = Optional.empty();
         }
         return optionalUser;

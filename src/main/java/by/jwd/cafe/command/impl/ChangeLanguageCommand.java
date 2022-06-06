@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 public class ChangeLanguageCommand implements Command {
     static Logger logger = LogManager.getLogger();
     private enum Language {
-        EN("en_US"),
+        EN("en_EN"),
         RU("ru_RU");
         private String locale;
 
@@ -32,8 +32,8 @@ public class ChangeLanguageCommand implements Command {
         Language newLanguage = Language.valueOf(request.getParameter(RequestParameter.LANGUAGE));
         logger.info("Language will be changed to " + newLanguage.getLocale());
         switch (newLanguage) {
-            case RU -> session.setAttribute(SessionAttribute.LOCALE, Language.RU.getLocale());
-            default -> session.setAttribute(SessionAttribute.LOCALE, Language.EN.getLocale());
+            case EN -> session.setAttribute(SessionAttribute.LOCALE, Language.EN.getLocale());
+            default -> session.setAttribute(SessionAttribute.LOCALE, Language.RU.getLocale());
         }
         return new Router(currentPage);
     }

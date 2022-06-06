@@ -21,6 +21,12 @@ public final class ColumnName {
     public static final String PRICE = "price";
     public static final String AVAILABLE = "available";
     public static final String PICTURE = "picture";
+    //table cafe.menu_item_type
+    public static final String TYPE_ID = "id";
+    public static final String TYPE_NAME = "type_name";
+
+
+    public static final String NUM ="num";
 
     private ColumnName() {}
 }

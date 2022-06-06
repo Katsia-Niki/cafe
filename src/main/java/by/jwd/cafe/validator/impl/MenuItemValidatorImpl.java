@@ -15,10 +15,14 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
     private static final String DESCRIPTION_REGEX = "[^><]+";
     private static final String PRICE_REGEX = "\\d{1,5}\\.?\\d{0,2}";
     private static final MenuItemValidatorImpl instance = new MenuItemValidatorImpl();
-    private MenuItemValidatorImpl() {}
+
+    private MenuItemValidatorImpl() {
+    }
+
     public static MenuItemValidatorImpl getInstance() {
         return instance;
     }
+
     @Override
     public boolean validateName(String name) {
         return (name != null && name.matches(NAME_REGEX));
@@ -49,11 +53,17 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
             isValid = false;
             logger.error("Invalid menu item description.");
             menuItemData.put(WRONG_MENU_ITEM_DESCRIPTION, WRONG_DATA_MARKER);
-        }if (!validatePrice(price)) {
+        }
+        if (!validatePrice(price)) {
             isValid = false;
             logger.error("Invalid menu item price.");
             menuItemData.put(WRONG_MENU_ITEM_PRICE, WRONG_DATA_MARKER);
         }
         return isValid;
+    }
+
+    @Override
+    public boolean validateDirection(String direction) {
+        return direction.equals(PREVIOUS_SHEET) || direction.equals(NEXT_SHEET);
     }
 }

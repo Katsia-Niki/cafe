@@ -23,6 +23,7 @@ public class PreControllerFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+        logger.debug("Start PreControllerFilter"); //fixme
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpSession session = httpServletRequest.getSession();
@@ -46,6 +47,7 @@ public class PreControllerFilter implements Filter {
         } catch (IllegalArgumentException e) {
             httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
+        logger.debug("End PreControllerFilter");//fixme
     }
 
     public void init(FilterConfig config) {

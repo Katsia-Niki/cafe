@@ -9,6 +9,7 @@ public class Review extends AbstractEntity {
     public Review() {
 
     }
+
     public Review(int rate, String review) {
         this.rate = rate;
         this.review = review;

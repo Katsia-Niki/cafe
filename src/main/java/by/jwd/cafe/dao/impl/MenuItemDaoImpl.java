@@ -1,5 +1,6 @@
 package by.jwd.cafe.dao.impl;
 
+import by.jwd.cafe.dao.ColumnName;
 import by.jwd.cafe.dao.MenuItemDao;
 import by.jwd.cafe.dao.mapper.Mapper;
 import by.jwd.cafe.dao.mapper.impl.ItemMapper;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.management.ManagementFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,13 +27,31 @@ public class MenuItemDaoImpl implements MenuItemDao {
             FROM cafe.menu_item""";
     private static final String SELECT_ALL_AVAILABLE_MENU_ITEMS = """
             SELECT menu_item_id, menu_item_type_id, menu_item_name, description, price, picture
-            FROM cafe.menu_item WHERE available=1""";
+            FROM cafe.menu_item WHERE available=true""";
+    private static final String SELECT_NUMBER_AVAILABLE_MENU_ITEMS = """
+            SELECT count(available) AS num
+                       FROM cafe.menu_item
+                       WHERE available=true""";
+    private static final String SELECT_PREVIOUS_MENU_ITEM_SHEET = """
+            SELECT menu_item_id, menu_item_name, description, price, available, picture, type_name FROM (
+                       SELECT menu_item_id, menu_item_name, description, price, available, picture, type_name
+                       FROM cafe.menu_item
+                       JOIN cafe.menu_item_type ON cafe.menu_item.menu_item_type_id=cafe.menu_item_type.id
+                       WHERE available=true AND cafe.menu_item.menu_item_id<?
+                       ORDER BY cafe.menu_item.menu_item_id DESC LIMIT ?) AS revers_table
+                       ORDER BY menu_item_id""";
+    private static final String SELECT_NEXT_MENU_ITEM_SHEET = """
+            SELECT menu_item_id, menu_item_name, description, price, available, picture, type_name
+                       FROM cafe.menu_item
+                       JOIN cafe.menu_item_type ON cafe.menu_item.menu_item_type_id=cafe.menu_item_type.id
+                       WHERE available=true AND cafe.menu_item.menu_item_id>? LIMIT ?""";
     private static final String INSERT_MENU_ITEM = """
             INSERT INTO cafe.menu_item(menu_item_id, menu_item_type_id, menu_item_name, description, price, available, picture)
             VALUES (?,?,?,?,?,?,?)""";
     private static final String UPDATE_MENU_ITEM = """
             UPDATE cafe.menu_item SET menu_item_type_id=?, menu_item_name=?, description=?, price=?, 
             available=?, picture=? WHERE menu_item_id=?""";
+    private static final int DEFAULT_PAGE_CAPACITY = 5;
     private static final MenuItemDaoImpl instance = new MenuItemDaoImpl();
     private MenuItemDaoImpl() {}
     public static MenuItemDaoImpl getInstance() {
@@ -133,7 +153,76 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public Optional<MenuItem> findItemByName() throws DaoException {
+    public int findNumberOfAvailableItems() throws DaoException {
+        int num = 0;
+        ConnectionPool pool = ConnectionPool.getInstance();
+        try(Connection connection = pool.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_NUMBER_AVAILABLE_MENU_ITEMS);
+        ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                num = resultSet.getInt(ColumnName.NUM);
+                num = num % DEFAULT_PAGE_CAPACITY == 0
+                        ? num / DEFAULT_PAGE_CAPACITY
+                        : num / DEFAULT_PAGE_CAPACITY + 1;
+            }
+        } catch (SQLException e) {
+            logger.error("SQL request to findNumberOfAvailableItems was failed.", e);
+            throw new DaoException("SQL request to findNumberOfAvailableItems was failed.", e);
+        }
+        return num;
+    }
+
+    @Override
+    public Optional<MenuItem> findItemByName() throws DaoException { //fixme
+
         return Optional.empty();
+    }
+
+    @Override
+    public List<MenuItem> findPrevious(int menuItemId) throws DaoException {
+        List<MenuItem> menu = new ArrayList<>();
+        Mapper<MenuItem> mapper = ItemMapper.getInstance();
+        ConnectionPool pool = ConnectionPool.getInstance();
+        try (Connection connection = pool.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_PREVIOUS_MENU_ITEM_SHEET)) {
+            statement.setInt(1, menuItemId);
+            statement.setInt(2, DEFAULT_PAGE_CAPACITY);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Optional<MenuItem> optionalItem = mapper.map(resultSet);
+                    if (optionalItem.isPresent()) {
+                        menu.add(optionalItem.get());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Try to find previous menu item sheet was failed.", e);
+            throw new DaoException("Try to find previous menu item sheet was failed.", e);
+        }
+        return menu;
+    }
+
+    @Override
+    public List<MenuItem> findNext(int menuItemId) throws DaoException {
+        List<MenuItem> menu = new ArrayList<>();
+        Mapper<MenuItem> mapper = ItemMapper.getInstance();
+        ConnectionPool pool = ConnectionPool.getInstance();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_NEXT_MENU_ITEM_SHEET)) {
+            statement.setInt(1, menuItemId);
+            statement.setInt(2, DEFAULT_PAGE_CAPACITY);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Optional<MenuItem> optionalItem = mapper.map(resultSet);
+                    if (optionalItem.isPresent()) {
+                        menu.add(optionalItem.get());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Try to find next menu item sheet was failed.", e);
+            throw new DaoException("Try to find next menu item sheet was failed.", e);
+        }
+        return menu;
     }
 }
