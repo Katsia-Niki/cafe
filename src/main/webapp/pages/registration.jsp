@@ -66,8 +66,9 @@
 </header>
 <br><br><br><br>
 <div class="container text-secondary text-center">
-    <div class="mb-3 fw-bold">
-        ${title}
+    <div class="section-heading">
+        <h6>${title}</h6>
+        <br>
     </div>
     <c:choose>
         <c:when test="${not empty registration_result}">

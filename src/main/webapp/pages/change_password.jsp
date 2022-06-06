@@ -40,8 +40,9 @@
 <body>
 <br><br><br><br><br>
 <div class="container text-secondary ">
-    <div class="mb-3 fw-bold">
-        ${title}
+    <div class="section-heading">
+        <h6>${title}</h6>
+        <br><br>
     </div>
     <c:choose>
         <c:when test="${not empty change_password_result}">
@@ -98,6 +99,7 @@
         </c:otherwise>
     </c:choose>
 </div>
+<br><br><br><br><br><br><br><br>
 <footer>
     <jsp:include page="footer/footer.jsp"/>
 </footer>

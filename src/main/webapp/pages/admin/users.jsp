@@ -54,8 +54,10 @@
     <div class="row">
         <div class="container">
             <br><br><br><br><br>
-            <h3 class="text-center">${user_list} </h3>
-            <hr>
+            <div class="section-heading">
+                <h6>${user_list}</h6>
+                <br>
+            </div>
             <br>
             <c:choose>
                 <c:when test="${not empty update_user_status_result}">

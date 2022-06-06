@@ -32,26 +32,24 @@
     <link rel="stylesheet" href="${path}/assets/css/lightbox.css">
 </head>
 <body>
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-xs-12">
-                <div class="right-text-content">
-                    <div class="logo">
-                        <img src="${path}/assets/images/inverse-logo.png" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8 col-xs-12">
-                <div class="left-text-content">
-                    <p>${footer}
-                        <br> ${author}
-                    </p>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-xs-12">
+            <div class="right-text-content">
+                <div class="logo">
+                    <img src="${path}/assets/images/inverse-logo.png" alt=""></a>
                 </div>
             </div>
         </div>
+        <div class="col-lg-8 col-xs-12">
+            <div class="left-text-content">
+                <p>${footer}
+                    <br> ${author}
+                </p>
+            </div>
+        </div>
     </div>
-</footer>
+</div>
 </body>
 </html>
 

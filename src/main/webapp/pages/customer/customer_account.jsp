@@ -5,52 +5,6 @@
   Time: 14:45
   To change this template use File | Settings | File Templates.
 --%>
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>--%>
-
-<%--<c:set var="path" value="${pageContext.request.contextPath}"/>--%>
-
-<%--<fmt:setLocale value="${locale}" scope="session"/>--%>
-<%--<fmt:setBundle basename="properties.pagecontent"/>--%>
-<%--<html>--%>
-<%--<head>--%>
-<%--    <script>--%>
-<%--        function preventBack() {--%>
-<%--            window.history.forward();--%>
-<%--        }--%>
-<%--        setTimeout("preventBack()", 0);--%>
-<%--        window.onunload = function() {--%>
-<%--            null--%>
-<%--        };--%>
-<%--    </script>--%>
-<%--    <title>Main</title>--%>
-<%--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"--%>
-<%--          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">--%>
-<%--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"--%>
-<%--            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>--%>
-<%--</head>--%>
-<%--<header>--%>
-<%--    <jsp:include page="../header/header.jsp"/>--%>
-<%--</header>--%>
-<%--<body>--%>
-<%--<br><br><br><br>--%>
-<%--Hello = ${user}--%>
-<%--<hr>--%>
-<%--${filter_attribute}--%>
-<%--<hr>--%>
-
-<%--<form action="controller">--%>
-<%--    <input type="hidden" name="command" value="logout"/>--%>
-<%--    <input type="submit" value="logOut"/>--%>
-<%--</form>--%>
-<%--<footer>--%>
-<%--    <jsp:include page="../footer/footer.jsp"/>--%>
-<%--</footer>--%>
-<%--</body>--%>
-<%--</html>--%>
-
-
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -62,6 +16,7 @@
 
 <fmt:message key="button.update" var="update"/>
 <fmt:message key="field.balance" var="user_balance"/>
+<fmt:message key="field.loyalty_points" var="user_loyalty_points"/>
 <fmt:message key="field.email" var="user_email"/>
 <fmt:message key="field.first_name" var="first_name"/>
 <fmt:message key="field.last_name" var="last_name"/>
@@ -80,6 +35,8 @@
 <fmt:message key="message.no_data" var="no_data"/>
 <fmt:message key="message.not_found" var="not_found"/>
 <fmt:message key="message.password_rules" var="password_rules"/>
+<fmt:message key="message.user_active" var="active"/>
+<fmt:message key="message.user_banned" var="banned"/>
 <fmt:message key="title.account" var="title"/>
 <fmt:message key="user.status" var="user_is_active"/>
 
@@ -96,10 +53,11 @@
     <jsp:include page="../header/header.jsp"/>
 </header>
 <body>
-<br><br><br><br><br><br><br><br>
+<br><br><br><br><br>
 <div class="container text-secondary">
-    <div class="mb-3 fw-bold">
-        ${title}
+    <div class="section-heading">
+        <h6>${title}</h6>
+        <br>
     </div>
     <c:choose>
         <c:when test="${not empty not_found_ses}">
@@ -176,7 +134,7 @@
                             ${user_is_active}
                     </label>
                     <div class="col-md-10">
-                        <input type="text" value="${user_data_ses['is_active_ses']}" class="form-control" disabled>
+                        <input type="text" value="${user_data_ses['is_active_ses'] ? active : banned}" class="form-control" disabled>
                     </div>
                 </div>
                 <div class="row">
@@ -185,6 +143,14 @@
                     </label>
                     <div class="col-md-10">
                         <input type="text" value="${user_data_ses['balance_ses']}" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 col-form-label mb-3">
+                            ${user_loyalty_points}
+                    </label>
+                    <div class="col-md-10">
+                        <input type="text" value="${user_data_ses['loyalty_points_ses']}" class="form-control" disabled>
                     </div>
                 </div>
                 <div class="row">
