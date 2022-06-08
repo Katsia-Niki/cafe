@@ -13,6 +13,7 @@ public final class ColumnName {
     public static final String IS_ACTIVE = "is_active";
     public static final String ROLE_ID = "role_id";
     public static final String ROLE_NAME = "role_name";
+
     //table cafe.menu_item
     public static final String MENU_ITEM_ID = "menu_item_id";
     public static final String MENU_ITEM_TYPE_ID = "menu_item_type_id";
@@ -21,9 +22,19 @@ public final class ColumnName {
     public static final String PRICE = "price";
     public static final String AVAILABLE = "available";
     public static final String PICTURE = "picture";
+
     //table cafe.menu_item_type
     public static final String TYPE_ID = "id";
     public static final String TYPE_NAME = "type_name";
+    //table cafe.order
+    public static final String ORDER_ID = "order_id";
+    public static final String USERS_USER_ID = "users_user_id";
+    public static final String PAYMENT_TYPE = "payment_type";
+    public static final String PICK_UP_TIME = "pick_up_time";
+    public static final String ORDER_COST = "order_cost";
+    public static final String IS_PAID = "is_paid";
+    public static final String STATUS = "status";
+    public static final String CREATION_DATE = "creation_date";
 
 
     public static final String NUM ="num";

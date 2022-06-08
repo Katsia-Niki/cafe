@@ -2,6 +2,8 @@ package by.jwd.cafe.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.StringJoiner;
 
 public class Order extends AbstractEntity {
@@ -9,7 +11,7 @@ public class Order extends AbstractEntity {
     private int orderId;
     private int userId;
     private PaymentType paymentType;
-    private LocalDate pickUpTime;
+    private LocalDateTime pickUpTime;
     private BigDecimal orderCost;
     private Order.Status status;
     private boolean isPaid;
@@ -44,7 +46,7 @@ public class Order extends AbstractEntity {
             return this;
         }
 
-        public OrderBuilder withPickUpTime(LocalDate pickUpTime) {
+        public OrderBuilder withPickUpTime(LocalDateTime pickUpTime) {
             newOrder.pickUpTime = pickUpTime;
             return this;
         }
@@ -98,11 +100,11 @@ public class Order extends AbstractEntity {
         this.paymentType = paymentType;
     }
 
-    public LocalDate getPickUpTime() {
+    public LocalDateTime getPickUpTime() {
         return pickUpTime;
     }
 
-    public void setPickUpTime(LocalDate pickUpTime) {
+    public void setPickUpTime(LocalDateTime pickUpTime) {
         this.pickUpTime = pickUpTime;
     }
 

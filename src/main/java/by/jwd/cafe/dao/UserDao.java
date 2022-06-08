@@ -14,4 +14,6 @@ public interface UserDao extends BaseDao<Integer, User> {
     boolean updateBalance(int userId, BigDecimal amount) throws DaoException;
     boolean isEmailExist(String email) throws DaoException;
     boolean isLoginExist(String login) throws DaoException;
+    BigDecimal findBalanceByUserId(int userId) throws DaoException;
+    BigDecimal findLoyaltyPointsByUserId(int userId) throws DaoException;
 }

@@ -5,6 +5,7 @@ import by.jwd.cafe.command.CommandType;
 import by.jwd.cafe.command.impl.*;
 import by.jwd.cafe.command.impl.admin.FindAllUsersCommand;
 import by.jwd.cafe.command.impl.admin.UpdateUserStatusCommand;
+import by.jwd.cafe.command.impl.admin.to.GoToEditMenuPageCommand;
 import by.jwd.cafe.command.impl.customer.AddItemToCartCommand;
 import by.jwd.cafe.command.impl.customer.ConfirmOrderCommand;
 import by.jwd.cafe.command.impl.customer.RefillBalanceCommand;
@@ -36,6 +37,7 @@ public final class CommandProvider {
         commands.put(GO_TO_CART_PAGE, new GoToCartPageCommand());
         commands.put(GO_TO_CHANGE_PASSWORD_PAGE, new GoToChangePasswordPageCommand());
         commands.put(GO_TO_CONTACT_PAGE, new GoToContactPageCommand());
+        commands.put(GO_TO_EDIT_MENU_PAGE, new GoToEditMenuPageCommand());
         commands.put(GO_TO_LOGIN_PAGE, new GoToLoginPageCommand());
         commands.put(GO_TO_MAIN_PAGE, new GoToMainPageCommand());
         commands.put(GO_TO_MENU_PAGE, new GoToMenuPageCommand());
@@ -43,7 +45,7 @@ public final class CommandProvider {
         commands.put(GO_TO_REGISTRATION_PAGE, new GoToRegistrationPageCommand());
         commands.put(LOGIN, new LoginCommand());
         commands.put(LOGOUT, new LogoutCommand());
-        commands.put(GO_TO_PLACE_ORDER, new GoToPlaceOrderPageCommand());
+        commands.put(GO_TO_PLACE_ORDER_PAGE, new GoToPlaceOrderPageCommand());
         commands.put(REFILL_BALANCE, new RefillBalanceCommand());
         commands.put(REGISTRATION, new RegistrationCommand());
         commands.put(REMOVE_ITEM_FROM_CART, new RemoveItemFromCartCommand());

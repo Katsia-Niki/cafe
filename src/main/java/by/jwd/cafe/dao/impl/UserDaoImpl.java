@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static by.jwd.cafe.dao.ColumnName.BALANCE;
+import static by.jwd.cafe.dao.ColumnName.LOYALTY_POINTS;
+
 public class UserDaoImpl implements UserDao {
     static Logger logger = LogManager.getLogger();
     private static final String INSERT_USER = """
@@ -52,9 +55,18 @@ public class UserDaoImpl implements UserDao {
             FROM cafe.users JOIN users_role ON users_role.users_role_role_id=users.role_id 
             WHERE email=?""";
     private static String SELECT_ALL_USERS = """
-             SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points,
-             is_active, role_id 
-             FROM cafe.users""";
+            SELECT user_id, login, password, first_name, last_name, email, balance, loyalty_points,
+            is_active, role_id 
+            FROM cafe.users""";
+    private static final String SELECT_BALANCE_BY_USER_ID = """
+            SELECT balance
+            FROM cafe.users
+            WHERE user_id=?""";
+
+    private static final String SELECT_LOYALTY_POINTS_BY_USER_ID = """
+            SELECT loyalty_points
+            FROM cafe.users
+            WHERE user_id=?""";
     private static UserDaoImpl instance = new UserDaoImpl();
 
     private UserDaoImpl() {
@@ -144,7 +156,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             statement.setInt(1, entityId);
-            try (ResultSet resultSet = statement.executeQuery()){
+            try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 optionalUser = mapper.map(resultSet);
             }
@@ -216,7 +228,7 @@ public class UserDaoImpl implements UserDao {
         ConnectionPool pool = ConnectionPool.getInstance();
         try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER_STATUS)) {
-            statement.setInt(1,  newUserStatus);
+            statement.setInt(1, newUserStatus);
             statement.setInt(2, userId);
             rows = statement.executeUpdate();
         } catch (SQLException e) {
@@ -240,6 +252,44 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException("SQL request updateBalance from table cafe.users was failed.", e);
         }
         return rows == 1;
+    }
+
+    @Override
+    public BigDecimal findBalanceByUserId(int userId) throws DaoException {
+        BigDecimal balance = BigDecimal.ZERO;
+        ConnectionPool pool = ConnectionPool.getInstance();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BALANCE_BY_USER_ID)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    balance = resultSet.getBigDecimal(BALANCE);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Try to execute request findBalanceByUserId was failed.", e);
+            throw new DaoException("Try to execute request findBalanceByUserId was failed.", e);
+        }
+        return balance;
+    }
+
+    @Override
+    public BigDecimal findLoyaltyPointsByUserId(int userId) throws DaoException {
+        BigDecimal loyaltyPoints = BigDecimal.ZERO;
+        ConnectionPool pool = ConnectionPool.getInstance();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_LOYALTY_POINTS_BY_USER_ID)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    loyaltyPoints = resultSet.getBigDecimal(LOYALTY_POINTS);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Try to execute request findLoyaltyPointsByUserId was failed.", e);
+            throw new DaoException("Try to execute request findLoyaltyPointsByUserId was failed.", e);
+        }
+        return loyaltyPoints;
     }
 
     @Override

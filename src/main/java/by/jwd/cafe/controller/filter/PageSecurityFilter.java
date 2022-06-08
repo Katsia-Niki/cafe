@@ -33,6 +33,7 @@ public class PageSecurityFilter implements Filter {
                 REGISTRATION,
                 CONTACT);
         customerPages = Set.of(CONTACT,
+                CONFIRMED_ORDER,
                 CART,
                 CUSTOMER_ACCOUNT,
                 CHANGE_PASSWORD,
