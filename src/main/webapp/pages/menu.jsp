@@ -129,7 +129,11 @@
                                                                             </form>
                                                                         </c:if>
                                                                         <c:if test="${current_role eq 'ADMIN'}">
-                                                                            <th scope="col">${edit}</th>
+                                                                            <form target="_blank" method="get" action="${path}/controller">
+                                                                                <input type="hidden" name="command" value="go_to_edit_menu_page">
+                                                                                <input type="hidden" name="menu_item_to_edit_id" value="${menu.menuItemId}">
+                                                                                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">${edit}</button>
+                                                                            </form>
                                                                         </c:if>
                                                                     </div>
                                                                 </div>

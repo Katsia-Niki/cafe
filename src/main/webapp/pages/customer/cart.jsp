@@ -103,7 +103,7 @@
         <br>
         <div class="text-right">
         <form name="placeOrderForm" method="get" action="${path}/controller">
-            <input type="hidden" name="command" value="go_to_place_order"/>
+            <input type="hidden" name="command" value="go_to_place_order_page"/>
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">${place_order}</button>
         </form>
         </div>

@@ -29,6 +29,8 @@
 <fmt:message key="message.use_points" var="use_points"/>
 <fmt:message key="message.when_pick_up" var="when_pick_up"/>
 <fmt:message key="button.confirm" var="confirm"/>
+<fmt:message key="message.complete_order" var="complete"/>
+<fmt:message key="message.failed" var="failed"/>
 
 <html>
 <head>
@@ -62,89 +64,103 @@
 </div>
 <div class="container text-center justify-content-center">
     <div class="row justify-content-center">
-        <div class="col">
-            <table class="table table-hover table-bordered">
-                <thead class="thead-light text-uppercase">
-                <tr>
-                    <th scope="col">N</th>
-                    <th scope="col">${cart_name}</th>
-                    <th scope="col">${cart_quantity}</th>
-                    <th scope="col">${cart_price}</th>
-                </tr>
-                </thead>
-                <tbody class="text-left">
-                <c:forEach var="cart" items="${cart}" varStatus="status">
-                    <tr>
-                        <td scope="row">${status.count}</td>
-                        <td>${cart.key.name}</td>
-                        <td class="text-right">${cart.key.price}</td>
-                        <td class="text-right"> ${cart.value}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-                <tfoot>
-                <tr class="text-right">
-                    <th scope="row" colspan="3">${cart_total_sum}:</th>
-                    <th>${cart_sum} </th>
-                </tr>
-                </tfoot>
-            </table>
-            <br>
-            <form name="OrderInputInfoForm" method="post" action="${root}/controller">
-                <h4>${choose_type}</h4>
-                <input type="hidden" name="command" value="confirm_order"/>
-                <div class="row justify-content-center">
-                    <div class="col-5">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio1" name="payment_type" class="custom-control-input"
-                                   value="account" required>
-                            <label class="custom-control-label" for="customRadio1">${get_points_account} ${points_for_account}
-                                ${get_points2}</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio2" name="payment_type" class="custom-control-input"
-                                   value="cash"
-                                   required>
-                            <label class="custom-control-label" for="customRadio2">${get_points_cash} ${points_for_cash} ${get_points2}</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <c:choose>
-                                <c:when test="${user.loyaltyPoints.compareTo(cart_sum) < 0}">
-                                    <input type="radio" id="customRadio3" name="payment_type"
+        <c:choose>
+            <c:when test="${not empty order_confirmed_message}">
+                ${order_confirmed_message eq true? complete: failed}
+            </c:when>
+            <c:otherwise>
+                <div class="col">
+                    <table class="table table-hover table-bordered">
+                        <thead class="thead-light text-uppercase">
+                        <tr>
+                            <th scope="col">N</th>
+                            <th scope="col">${cart_name}</th>
+                            <th scope="col">${cart_quantity}</th>
+                            <th scope="col">${cart_price}</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-left">
+                        <c:forEach var="cart" items="${cart}" varStatus="status">
+                            <tr>
+                                <td scope="row">${status.count}</td>
+                                <td>${cart.key.name}</td>
+                                <td class="text-right">${cart.key.price}</td>
+                                <td class="text-right"> ${cart.value}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                        <tfoot>
+                        <tr class="text-right">
+                            <th scope="row" colspan="3">${cart_total_sum}:</th>
+                            <th>${cart_sum} </th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <br>
+                    <form name="OrderInputInfoForm" method="post" action="${path}/controller">
+                        <h4>${choose_type}</h4>
+                        <input type="hidden" name="command" value="confirm_order"/>
+                        <div class="row justify-content-center">
+                            <div class="col-5">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio1" name="payment_type"
                                            class="custom-control-input"
-                                           value="loyalty_points" disabled>
-                                    <label class="custom-control-label" for="customRadio3">${points_not_enough1} ${user.loyaltyPoints} ${points_not_enough2}</label>
-                                </c:when>
-                                <c:otherwise>
-                                        <input class="form-check-input" type="checkbox" id="flexCheckChecked"
-                                               value="loyalty_points"  name="payment_type" checked>
-                                        <label class="form-check-label" for="flexCheckChecked">
-                                                ${use_points}
-                                        </label>
-<%--                                    <input type="radio" id="customRadio3" name="payment_type"--%>
-<%--                                           class="custom-control-input"--%>
-<%--                                           value="loyalty_points" required>--%>
-<%--                                    <label class="custom-control-label" for="customRadio3">${use_points}</label>--%>
-                                </c:otherwise>
-                            </c:choose>
+                                           value="account" required>
+                                    <label class="custom-control-label"
+                                           for="customRadio1">${get_points_account} ${order_data_ses['points_for_account']}
+                                            ${get_points2}</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio2" name="payment_type"
+                                           class="custom-control-input"
+                                           value="cash"
+                                           required>
+                                    <label class="custom-control-label"
+                                           for="customRadio2">${get_points_cash} ${order_data_ses['points_for_cash']} ${get_points2}</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <c:choose>
+                                        <c:when test="${current_loyalty_points.compareTo(cart_sum) < 0}">
+                                            <input class="form-check-input" type="checkbox" id="flexCheckChecked"
+                                                   value="loyalty_points" name="payment_type" disabled>
+
+                                            <label class="custom-control-label"
+                                                   for="flexCheckChecked">${points_not_enough1} ${current_loyalty_points} ${points_not_enough2}</label>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input class="form-check-input" type="checkbox" id="flexCheckChecked"
+                                                   value="loyalty_points" name="payment_type" checked>
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                                    ${use_points}
+                                            </label>
+                                            <%--                                    <input type="radio" id="customRadio3" name="payment_type"--%>
+                                            <%--                                           class="custom-control-input"--%>
+                                            <%--                                           value="loyalty_points" required>--%>
+                                            <%--                                    <label class="custom-control-label" for="customRadio3">${use_points}</label>--%>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <br><br>
+                        <h4>${when_pick_up}</h4>
+                        <div class="row justify-content-center">
+                            <div class="col-3">
+                                <label>
+                                    <input type="datetime-local" class="form-control" name="pick_up_time"
+                                           max="${order_data_ses['max_pick_up_time']}"
+                                           min="${order_data_ses['min_pick_up_time']}"
+                                           required>
+                                </label>
+                            </div>
+                        </div>
+                        <br>
+                        <hr style="border-color: #fb5849">
+                        <button class="btn btn-outline-success" type="submit">${confirm}</button>
+                    </form>
                 </div>
-                <br><br>
-                <h4>${when_pick_up}</h4>
-                <div class="row justify-content-center">
-                    <div class="col-3">
-                        <label>
-                            <input type="datetime-local" class="form-control" name="pick_up_time" min="${min_pick_up_time}"
-                                   max="${max_pick_up_time}"
-                                   required>
-                        </label>
-                    </div>
-                </div>
-                <br><hr style="border-color: #fb5849">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">${confirm}</button>
-            </form>
-        </div>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 <footer>
