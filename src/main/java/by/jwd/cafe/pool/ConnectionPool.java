@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
     static Logger logger = LogManager.getLogger();
-    private static final int DEFAULT_POOL_SIZE = 8;
+    private static final int POOL_SIZE = 8;
     private static final String DB_PROPERTY = "properties.db";
     private static final String DB_DRIVER_KEY = "driver";
     private static final String DB_URL_KEY = "url";
@@ -29,9 +29,9 @@ public class ConnectionPool {
     private static ConnectionPool instance;
     private static AtomicBoolean instanceIsExist = new AtomicBoolean(false);
     private static Lock instanceLocker = new ReentrantLock();
-    private BlockingQueue<ProxyConnection> freeConnections = new LinkedBlockingQueue<>(DEFAULT_POOL_SIZE);
-    private BlockingQueue<ProxyConnection> usedConnections = new LinkedBlockingQueue<>(DEFAULT_POOL_SIZE);
-    //можно добавить TimerTask, который будет проверять, чтобы в сумме Connection было 8
+    private BlockingQueue<ProxyConnection> freeConnections = new LinkedBlockingQueue<>(POOL_SIZE);
+    private BlockingQueue<ProxyConnection> usedConnections = new LinkedBlockingQueue<>(POOL_SIZE);
+    //todo можно добавить TimerTask, который будет проверять, чтобы в сумме Connection было 8
 
     static {
         try {
@@ -51,7 +51,7 @@ public class ConnectionPool {
     }
 
     private ConnectionPool() {
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+        for (int i = 0; i < POOL_SIZE; i++) {
             try {
                 Connection connection = createConnection();
                 ProxyConnection proxyConnection = new ProxyConnection(connection);
@@ -109,8 +109,9 @@ public class ConnectionPool {
         }
         return flag;
     }
+
     public void destroyPool() {
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+        for (int i = 0; i < POOL_SIZE; i++) {
             try {
                 freeConnections.take().reallyClose();
             } catch (SQLException e) {

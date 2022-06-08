@@ -18,5 +18,4 @@ public interface MenuItemService {
     void addItemToCart(Map<MenuItem, Integer> cart, MenuItem itemToAdd, int quantity); //todo ??
     boolean removeItemFromCart(Map<MenuItem, Integer> cart, int itemToRemoveId); //todo ??
     BigDecimal calculateCartSum(Map<MenuItem, Integer> cart);  //todo ??
-    BigDecimal calculateLoyaltyPoints(BigDecimal cartSum, PaymentType paymentType);  //todo ??
 }

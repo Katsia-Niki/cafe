@@ -145,15 +145,6 @@ public class MenuItemServiceImpl implements MenuItemService {
         }
         return cartSum;
     }
-
-    @Override
-    public BigDecimal calculateLoyaltyPoints(BigDecimal cartSum, PaymentType paymentType) {
-        BigDecimal percentLoyaltyPoints = new BigDecimal(paymentType.getPercentLoyaltyPoints());
-        BigDecimal result = cartSum.multiply(percentLoyaltyPoints.divide(new BigDecimal(100)));
-        result.setScale(2, RoundingMode.HALF_UP);
-        return result;
-    }
-
     private void buildPaginationData(Map<String, Integer> paginationData) throws DaoException {
         int num = itemDao.findNumberOfAvailableItems();
         paginationData.put(ALL_SHEETS_SESSION, Integer.valueOf(num));
