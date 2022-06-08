@@ -8,6 +8,8 @@ public final class SessionAttribute {
     public static final String CART_SUM = "cart_sum";
     public static final String CHANGE_PASSWORD_RESULT = "change_password_result";
     public static final String CURRENT_PAGE = "current_page";
+    public static final String CURRENT_BALANCE = "current_balance";
+    public static final String CURRENT_LOYALTY_POINTS = "current_loyalty_points";
     public static final String CURRENT_ROLE = "current_role";
     public static final String CURRENT_LOGIN_SESSION = "current_login_ses";
     public static final String CURRENT_USER_ID = "current_user_id";
@@ -33,8 +35,12 @@ public final class SessionAttribute {
     public static final String LAST_NAME_SESSION = "last_name_ses";
     public static final String MIN_PICK_UP_TIME = "min_pick_up_time";
     public static final String MAX_PICK_UP_TIME = "man_pick_up_time";
+    public static final String ORDER_DATA_SESSION = "order_data_ses";
+    public static final String ORDER_CONFIRMED_MESSAGE = "order_confirmed_message";
     public static final String PASSWORD_SESSION = "password_ses";
     public static final String PAGINATION_SESSION = "pagination_ses";
+    public static final String PAYMENT_TYPE_SESSION = "payment_type_ses";
+    public static final String PICK_UP_TIME_SESSION = "pick_up_time_ses";
     public static final String POINTS_FOR_ACCOUNT = "points_for_account";
     public static final String POINTS_FOR_CASH = "points_for_cash";
     public static final String REPEAT_PASSWORD_SESSION = "repeat_password_ses";
