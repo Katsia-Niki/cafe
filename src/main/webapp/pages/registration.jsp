@@ -79,7 +79,7 @@
                 <div class="col">
                 </div>
                 <div class="col">
-                    <form method="post" action="${path}/controller" novalidate>
+                    <form method="post" action="${path}/controller">
                         <input type="hidden" name="command" value="registration"/>
                         <div class="mb-3">
                             <label class="form-label">
@@ -89,14 +89,14 @@
                                    pattern="[\dA-z]([\dA-z_\-\.]*)[\dA-z_\-]@[\dA-z_\-]{2,}\.[A-z]{2,6}"
                                    required oninvalid="this.setCustomValidity('${email_rules}')"
                                    class="form-control">
-                            <label class="form-label text-danger">
-                                <c:if test="${not empty user_data_ses['wrong_email_ses']}">
-                                    ${incorrect_data} ${email_rules}
-                                </c:if>
-                                <c:if test="${not empty user_data_ses['wrong_email_exists_ses']}">
-                                    ${incorrect_email_exist}
-                                </c:if>
-                            </label>
+<%--                            <label class="form-label text-danger">--%>
+<%--                                <c:if test="${not empty user_data_ses['wrong_email_ses']}">--%>
+<%--                                    ${incorrect_data} ${email_rules}--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${not empty user_data_ses['wrong_email_exists_ses']}">--%>
+<%--                                    ${incorrect_email_exist}--%>
+<%--                                </c:if>--%>
+<%--                            </label>--%>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">
@@ -106,14 +106,14 @@
                                    pattern="[\w-]{2,45}"
                                    required oninvalid="this.setCustomValidity('${login_rules}')"
                                    class="form-control">
-                            <label class="form-label text-danger">
-                                <c:if test="${not empty user_data_ses.wrong_login_ses}">
-                                    ${incorrect_data} ${login_rules}
-                                </c:if>
-                                <c:if test="${not empty user_data_ses['wrong_login_exists_ses']}">
-                                    ${incorrect_login_exist}
-                                </c:if>
-                            </label>
+<%--                            <label class="form-label text-danger">--%>
+<%--                                <c:if test="${not empty user_data_ses.wrong_login_ses}">--%>
+<%--                                    ${incorrect_data} ${login_rules}--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${not empty user_data_ses['wrong_login_exists_ses']}">--%>
+<%--                                    ${incorrect_login_exist}--%>
+<%--                                </c:if>--%>
+<%--                            </label>--%>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">
@@ -123,11 +123,11 @@
                                    pattern="[\wА-яЁё\s]{2,20}"
                                    required oninvalid="this.setCustomValidity('${name_rules}')"
                                    class="form-control">
-                            <label class="form-label text-danger">
-                                <c:if test="${not empty user_data_ses['wrong_first_name_ses']}">
-                                    ${incorrect_data} ${name_rules}
-                                </c:if>
-                            </label>
+<%--                            <label class="form-label text-danger">--%>
+<%--                                <c:if test="${not empty user_data_ses['wrong_first_name_ses']}">--%>
+<%--                                    ${incorrect_data} ${name_rules}--%>
+<%--                                </c:if>--%>
+<%--                            </label>--%>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">
@@ -137,11 +137,11 @@
                                    pattern="[\wА-яЁё\s]{2,20}"
                                    required oninvalid="this.setCustomValidity('${name_rules}')"
                                    class="form-control">
-                            <label class="form-label text-danger">
-                                <c:if test="${not empty user_data_ses['wrong_last_name_ses']}">
-                                    ${incorrect_data} ${name_rules}
-                                </c:if>
-                            </label>
+<%--                            <label class="form-label text-danger">--%>
+<%--                                <c:if test="${not empty user_data_ses['wrong_last_name_ses']}">--%>
+<%--                                    ${incorrect_data} ${name_rules}--%>
+<%--                                </c:if>--%>
+<%--                            </label>--%>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">
@@ -150,13 +150,13 @@
                             <input type="password" minlength="3" maxlength="15" name="pass" id="pass"
                                    value="${user_data_ses['password_ses']}"
                                    pattern="^[\wА-я\.\-]{3,45}$"
-                                   required oninvalid="this.setCustomValidity('${password_rules} \'')"
+                                   required oninvalid="this.setCustomValidity('${password_rules}')"
                                    class="form-control">
-                            <label class="form-label text-danger">
-                                <c:if test="${not empty user_data_ses['wrong_password_ses']}">
-                                    ${incorrect_data} ${password_rules}</br>
-                                </c:if>
-                            </label>
+<%--                            <label class="form-label text-danger">--%>
+<%--                                <c:if test="${not empty user_data_ses['wrong_password_ses']}">--%>
+<%--                                    ${incorrect_data} ${password_rules}<br>--%>
+<%--                                </c:if>--%>
+<%--                            </label>--%>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">
@@ -167,11 +167,11 @@
                                    pattern="^[\wА-я\.\-]{3,45}$"
                                    required oninvalid="this.setCustomValidity('${password_rules} \'')"
                                    class="form-control">
-                            <label class="form-label text-danger">
-                                <c:if test="${not empty user_data_ses['mismatch_passwords_ses']}">
-                                    ${mismatch}
-                                </c:if>
-                            </label>
+<%--                            <label class="form-label text-danger">--%>
+<%--                                <c:if test="${not empty user_data_ses['mismatch_passwords_ses']}">--%>
+<%--                                    ${mismatch}--%>
+<%--                                </c:if>--%>
+<%--                            </label>--%>
                         </div>
                         <button type="submit" class="btn btn-secondary">
                                 ${confirm}

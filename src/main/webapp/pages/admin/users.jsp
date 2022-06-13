@@ -19,6 +19,7 @@
 <fmt:message key="title.user_list" var="user_list"/>
 <fmt:message key="reference.ban" var="ban"/>
 <fmt:message key="reference.unban" var="unban"/>
+<fmt:message key="reference.continue_editing" var="continue_editing"/>
 <fmt:message key="field.action" var="action"/>
 <fmt:message key="field.email" var="email"/>
 <fmt:message key="field.login" var="login"/>
@@ -61,7 +62,16 @@
             <br>
             <c:choose>
                 <c:when test="${not empty update_user_status_result}">
-                    ${update_user_status_result eq true ? complete_changing: failed}
+                    ${update_user_status_result eq true ? complete_changing : failed}
+                    <div class="container">
+                        <div class ="row">
+                            <div class="col mb-3">
+                                <a class="link" href="${path}/controller?command=find_all_users"/>
+                                        ${continue_editing}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </c:when>
                 <c:otherwise>
                     <table class="table table-bordered">

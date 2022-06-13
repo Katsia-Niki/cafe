@@ -50,7 +50,7 @@
     <jsp:include page="header/header.jsp"/>
 </header>
 <body>
-<br><br><br><br>
+<br><br><br><br><br>
 <div class="container">
     <div class="row">
         <div class="col-lg-6 align-self-center">
@@ -89,31 +89,6 @@
         </div>
     </div>
 </div>
-<%--<div class="container text-secondary ">--%>
-<%--    <div class="mb-3 fw-bold">--%>
-<%--        ${title}--%>
-<%--    </div>--%>
-<%--    <div class ="row">--%>
-<%--        <div class="col mb-3">--%>
-<%--            ${name}--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <div class ="row">--%>
-<%--        <div class="col mb-3">--%>
-<%--            ${address}--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <div class ="row">--%>
-<%--        <div class="col mb-3">--%>
-<%--            ${phone_number}--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <div class ="row">--%>
-<%--        <div class="col mb-3">--%>
-<%--            ${email}--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
 <footer>
     <jsp:include page="footer/footer.jsp"/>
 </footer>

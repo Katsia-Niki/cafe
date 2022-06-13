@@ -31,6 +31,7 @@
 <fmt:message key="button.confirm" var="confirm"/>
 <fmt:message key="message.complete_order" var="complete"/>
 <fmt:message key="message.failed" var="failed"/>
+<fmt:message key="message.not_enough_balance" var="not_enough_balance"/>
 
 <html>
 <head>
@@ -66,7 +67,17 @@
     <div class="row justify-content-center">
         <c:choose>
             <c:when test="${not empty order_confirmed_message}">
-                ${order_confirmed_message eq true? complete: failed}
+                <c:choose>
+                    <c:when test="${order_confirmed_message eq true}">
+                        ${complete}
+                    </c:when>
+                    <c:otherwise>
+                        ${failed}
+                        <c:if test="${not empty order_data_ses['not_enough_money_ses']}">
+                            ${not_enough_balance}
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
             </c:when>
             <c:otherwise>
                 <div class="col">
@@ -109,6 +120,13 @@
                                     <label class="custom-control-label"
                                            for="customRadio1">${get_points_account} ${order_data_ses['points_for_account']}
                                             ${get_points2}</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-danger">
+                                        <c:if test="${not empty order_data_ses['not_enough_money_ses']}">
+                                            ${not_enough_balance}
+                                        </c:if>
+                                    </div>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="customRadio2" name="payment_type"

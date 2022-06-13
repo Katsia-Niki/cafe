@@ -71,6 +71,7 @@
                     ${not_found}
                 </c:when>
                 <c:otherwise>
+
                     <c:forEach var="menu" items="${menu_item_available_ses}">
                         <div class="row">
                             <div class="col-lg-12">
@@ -83,8 +84,7 @@
                                                         <div class="list-group-item">
                                                             <div class="col-lg-12">
                                                                 <div class="tab-item">
-                                                                    <img src="${pageContext.request.contextPath}/assets/images/tab-item-01.png"
-                                                                         alt="">
+                                                                    <img src="${menu.image}" class="img-thumbnail">
                                                                     <h4>${menu.name}</h4>
                                                                     <p>${menu.description}</p>
                                                                     <div class="price">
@@ -131,7 +131,7 @@
                                                                         <c:if test="${current_role eq 'ADMIN'}">
                                                                             <form target="_blank" method="get" action="${path}/controller">
                                                                                 <input type="hidden" name="command" value="go_to_edit_menu_page">
-                                                                                <input type="hidden" name="menu_item_to_edit_id" value="${menu.menuItemId}">
+                                                                                <input type="hidden" name="menu_item_id_to_edit" value="${menu.menuItemId}">
                                                                                 <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">${edit}</button>
                                                                             </form>
                                                                         </c:if>

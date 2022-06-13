@@ -83,7 +83,7 @@
                                                     ${change_password}</a></li>
                                             <li class="nav-item"><a class="nav-link" href="${path}/controller?command=go_to_refill_balance_page">
                                                     ${refill_balance}</a></li>
-                                            <li class="nav-item"><a class="nav-link" href="${path}/controller?command=go_to_customer_orders_page">
+                                            <li class="nav-item"><a class="nav-link" href="${path}/controller?command=find_order_by_user_id">
                                                     ${orders}</a></li>
                                             <li class="nav-item"><a class="nav-link" href="${path}/controller?command=logout">
                                                     ${logout}</a></li>
@@ -95,7 +95,7 @@
                                                     ${user_management}</a></li>
                                             <li><a class="nav-link" href="${path}/controller?command=go_to_order_management_page">
                                                     ${order_management}</a></li>
-                                            <li><a class="nav-link" href="${path}/controller?command=go_to_menu_item_management_page">
+                                            <li><a class="nav-link" href="${path}/controller?command=find_all_menu">
                                                     ${menu_item_management}</a></li>
                                             <li><a class="nav-link" href="${path}/controller?command=go_to_review_management_page">
                                                     ${review_management}</a></li>

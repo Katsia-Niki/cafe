@@ -20,6 +20,8 @@
 <fmt:message key="placeholder.password" var="password"/>
 <fmt:message key="reference.registration" var="registration"/>
 <fmt:message key="reference.back_to_main" var="back_to_main"/>
+<fmt:message key="message.login_rules" var="login_rules"/>
+<fmt:message key="message.password_rules" var="password_rules"/>
 <fmt:message key="message.incorrect_login_or_password" var="incorrect_login_or_password"/>
 <fmt:message key="message.not_found" var="not_found"/>
 
@@ -65,14 +67,20 @@
 <body>
 <div class="container">
     <section id="content">
-        <form method="post" action="controller">
+        <form method="post" action="${path}/controller">
             <input type="hidden" name="command" value="login"/>
             <h1>${login_form}</h1>
             <div>
-                <input type="text" name="login" value="" placeholder="${login}"/>
+                <input type="text" name="login" value="${user_data_ses['login_ses']}"  maxlength="45"
+                       pattern="[\w-]{2,45}" required oninvalid="this.setCustomValidity('${login_rules}')"
+                       placeholder="${login}"/>
             </div>
             <div>
-                <input type="password" name="pass" value="" placeholder="${password}"/>
+                <input type="password" name="pass" value="${user_data_ses['password_ses']}"
+                       minlength="3" maxlength="15"
+                       pattern="^[\wА-я\.\-]{3,45}$"
+                       required oninvalid="this.setCustomValidity('${password_rules}')"
+                       placeholder="${password}"/>
             </div>
             <div>
                 <input type="submit" value="${sign_in}">
