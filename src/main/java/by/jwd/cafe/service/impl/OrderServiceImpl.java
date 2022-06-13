@@ -28,7 +28,13 @@ import java.util.Set;
 
 import static by.jwd.cafe.command.SessionAttribute.*;
 
+/**
+ * The type Order service.
+ */
 public class OrderServiceImpl implements OrderService {
+    /**
+     * The Logger.
+     */
     static Logger logger = LogManager.getLogger();
     private static OrderServiceImpl instance = new OrderServiceImpl();
     private MenuItemDao itemDao = MenuItemDaoImpl.getInstance();
@@ -36,6 +42,11 @@ public class OrderServiceImpl implements OrderService {
     private OrderServiceImpl() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static OrderServiceImpl getInstance() {
         return instance;
     }
@@ -97,15 +108,17 @@ public class OrderServiceImpl implements OrderService {
             UserDao userDao = UserDaoImpl.getInstance();
             BigDecimal userBalance = userDao.findBalanceByUserId(userId);
             BigDecimal userLoyaltyPoints = userDao.findLoyaltyPointsByUserId(userId);
-            String paymentTypeStr = orderData.get(PAYMENT_TYPE_SESSION);
-            PaymentType paymentType = PaymentType.valueOf((paymentTypeStr).toUpperCase());
-            BigDecimal cartSum = new BigDecimal(orderData.get(CART_SUM));
 
             OrderValidator validator = OrderValidatorImpl.getInstance();
-            if (!validator.validateOrderData(paymentType, userBalance, userLoyaltyPoints, cartSum)) {
-                logger.info("Not enough money/loyalty points.");
+
+            if (!validator.validateOrderData(orderData, userBalance, userLoyaltyPoints)) {
                 return isCreated;
             }
+            String paymentTypeStr = orderData.get(PAYMENT_TYPE_SESSION);
+            BigDecimal cartSum = new BigDecimal(orderData.get(CART_SUM));
+            String pickUpTimeStr = orderData.get(PICK_UP_TIME_SESSION);
+            PaymentType paymentType = PaymentType.valueOf(paymentTypeStr.toUpperCase());
+
             userBalance = paymentType == PaymentType.ACCOUNT
                     ? userBalance.subtract(cartSum)
                     : userBalance;
@@ -117,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
                 userLoyaltyPoints = userLoyaltyPoints.add(pointsToAdd);
             }
             boolean isPaid = paymentType != PaymentType.CASH;
-            String pickUpTimeStr = orderData.get(PICK_UP_TIME_SESSION);
+
             LocalDateTime pickUpTime = LocalDateTime.parse(pickUpTimeStr);
 
             Order order = new Order.OrderBuilder()
@@ -129,14 +142,10 @@ public class OrderServiceImpl implements OrderService {
                     .build();
 
             isCreated = orderDao.createOrder(order, userBalance, userLoyaltyPoints, cart);
-
-        } catch (IllegalArgumentException | DateTimeParseException e) {
-            logger.error("Not valid data.", e);
-            return isCreated;
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            logger.error("Try to create order was failed.", e);
+            throw new ServiceException("Try to create order was failed.", e);
         }
-
         return isCreated;
     }
 

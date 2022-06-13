@@ -1,16 +1,24 @@
 package by.jwd.cafe.entity;
 
 public enum MenuItemType {
-    UNSUPPORTED ("неподдерживается"),
-    APPETIZER ("закуска"),
-    MAIN_COURSE("основное блюдо"),
-    SOUP ("суп"),
-    DESSERT("десерт"),
-    DRINK("напиток");
-    String name;  //fixme проверить, нужен ли
-    MenuItemType(String name) {} //fixme проверить, нужен ли
+    UNSUPPORTED,
+    APPETIZER,
+    MAIN_COURSE,
+    SOUP,
+    DESSERT,
+    DRINK;
 
-    public String getName() {  //fixme проверить, нужен ли
-        return name;
+    private static final char UNDERSCORE = '_';
+    private static final char SPACE = ' ';
+
+    @Override
+    public String toString() {
+     return this.name().replace(UNDERSCORE, SPACE).toLowerCase();
     }
+
+
+    public static MenuItemType valueOfMenuItemType(String name) {
+        return MenuItemType.valueOf(name.toUpperCase().replace(SPACE, UNDERSCORE));
+    }
+
 }

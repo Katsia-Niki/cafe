@@ -3,13 +3,9 @@ package by.jwd.cafe.controller;
 import by.jwd.cafe.command.Command;
 import by.jwd.cafe.command.CommandType;
 import by.jwd.cafe.command.impl.*;
-import by.jwd.cafe.command.impl.admin.FindAllUsersCommand;
-import by.jwd.cafe.command.impl.admin.UpdateUserStatusCommand;
+import by.jwd.cafe.command.impl.admin.*;
 import by.jwd.cafe.command.impl.admin.to.GoToEditMenuPageCommand;
-import by.jwd.cafe.command.impl.customer.AddItemToCartCommand;
-import by.jwd.cafe.command.impl.customer.ConfirmOrderCommand;
-import by.jwd.cafe.command.impl.customer.RefillBalanceCommand;
-import by.jwd.cafe.command.impl.customer.RemoveItemFromCartCommand;
+import by.jwd.cafe.command.impl.customer.*;
 import by.jwd.cafe.command.impl.customer.to.GoToCartPageCommand;
 import by.jwd.cafe.command.impl.customer.to.GoToPlaceOrderPageCommand;
 import by.jwd.cafe.command.impl.customer.to.GoToRefillBalancePageCommand;
@@ -31,8 +27,11 @@ public final class CommandProvider {
         commands.put(CHANGE_LANGUAGE, new ChangeLanguageCommand());
         commands.put(CONFIRM_ORDER, new ConfirmOrderCommand());
         commands.put(DEFAULT, new DefaultCommand());
+        commands.put(EDIT_MENU_ITEM, new EditMenuItemCommand());
         commands.put(FIND_ALL_USERS, new FindAllUsersCommand());
         commands.put(FIND_ALL_AVAILABLE_MENU, new FindAllAvailableMenuCommand());
+        commands.put(FIND_ALL_MENU, new FindAllMenuCommand());
+        commands.put(FIND_ORDER_BY_USER_ID, new FindOrderByUserIdCommand());
         commands.put(GO_TO_ACCOUNT_PAGE, new GoToAccountPageCommand());
         commands.put(GO_TO_CART_PAGE, new GoToCartPageCommand());
         commands.put(GO_TO_CHANGE_PASSWORD_PAGE, new GoToChangePasswordPageCommand());
@@ -51,6 +50,7 @@ public final class CommandProvider {
         commands.put(REMOVE_ITEM_FROM_CART, new RemoveItemFromCartCommand());
         commands.put(UPDATE_PERSONAL_DATA, new UpdatePersonalDataCommand());
         commands.put(UPDATE_USER_STATUS, new UpdateUserStatusCommand());
+        commands.put(UPLOAD_IMAGE, new UploadImageCommand());
     }
 
     public static Command of(String commandName) {

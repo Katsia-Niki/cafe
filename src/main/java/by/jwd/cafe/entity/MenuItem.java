@@ -2,6 +2,7 @@ package by.jwd.cafe.entity;
 
 import java.io.Serial;
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class MenuItem extends AbstractEntity {
     @Serial
@@ -12,7 +13,8 @@ public class MenuItem extends AbstractEntity {
     private String description;
     private BigDecimal price;
     private boolean isAvailable;
-    private String picture;
+    private byte[] picture;
+    private String image;
 
     public MenuItem() {
     }
@@ -72,12 +74,20 @@ public class MenuItem extends AbstractEntity {
         isAvailable = available;
     }
 
-    public String getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public static class MenuItemBuilder {
@@ -135,7 +145,12 @@ public class MenuItem extends AbstractEntity {
             return this;
         }
 
-        public MenuItemBuilder withPicture(String picture) {
+        public MenuItemBuilder withImage(String image) {
+            newMenuItem.image = image;
+            return this;
+        }
+
+        public MenuItemBuilder withPicture(byte[] picture) {
             newMenuItem.picture = picture;
             return this;
         }
@@ -159,7 +174,7 @@ public class MenuItem extends AbstractEntity {
         if (description != null ? !description.equals(menuItem.description) : menuItem.description != null)
             return false;
         if (price != null ? !price.equals(menuItem.price) : menuItem.price != null) return false;
-        return picture != null ? picture.equals(menuItem.picture) : menuItem.picture == null;
+        return Arrays.equals(picture, menuItem.picture);
     }
 
     @Override
@@ -170,7 +185,7 @@ public class MenuItem extends AbstractEntity {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (isAvailable ? 1 : 0);
-        result = 31 * result + (picture != null ? picture.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(picture);
         return result;
     }
 

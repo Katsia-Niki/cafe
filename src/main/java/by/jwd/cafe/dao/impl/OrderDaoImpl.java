@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.*;
 import java.util.*;
 
@@ -54,56 +53,44 @@ public class OrderDaoImpl implements OrderDao {
         boolean result = false;
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+
         try {
             connection = pool.getConnection();
             connection.setAutoCommit(false);
 
-            statement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, order.getOrderId());
-            statement.setInt(2, order.getUserId());
-            statement.setString(3, order.getPaymentType().name());
-            statement.setTimestamp(4, Timestamp.valueOf(order.getPickUpTime()));
-            statement.setBigDecimal(5, order.getOrderCost());
-            statement.setBoolean(6, order.isPaid());
-            int row = statement.executeUpdate();
-            if (row == 0) {
-                return result;
-            }
-            resultSet = statement.getGeneratedKeys();
+            try (PreparedStatement orderStatement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
+                 PreparedStatement balanceStatement = connection.prepareStatement(UPDATE_USER_BALANCE_AND_LOYALTY_POINTS);
+                 PreparedStatement orderedItemStatement = connection.prepareStatement(INSERT_ORDERED_MENU_ITEM)) {
 
-            if (resultSet.next()) {
-                order.setOrderId(resultSet.getInt(1));
-            } else {
-                logger.error("No generated keys.");
-                throw new DaoException("No generated keys.");
-            }
+                orderStatement.setInt(1, order.getOrderId());
+                orderStatement.setInt(2, order.getUserId());
+                orderStatement.setString(3, order.getPaymentType().name());
+                orderStatement.setTimestamp(4, Timestamp.valueOf(order.getPickUpTime()));
+                orderStatement.setBigDecimal(5, order.getOrderCost());
+                orderStatement.setBoolean(6, order.isPaid());
+                orderStatement.executeUpdate();
 
-            statement = connection.prepareStatement(UPDATE_USER_BALANCE_AND_LOYALTY_POINTS);
-            statement.setBigDecimal(1, balance);
-            statement.setBigDecimal(2, loyaltyPoints);
-            statement.setInt(3, order.getUserId());
-            row = statement.executeUpdate();
-            if (row == 0) {
-                return result;
-            }
-
-            statement = connection.prepareStatement(INSERT_ORDERED_MENU_ITEM);
-            Set<Map.Entry<MenuItem, Integer>> menuItems = cart.entrySet();
-            for (Map.Entry<MenuItem, Integer> menuItem : menuItems) {
-                statement.setInt(1, order.getOrderId());
-                statement.setInt(2, menuItem.getKey().getMenuItemId());
-                statement.setBigDecimal(3, menuItem.getKey().getPrice());
-                statement.setInt(4, menuItem.getValue());
-                row = statement.executeUpdate();
-                if (row == 0) {
-                    return result;
+                try (ResultSet resultSet = orderStatement.getGeneratedKeys()) {
+                    resultSet.next();
+                    order.setOrderId(resultSet.getInt(1));
                 }
-            }
-            result = true;
-            connection.commit();
 
+                balanceStatement.setBigDecimal(1, balance);
+                balanceStatement.setBigDecimal(2, loyaltyPoints);
+                balanceStatement.setInt(3, order.getUserId());
+                balanceStatement.executeUpdate();
+
+                Set<Map.Entry<MenuItem, Integer>> menuItems = cart.entrySet();
+                for (Map.Entry<MenuItem, Integer> menuItem : menuItems) {
+                    orderedItemStatement.setInt(1, order.getOrderId());
+                    orderedItemStatement.setInt(2, menuItem.getKey().getMenuItemId());
+                    orderedItemStatement.setBigDecimal(3, menuItem.getKey().getPrice());
+                    orderedItemStatement.setInt(4, menuItem.getValue());
+                    orderedItemStatement.executeUpdate();
+                }
+                result = true;
+                connection.commit();
+            }
         } catch (SQLException e) {
             logger.error("Try to create order was failed.", e);
             try {
@@ -115,11 +102,9 @@ public class OrderDaoImpl implements OrderDao {
         } finally {
             try {
                 connection.setAutoCommit(true);
-                resultSet.close();
-                statement.close();
                 connection.close();
             } catch (SQLException e) {
-                logger.error("Connection or statement close was failed" + e);
+                logger.error("Connection or statement close was failed", e);
                 throw new DaoException("Connection or statement close was failed", e);
             }
         }

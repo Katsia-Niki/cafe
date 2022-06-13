@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static by.jwd.cafe.command.RequestParameter.USER_IS_ACTIVE;
 import static by.jwd.cafe.command.RequestParameter.WRONG_DATA_MARKER;
 import static by.jwd.cafe.command.SessionAttribute.*;
 

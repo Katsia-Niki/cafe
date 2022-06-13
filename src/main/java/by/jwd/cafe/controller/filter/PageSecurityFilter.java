@@ -36,6 +36,7 @@ public class PageSecurityFilter implements Filter {
                 CONFIRMED_ORDER,
                 CART,
                 CUSTOMER_ACCOUNT,
+                CUSTOMER_ORDERS,
                 CHANGE_PASSWORD,
                 HOME,
                 LOGIN,
@@ -45,8 +46,10 @@ public class PageSecurityFilter implements Filter {
                 REGISTRATION,
                 REFILL_BALANCE);
         adminPages = Set.of(ADMIN_ACCOUNT,
+                ALL_MENU,
                 CONTACT,
                 CHANGE_PASSWORD,
+                EDIT_MENU,
                 HOME,
                 LOGIN,
                 MAIN,

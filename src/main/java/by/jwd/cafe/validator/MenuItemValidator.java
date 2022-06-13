@@ -13,6 +13,6 @@ public interface MenuItemValidator {
 
     boolean validatePrice(String price);
 
-    boolean validateItemDataCreate(Map<String, String> menuItemData);
+    boolean validateItemData(Map<String, String> menuItemData);
     boolean validateDirection(String direction);
 }

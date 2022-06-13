@@ -10,7 +10,7 @@ import static by.jwd.cafe.command.RequestParameter.WRONG_DATA_MARKER;
 import static by.jwd.cafe.command.SessionAttribute.*;
 
 
-public class UserValidatorImpl implements UserValidator {
+public final class UserValidatorImpl implements UserValidator {
     static Logger logger = LogManager.getLogger();
     private static final String EMAIL_REGEX =
             "[\\d\\p{Alpha}]([\\d\\p{Alpha}_\\-\\.]*)[\\d\\p{Alpha}_\\-]@[\\d\\p{Alpha}_\\-]{2,}\\.\\p{Alpha}{2,6}";

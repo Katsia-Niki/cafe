@@ -9,9 +9,9 @@ import java.util.Map;
 import static by.jwd.cafe.command.RequestParameter.*;
 import static by.jwd.cafe.command.SessionAttribute.*;
 
-public class MenuItemValidatorImpl implements MenuItemValidator {
+public final class MenuItemValidatorImpl implements MenuItemValidator {
     static Logger logger = LogManager.getLogger();
-    private static final String NAME_REGEX = "[\\wА-яЁё\\s]{2,45}";
+    private static final String NAME_REGEX = "[\\wА-яЁё\\s\"]{2,200}";
     private static final String DESCRIPTION_REGEX = "[^><]+";
     private static final String PRICE_REGEX = "\\d{1,5}\\.?\\d{0,2}";
     private static final MenuItemValidatorImpl instance = new MenuItemValidatorImpl();
@@ -39,13 +39,14 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
     }
 
     @Override
-    public boolean validateItemDataCreate(Map<String, String> menuItemData) {
+    public boolean validateItemData(Map<String, String> menuItemData) {
         boolean isValid = true;
         String itemName = menuItemData.get(MENU_ITEM_NAME_SESSION);
         String description = menuItemData.get(MENU_ITEM_DESCRIPTION_SESSION);
         String price = menuItemData.get(MENU_ITEM_PRICE_SESSION);
         if (!validateName(itemName)) {
             isValid = false;
+            System.out.println(itemName);
             logger.error("Invalid menu item name.");
             menuItemData.put(WRONG_MENU_ITEM_NAME, WRONG_DATA_MARKER);
         }
