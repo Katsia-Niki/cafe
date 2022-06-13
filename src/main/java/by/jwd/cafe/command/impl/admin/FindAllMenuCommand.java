@@ -1,8 +1,8 @@
-package by.jwd.cafe.command.impl;
+package by.jwd.cafe.command.impl.admin;
 
 import by.jwd.cafe.command.Command;
-import by.jwd.cafe.command.Router;
 import by.jwd.cafe.command.PagePath;
+import by.jwd.cafe.command.Router;
 import by.jwd.cafe.entity.MenuItem;
 import by.jwd.cafe.exception.CommandException;
 import by.jwd.cafe.exception.ServiceException;
@@ -21,7 +21,7 @@ import static by.jwd.cafe.command.RequestAttribute.MENU_ITEM_LIST;
 import static by.jwd.cafe.command.RequestParameter.DIRECTION;
 import static by.jwd.cafe.command.SessionAttribute.*;
 
-public class FindAllAvailableMenuCommand implements Command {
+public class FindAllMenuCommand implements Command {
     static Logger logger = LogManager.getLogger();
 
     @Override
@@ -34,14 +34,15 @@ public class FindAllAvailableMenuCommand implements Command {
         MenuItemService service = MenuItemServiceImpl.getInstance();
         Router router;
         try {
-            List<MenuItem> menu = service.findAvailableMenuItems(direction, paginationData);
-            session.setAttribute(MENU_ITEM_AVAILABLE_SESSION, menu);
+            List<MenuItem> menu = service.findAllMenuItems(direction, paginationData);
+            session.setAttribute(MENU_ITEM_ALL_SESSION, menu);
+            System.out.println(session.getAttribute(MENU_ITEM_ALL_SESSION));
             session.setAttribute(PAGINATION_SESSION, paginationData);
             session.setAttribute(CURRENT_PAGE, Command.extract(request));
-            router = new Router(PagePath.MENU);
+            router = new Router(PagePath.ALL_MENU);
         } catch (ServiceException e) {
-            logger.error("Try to execute FindAllAvailableMenuCommand was failed.", e);
-            throw new CommandException("Try to execute FindAllAvailableMenuCommand was failed.", e);
+            logger.error("Try to execute FindAllMenuCommand was failed.", e);
+            throw new CommandException("Try to execute FindAllMenuCommand was failed.", e);
         }
         return router;
     }

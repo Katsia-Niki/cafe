@@ -31,7 +31,6 @@ public class UpdateUserStatusCommand implements Command {
         try {
             boolean result = service.updateUserStatus(userId, newUserStatus);
             session.setAttribute(UPDATE_USER_STATUS_RESULT, result);
-            logger.info("Update user status result = " + result); //fixme
             router = new Router(PagePath.USERS);
         } catch (ServiceException e) {
             logger.error("Try to execute UpdateUserStatusCommand was failed.", e);

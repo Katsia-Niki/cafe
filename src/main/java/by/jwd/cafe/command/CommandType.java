@@ -12,8 +12,11 @@ public enum CommandType {
     CHANGE_LANGUAGE(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
     CONFIRM_ORDER(EnumSet.of(CUSTOMER)),
     DEFAULT(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    EDIT_MENU_ITEM(EnumSet.of(ADMIN)),
     FIND_ALL_USERS(EnumSet.of(ADMIN)),
     FIND_ALL_AVAILABLE_MENU(EnumSet.of(GUEST, CUSTOMER, ADMIN)),
+    FIND_ALL_MENU(EnumSet.of(ADMIN)),
+    FIND_ORDER_BY_USER_ID(EnumSet.of(CUSTOMER)),
     GO_TO_ACCOUNT_PAGE(EnumSet.of(CUSTOMER, ADMIN)),
     GO_TO_CART_PAGE(EnumSet.of(CUSTOMER)),
     GO_TO_CHANGE_PASSWORD_PAGE(EnumSet.of(CUSTOMER, ADMIN)),
@@ -31,7 +34,8 @@ public enum CommandType {
     REFILL_BALANCE(EnumSet.of(CUSTOMER)),
     REMOVE_ITEM_FROM_CART(EnumSet.of(CUSTOMER)),
     UPDATE_PERSONAL_DATA(EnumSet.of(CUSTOMER, ADMIN)),
-    UPDATE_USER_STATUS(EnumSet.of(ADMIN));
+    UPDATE_USER_STATUS(EnumSet.of(ADMIN)),
+    UPLOAD_IMAGE(EnumSet.of(ADMIN));
     private EnumSet<UserRole> acceptableRole;
 
     CommandType(EnumSet<UserRole> acceptableRole) {

@@ -30,13 +30,13 @@ public class ConfirmOrderCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         Map<String, String> orderData = (Map<String, String>) session.getAttribute(ORDER_DATA_SESSION);
+        removeTempData(orderData);
         updateOrderDataFromRequest(request, orderData);
 
         Map<MenuItem, Integer> cart = (Map<MenuItem, Integer>) session.getAttribute(CART);
         OrderService service = OrderServiceImpl.getInstance();
         Router router;
         try {
-            // isConfirmed = service.createOrder(userBalance, paymentType, pickUpTime, cartSum, cart);
             boolean isConfirmed = service.createOrder(orderData, cart);
             session.setAttribute(ORDER_CONFIRMED_MESSAGE, isConfirmed);
             session.setAttribute(CURRENT_PAGE, PagePath.PLACE_ORDER);
@@ -48,11 +48,17 @@ public class ConfirmOrderCommand implements Command {
         return router;
     }
 
-    private Map<String, String> updateOrderDataFromRequest(HttpServletRequest request, Map<String, String> orderData) {
+    private void updateOrderDataFromRequest(HttpServletRequest request, Map<String, String> orderData) {
         String paymentTypeStr = request.getParameter(PAYMENT_TYPE);
         String pickUpTimeStr = request.getParameter(PICK_UP_TIME);
         orderData.put(PAYMENT_TYPE_SESSION, paymentTypeStr);
         orderData.put(PICK_UP_TIME_SESSION, pickUpTimeStr);
-        return orderData;
+    }
+
+    private void removeTempData(Map<String, String> orderData) {
+        orderData.remove(WRONG_PAYMENT_TYPE_SESSION);
+        orderData.remove(WRONG_PICK_UP_TIME_SESSION);
+        orderData.remove(NOT_ENOUGH_MONEY_SESSION);
+        orderData.remove(NOT_ENOUGH_LOYALTY_POINTS_SESSION);
     }
 }

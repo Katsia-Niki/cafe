@@ -39,6 +39,7 @@ public class LoginCommand implements Command {
                 session.setAttribute(CURRENT_BALANCE, user.getBalance());
                 session.setAttribute(CURRENT_LOYALTY_POINTS, user.getLoyaltyPoints());
                 request.setAttribute(RequestAttribute.USER, user.getFirstName());
+                session.setAttribute(CURRENT_PAGE, PagePath.HOME);
                 router = new Router(PagePath.HOME);
             } else {
                 session.setAttribute(USER_DATA_SESSION, userData);
