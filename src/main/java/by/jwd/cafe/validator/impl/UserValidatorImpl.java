@@ -1,13 +1,13 @@
 package by.jwd.cafe.validator.impl;
 
+import by.jwd.cafe.model.entity.UserRole;
 import by.jwd.cafe.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import static by.jwd.cafe.command.RequestParameter.WRONG_DATA_MARKER;
-import static by.jwd.cafe.command.SessionAttribute.*;
+import static by.jwd.cafe.controller.command.SessionAttribute.*;
 
 
 public final class UserValidatorImpl implements UserValidator {
@@ -51,6 +51,16 @@ public final class UserValidatorImpl implements UserValidator {
     @Override
     public boolean validateAmount(String amount) {
         return amount != null && amount.matches(AMOUNT_REGEX);
+    }
+
+    @Override
+    public boolean validateRole(String role) {
+        try {
+            UserRole.valueOf(role);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -101,6 +111,7 @@ public final class UserValidatorImpl implements UserValidator {
         String firstName = userData.get(FIRST_NAME_SESSION);
         String lastName = userData.get(LAST_NAME_SESSION);
         String password = userData.get(PASSWORD_SESSION);
+        String newEmail = userData.get(NEW_EMAIL_SESSION);
 
         boolean isValid = true;
         if (password != null && !validatePassword(password)) {
@@ -112,7 +123,11 @@ public final class UserValidatorImpl implements UserValidator {
             isValid = false;
         }
         if (lastName != null && !validateName(lastName)) {
-            userData.put(WRONG_FIRST_NAME_SESSION, WRONG_DATA_MARKER);
+            userData.put(WRONG_LAST_NAME_SESSION, WRONG_DATA_MARKER);
+            isValid = false;
+        }
+        if (newEmail != null && !validateEmail(newEmail)) {
+            userData.put(WRONG_EMAIL_SESSION, WRONG_DATA_MARKER);
             isValid = false;
         }
         return isValid;

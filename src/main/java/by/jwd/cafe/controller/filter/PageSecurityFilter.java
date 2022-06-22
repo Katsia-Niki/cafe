@@ -1,25 +1,26 @@
 package by.jwd.cafe.controller.filter;
 
 
-import by.jwd.cafe.entity.UserRole;
+import by.jwd.cafe.model.entity.UserRole;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static by.jwd.cafe.command.PagePath.*;
-import static by.jwd.cafe.command.SessionAttribute.CURRENT_ROLE;
+import static by.jwd.cafe.controller.command.PagePath.*;
+import static by.jwd.cafe.controller.command.SessionAttribute.CURRENT_ROLE;
 
+/**
+ * {@code PageSecurityFilter} class implements functional of {@link Filter}
+ * Restricts access to the page depending on the user's role.
+ */
 @WebFilter(urlPatterns = {"/pages/*"})
 public class PageSecurityFilter implements Filter {
-    static Logger logger = LogManager.getLogger();
     private Set<String> guestPages;
     private Set<String> customerPages;
     private Set<String> adminPages;
@@ -33,7 +34,7 @@ public class PageSecurityFilter implements Filter {
                 REGISTRATION,
                 CONTACT);
         customerPages = Set.of(CONTACT,
-                CONFIRMED_ORDER,
+                CANCEL_ORDER,
                 CART,
                 CUSTOMER_ACCOUNT,
                 CUSTOMER_ORDERS,
@@ -49,12 +50,15 @@ public class PageSecurityFilter implements Filter {
                 ALL_MENU,
                 CONTACT,
                 CHANGE_PASSWORD,
+                CREATE_MENU_ITEM,
                 EDIT_MENU,
                 HOME,
                 LOGIN,
                 MAIN,
                 MENU,
+                ORDER_MANAGEMENT,
                 REGISTRATION,
+                UPDATE_ORDER,
                 USERS);
         allPages = new HashSet<>();
         allPages.addAll(guestPages);
@@ -64,7 +68,6 @@ public class PageSecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.debug("Start PageSecurityFilter");//fixme
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
@@ -89,7 +92,6 @@ public class PageSecurityFilter implements Filter {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         filterChain.doFilter(servletRequest, servletResponse);
-        logger.debug("End PageSecurityFilter");//fixme
     }
 
     @Override

@@ -1,5 +1,10 @@
 package by.jwd.cafe.exception;
 
+/**
+ * {@code ServiceException} class represent a checked exception from {@link by.jwd.cafe.service}
+ *
+ * @see Exception
+ */
 public class ServiceException extends Exception {
     public ServiceException() {
     }

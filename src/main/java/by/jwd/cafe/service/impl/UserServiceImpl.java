@@ -1,10 +1,9 @@
 package by.jwd.cafe.service.impl;
 
-import by.jwd.cafe.dao.UserDao;
-import by.jwd.cafe.dao.impl.UserDaoImpl;
-import by.jwd.cafe.entity.MenuItem;
-import by.jwd.cafe.entity.User;
-import by.jwd.cafe.entity.UserRole;
+import by.jwd.cafe.model.dao.UserDao;
+import by.jwd.cafe.model.dao.impl.UserDaoImpl;
+import by.jwd.cafe.model.entity.User;
+import by.jwd.cafe.model.entity.UserRole;
 import by.jwd.cafe.exception.DaoException;
 import by.jwd.cafe.exception.ServiceException;
 import by.jwd.cafe.service.UserService;
@@ -19,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static by.jwd.cafe.command.RequestParameter.WRONG_DATA_MARKER;
-import static by.jwd.cafe.command.SessionAttribute.*;
+import static by.jwd.cafe.validator.UserValidator.WRONG_DATA_MARKER;
+import static by.jwd.cafe.controller.command.SessionAttribute.*;
 
 public class UserServiceImpl implements UserService {
     static Logger logger = LogManager.getLogger();
@@ -100,15 +99,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUsers() throws ServiceException {
+    public List<User> findAllUsers(int currentPageNumber) throws ServiceException {
         List<User> users;
         try {
-            users = userDao.findAll();
+            users = userDao.findAllPaginatedUsers(currentPageNumber);
         } catch (DaoException e) {
             logger.error("Try to find all users was failed.", e);
             throw new ServiceException("Try to find all users was failed.", e);
         }
         return users;
+    }
+
+    @Override
+    public int findNumberOfPages() throws ServiceException {
+        int numberOfPages;
+        try {
+            numberOfPages = userDao.findNumberOfAllUsers();
+        } catch (DaoException e) {
+            logger.error("Try to count pages was failed.", e);
+            throw new ServiceException("Try to count pages was failed.", e);
+        }
+        return numberOfPages;
     }
 
     @Override
@@ -171,7 +182,7 @@ public class UserServiceImpl implements UserService {
         if (password != null) {
             String secretPassword = PasswordEncryptor.md5Apache(password);
             try {
-                if (!newEmail.equals(email) && userDao.isEmailExist(email)) {
+                if (!newEmail.equals(email) && userDao.isEmailExist(newEmail)) {
                     logger.info("User with this email has been already registered.");
                     userData.put(WRONG_EMAIL_EXISTS_SESSION, WRONG_DATA_MARKER);
                     return isUpdated;
@@ -199,7 +210,7 @@ public class UserServiceImpl implements UserService {
                 .withUserId(userId)
                 .withLogin(login)
                 .withPassword(password)
-                .withEmail(email)
+                .withEmail(newEmail)
                 .withFirstName(firstName)
                 .withLastName(lastName)
                 .withUserRole(role)
@@ -207,7 +218,6 @@ public class UserServiceImpl implements UserService {
                 .withBalance(balance)
                 .withLoyaltyPoints(loyaltyPoints)
                 .build();
-        System.out.println(user);
         try {
             isUpdated = userDao.update(user);
         } catch (DaoException e) {
@@ -218,13 +228,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUserStatus(int userId, int newUserStatus) throws ServiceException {
+    public boolean updateUserStatus(int userId, boolean newUserStatus) throws ServiceException {
         boolean isUpdated;
         try {
             isUpdated = userDao.updateUserStatus(userId, newUserStatus);
         } catch (DaoException e) {
             logger.error("Try to update user status was failed.", e);
             throw new ServiceException("Try to update user status was failed.", e);
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean updateUserRole(int userId, String userRole) throws ServiceException {
+        boolean isUpdated = false;
+        UserValidator validator = UserValidatorImpl.getInstance();
+        if (!validator.validateRole(userRole)) {
+            logger.info("Invalid user role.");
+            return isUpdated;
+        }
+        UserRole newUserRole = UserRole.valueOf(userRole) == UserRole.CUSTOMER
+                ? UserRole.ADMIN : UserRole.CUSTOMER;
+        try {
+            boolean isUserActive = userDao.findUserStatusByUserId(userId);
+            if (!isUserActive) {
+                return isUpdated;
+            }
+            isUpdated = userDao.updateUserRole(userId, newUserRole);
+        } catch (DaoException e) {
+            logger.error("Try to update user role was failed.", e);
+            throw new ServiceException("Try to update user role was failed.", e);
         }
         return isUpdated;
     }

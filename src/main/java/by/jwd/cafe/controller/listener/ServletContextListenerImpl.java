@@ -1,13 +1,16 @@
 package by.jwd.cafe.controller.listener;
 
-import by.jwd.cafe.pool.ConnectionPool;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import by.jwd.cafe.model.pool.ConnectionPool;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * {@code ServletContextListenerImpl} class implements functional of {@link ServletContextListener}
+ */
 @WebListener
 public class ServletContextListenerImpl implements ServletContextListener {
     static Logger logger = LogManager.getLogger();

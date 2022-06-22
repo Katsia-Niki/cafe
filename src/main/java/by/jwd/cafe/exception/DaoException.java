@@ -1,5 +1,10 @@
 package by.jwd.cafe.exception;
 
+/**
+ * {@code DaoException} class represent a checked exception from {@link by.jwd.cafe.model.dao}
+ *
+ * @see Exception
+ */
 public class DaoException extends Exception {
     public DaoException() {
     }

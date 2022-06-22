@@ -1,11 +1,11 @@
 package by.jwd.cafe.service.impl;
 
-import by.jwd.cafe.dao.MenuItemDao;
-import by.jwd.cafe.dao.impl.MenuItemDaoImpl;
-import by.jwd.cafe.entity.MenuItem;
-import by.jwd.cafe.entity.MenuItemType;
 import by.jwd.cafe.exception.DaoException;
 import by.jwd.cafe.exception.ServiceException;
+import by.jwd.cafe.model.dao.MenuItemDao;
+import by.jwd.cafe.model.dao.impl.MenuItemDaoImpl;
+import by.jwd.cafe.model.entity.MenuItem;
+import by.jwd.cafe.model.entity.MenuItemType;
 import by.jwd.cafe.service.MenuItemService;
 import by.jwd.cafe.validator.MenuItemValidator;
 import by.jwd.cafe.validator.impl.MenuItemValidatorImpl;
@@ -13,11 +13,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-import static by.jwd.cafe.command.SessionAttribute.*;
-import static by.jwd.cafe.validator.MenuItemValidator.NEXT_SHEET;
-import static by.jwd.cafe.validator.MenuItemValidator.PREVIOUS_SHEET;
+import static by.jwd.cafe.controller.command.SessionAttribute.*;
 
 public class MenuItemServiceImpl implements MenuItemService {
     static Logger logger = LogManager.getLogger();
@@ -34,10 +35,10 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public List<MenuItem> findAllMenuItems() throws ServiceException {
+    public List<MenuItem> findAllMenuItems(int currentPageNumber) throws ServiceException {
         List<MenuItem> menu;
         try {
-            menu = itemDao.findAll();
+            menu = itemDao.findAllPaginatedItems(currentPageNumber);
         } catch (DaoException e) {
             logger.error("Try to find all menu was failed.", e);
             throw new ServiceException("Try to find all menu was failed.", e);
@@ -46,65 +47,37 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public List<MenuItem> findAvailableMenuItems(String direction, Map<String, Integer> paginationData) throws ServiceException {
-        List<MenuItem> menu = new ArrayList<>();
+    public int findNumberOfPages() throws ServiceException {
+        int numberOfPages;
         try {
-            if (paginationData.isEmpty() || direction == null
-                    || (paginationData.get(CURRENT_SHEET_SESSION) == 1 && PREVIOUS_SHEET.equals(direction))
-                    || (paginationData.get(CURRENT_SHEET_SESSION) == paginationData.get(ALL_SHEETS_SESSION))
-                    && NEXT_SHEET.equals(direction)) {
-                direction = NEXT_SHEET;
-                buildPaginationData(paginationData, MARKER_AVAILABLE);
-            }
-            MenuItemValidator validator = MenuItemValidatorImpl.getInstance();
-            if (!validator.validateDirection(direction)) {
-                paginationData.clear();
-                logger.info("Invalid direction.");
-                return menu;
-            }
-            if (direction.equals(NEXT_SHEET)) {
-                int lastId = paginationData.get(LAST_ID_SESSION);
-                menu = itemDao.findNext(lastId);
-            } else {
-                int firstId = paginationData.get(FIRST_ID_SESSION);
-                menu = itemDao.findPrevious(firstId);
-            }
-            updatePaginationData(paginationData, direction, menu);
+            numberOfPages = itemDao.findNumberOfAllItems();
         } catch (DaoException e) {
-            logger.error("Try to find all available menu items was failed.", e);
-            throw new ServiceException("Try to find all available menu items was failed.", e);
+            logger.error("Try to count pages was failed.", e);
+            throw new ServiceException("Try to count pages was failed.", e);
         }
-        return menu;
+        return numberOfPages;
     }
 
     @Override
-    public List<MenuItem> findAllMenuItems(String direction, Map<String, Integer> paginationData) throws ServiceException {
-        List<MenuItem> menu = new ArrayList<>();
+    public int findNumberOfAvailablePages() throws ServiceException {
+        int numberOfPages;
         try {
-            if (paginationData.isEmpty() || direction == null
-                    || (paginationData.get(CURRENT_SHEET_SESSION) == 1 && PREVIOUS_SHEET.equals(direction))
-                    || (paginationData.get(CURRENT_SHEET_SESSION) == paginationData.get(ALL_SHEETS_SESSION))
-                    && NEXT_SHEET.equals(direction)) {
-                direction = NEXT_SHEET;
-                buildPaginationData(paginationData, MARKER_ALL);
-            }
-            MenuItemValidator validator = MenuItemValidatorImpl.getInstance();
-            if (!validator.validateDirection(direction)) {
-                paginationData.clear();
-                logger.info("Invalid direction.");
-                return menu;
-            }
-            if (direction.equals(NEXT_SHEET)) {
-                int lastId = paginationData.get(LAST_ID_SESSION);
-                menu = itemDao.findAllNext(lastId);
-            } else {
-                int firstId = paginationData.get(FIRST_ID_SESSION);
-                menu = itemDao.findAllPrevious(firstId);
-            }
-            updatePaginationData(paginationData, direction, menu);
+            numberOfPages = itemDao.findNumberOfAvailableItems();
         } catch (DaoException e) {
-            logger.error("Try to find all available menu items was failed.", e);
-            throw new ServiceException("Try to find all available menu items was failed.", e);
+            logger.error("Try to count pages was failed.", e);
+            throw new ServiceException("Try to count pages was failed.", e);
+        }
+        return numberOfPages;
+    }
+
+    @Override
+    public List<MenuItem> findAvailablePaginatedMenuItems(int currentPageNumber) throws ServiceException {
+        List<MenuItem> menu;
+        try {
+            menu = itemDao.findAvailablePaginatedItems(currentPageNumber);
+        } catch (DaoException e) {
+            logger.error("Try to find all menu was failed.", e);
+            throw new ServiceException("Try to find all menu was failed.", e);
         }
         return menu;
     }
@@ -135,6 +108,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         String itemName = menuData.get(MENU_ITEM_NAME_SESSION);
         String description = menuData.get(MENU_ITEM_DESCRIPTION_SESSION);
         BigDecimal price = new BigDecimal(menuData.get(MENU_ITEM_PRICE_SESSION));
+        MenuItemType menuItemType = MenuItemType.valueOf(menuData.get(MENU_ITEM_TYPE_SESSION).toUpperCase());
         boolean isAvailable = menuData.get(MENU_ITEM_AVAILABLE_SESSION) != null
                 ? Boolean.parseBoolean(menuData.get(MENU_ITEM_AVAILABLE_SESSION))
                 : Boolean.TRUE;
@@ -142,6 +116,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItem item = new MenuItem.MenuItemBuilder()
                 .withName(itemName)
                 .withDescription(description)
+                .withMenuItemType(menuItemType)
                 .withPrice(price)
                 .withIsAvailable(isAvailable)
                 .build();
@@ -244,24 +219,5 @@ public class MenuItemServiceImpl implements MenuItemService {
             cartSum = cartSum.add(price.multiply(quantity));
         }
         return cartSum;
-    }
-
-    private void buildPaginationData(Map<String, Integer> paginationData, String marker) throws DaoException {
-        int num = marker == MARKER_AVAILABLE ? itemDao.findNumberOfAvailableItems() : itemDao.findNumberOfAllItems();
-        paginationData.put(ALL_SHEETS_SESSION, Integer.valueOf(num));
-        paginationData.put(CURRENT_SHEET_SESSION, 0);
-        paginationData.put(FIRST_ID_SESSION, 0);
-        paginationData.put(LAST_ID_SESSION, 0);
-    }
-
-    private void updatePaginationData(Map<String, Integer> paginationData, String direction, List<MenuItem> menu) throws DaoException {
-        if (!menu.isEmpty()) {
-            int newFirstId = menu.get(0).getMenuItemId();
-            int newLastId = menu.get(menu.size() - 1).getMenuItemId();
-            paginationData.put(FIRST_ID_SESSION, newFirstId);
-            paginationData.put(LAST_ID_SESSION, newLastId);
-            int currentSheet = paginationData.get(CURRENT_SHEET_SESSION);
-            paginationData.put(CURRENT_SHEET_SESSION, currentSheet + Integer.parseInt(direction));
-        }
     }
 }
