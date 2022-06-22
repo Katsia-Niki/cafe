@@ -26,6 +26,8 @@
 <fmt:message key="reference.to_cart" var="to_cart"/>
 <fmt:message key="title.header" var="title"/>
 <fmt:message key="title.menu" var="title_menu"/>
+<fmt:message key="reference.previous" var="previous"/>
+<fmt:message key="reference.next" var="next"/>
 
 <html>
 <head>
@@ -40,13 +42,12 @@
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-klassy-cafe.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-cafe.css">
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style_counter.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/background.css">
 
     <script src="${pageContext.request.contextPath}/assets/js/jquery-2.1.0.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/jquery.counterup.min.js"></script>
+
 </head>
 <body>
 <div class="page">
@@ -54,7 +55,7 @@
         <jsp:include page="header/header.jsp"/>
     </header>
     <section class="section" id="offers">
-        <div class="container text-center">
+        <div class="container container-fluid text-center">
             <div class="row">
                 <div class="col-lg-4 offset-lg-4 text-center">
                     <div class="section-heading">
@@ -76,7 +77,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="col-lg-12">
-                                    <section class='tabs-content' style="width: 500px">
+                                    <section class='tabs-content'>
                                         <article id='tabs-1'>
                                             <div class="row">
                                                 <div class="col-lg-12">
@@ -129,10 +130,15 @@
                                                                             </form>
                                                                         </c:if>
                                                                         <c:if test="${current_role eq 'ADMIN'}">
-                                                                            <form target="_blank" method="get" action="${path}/controller">
-                                                                                <input type="hidden" name="command" value="go_to_edit_menu_page">
-                                                                                <input type="hidden" name="menu_item_id_to_edit" value="${menu.menuItemId}">
-                                                                                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">${edit}</button>
+                                                                            <form target="_blank" method="get"
+                                                                                  action="${path}/controller">
+                                                                                <input type="hidden" name="command"
+                                                                                       value="go_to_edit_menu_page">
+                                                                                <input type="hidden"
+                                                                                       name="menu_item_id_to_edit"
+                                                                                       value="${menu.menuItemId}">
+                                                                                <button class="btn btn-outline-danger my-2 my-sm-0"
+                                                                                        type="submit">${edit}</button>
                                                                             </form>
                                                                         </c:if>
                                                                     </div>
@@ -148,23 +154,48 @@
                             </div>
                         </div>
                     </c:forEach>
-                    <div class="text-center justify-content-center">
+                    <div class="container-fluid text-center">
                         <div class="row">
-                            <div class="col mb-3">
-                                <c:if test="${pagination_ses['current_sheet_ses']>1}">
-                                    <a class="link-secondary"
-                                       href="${path}/controller?command=find_all_available_menu&direction=-1">
-                                        <img src="${pageContext.request.contextPath}/assets/images/prev.png"
-                                             alt=""/></a>
-                                </c:if>
+                            <div class="col-sm-2 col-auto col-lg-2 me-2">
                             </div>
-                            <div class="col mb-3">
-                                <c:if test="${pagination_ses['current_sheet_ses']<pagination_ses['all_sheets_ses']}">
-                                    <a class="link-secondary text-decoration-none"
-                                       href="${path}/controller?command=find_all_available_menu&direction=1">
-                                        <img src="${pageContext.request.contextPath}/assets/images/next.png"
-                                             alt=""/></a>
-                                </c:if>
+                            <div class="col">
+                                <nav aria-label="navigation for items">
+                                    <ul class="pagination justify-content-center mt-3 mb-4">
+                                        <c:if test="${current_page_number != 1}">
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="${path}/controller?command=find_all_available_menu&page=${current_page_number-1}">
+                                                        ${previous}
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${number_of_pages}" var="i">
+                                            <c:choose>
+                                                <c:when test="${current_page_number eq i}">
+                                                    <li class="page-item active">
+                                                        <a class="page-link"> ${i} <span class="sr-only"></span></a>
+                                                    </li>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                           href="${path}/controller?command=find_all_available_menu&page=${i}">
+                                                                ${i}
+                                                        </a>
+                                                    </li>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                        <c:if test="${current_page_number lt number_of_pages}">
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="${path}/controller?command=find_all_available_menu&page=${current_page_number+1}">
+                                                        ${next}
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>

@@ -24,14 +24,15 @@
 <fmt:message key="message.get_points_account" var="get_points_account"/>
 <fmt:message key="message.get_points_cash" var="get_points_cash"/>
 <fmt:message key="message.get_points2" var="get_points2"/>
-<fmt:message key="message.points_not_enough1" var="points_not_enough1"/>
-<fmt:message key="message.points_not_enough2" var="points_not_enough2"/>
 <fmt:message key="message.use_points" var="use_points"/>
 <fmt:message key="message.when_pick_up" var="when_pick_up"/>
 <fmt:message key="button.confirm" var="confirm"/>
 <fmt:message key="message.complete_order" var="complete"/>
 <fmt:message key="message.failed" var="failed"/>
 <fmt:message key="message.not_enough_balance" var="not_enough_balance"/>
+<fmt:message key="message.not_enough_loyalty_points" var="not_enough_loyalty_points"/>
+<fmt:message key="field.your_loyalty_points" var="your_loyalty_points"/>
+<fmt:message key="field.your_balance" var="your_balance"/>
 
 <html>
 <head>
@@ -48,7 +49,7 @@
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/font-awesome.css">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-klassy-cafe.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-cafe.css">
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/lightbox.css">
 </head>
@@ -75,6 +76,9 @@
                         ${failed}
                         <c:if test="${not empty order_data_ses['not_enough_money_ses']}">
                             ${not_enough_balance}
+                        </c:if>
+                        <c:if test="${not empty order_data_ses['not_enough_loyalty_points_ses']}">
+                            ${not_enough_loyalty_points}
                         </c:if>
                     </c:otherwise>
                 </c:choose>
@@ -108,6 +112,11 @@
                         </tfoot>
                     </table>
                     <br>
+                    <div>
+                        <h6>${your_balance} ${current_balance}<br>
+                                ${your_loyalty_points} ${current_loyalty_points}</h6>
+                        <br>
+                    </div>
                     <form name="OrderInputInfoForm" method="post" action="${path}/controller">
                         <h4>${choose_type}</h4>
                         <input type="hidden" name="command" value="confirm_order"/>
@@ -121,13 +130,6 @@
                                            for="customRadio1">${get_points_account} ${order_data_ses['points_for_account']}
                                             ${get_points2}</label>
                                 </div>
-                                <div class="row">
-                                    <div class="col text-danger">
-                                        <c:if test="${not empty order_data_ses['not_enough_money_ses']}">
-                                            ${not_enough_balance}
-                                        </c:if>
-                                    </div>
-                                </div>
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="customRadio2" name="payment_type"
                                            class="custom-control-input"
@@ -137,26 +139,11 @@
                                            for="customRadio2">${get_points_cash} ${order_data_ses['points_for_cash']} ${get_points2}</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <c:choose>
-                                        <c:when test="${current_loyalty_points.compareTo(cart_sum) < 0}">
-                                            <input class="form-check-input" type="checkbox" id="flexCheckChecked"
-                                                   value="loyalty_points" name="payment_type" disabled>
+                                    <input type="radio" id="customRadio3" name="payment_type"
+                                           class="custom-control-input"
+                                           value="loyalty_points" required>
+                                    <label class="custom-control-label" for="customRadio3">${use_points}</label>
 
-                                            <label class="custom-control-label"
-                                                   for="flexCheckChecked">${points_not_enough1} ${current_loyalty_points} ${points_not_enough2}</label>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input class="form-check-input" type="checkbox" id="flexCheckChecked"
-                                                   value="loyalty_points" name="payment_type" checked>
-                                            <label class="form-check-label" for="flexCheckChecked">
-                                                    ${use_points}
-                                            </label>
-                                            <%--                                    <input type="radio" id="customRadio3" name="payment_type"--%>
-                                            <%--                                           class="custom-control-input"--%>
-                                            <%--                                           value="loyalty_points" required>--%>
-                                            <%--                                    <label class="custom-control-label" for="customRadio3">${use_points}</label>--%>
-                                        </c:otherwise>
-                                    </c:choose>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +161,7 @@
                         </div>
                         <br>
                         <hr style="border-color: #fb5849">
-                        <button class="btn btn-outline-success" type="submit">${confirm}</button>
+                        <button class="btn btn-outline-danger" type="submit">${confirm}</button>
                     </form>
                 </div>
             </c:otherwise>

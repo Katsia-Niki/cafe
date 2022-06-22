@@ -27,7 +27,7 @@
 
     <link rel="stylesheet" type="text/css" href="${path}/assets/css/font-awesome.css">
 
-    <link rel="stylesheet" href="${path}/assets/css/templatemo-klassy-cafe.css">
+    <link rel="stylesheet" href="${path}/assets/css/templatemo-cafe.css">
 
     <link rel="stylesheet" href="${path}/assets/css/lightbox.css">
 </head>
@@ -37,7 +37,7 @@
         <div class="col-lg-4 col-xs-12">
             <div class="right-text-content">
                 <div class="logo">
-                    <img src="${path}/assets/images/inverse-logo.png" alt=""></a>
+                    <img src="${path}/assets/images/white-logo.png" alt=""></a>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
 <%--    <meta charset="UTF-8"/>--%>
 <%--    <meta name="viewport" content="width=device-width, initial-scale=1">--%>
 <%--    <link href="${path}/bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet">--%>
-<%--    <link rel="stylesheet" href="${path}/assets/css/templatemo-klassy-cafe.css">--%>
+<%--    <link rel="stylesheet" href="${path}/assets/css/templatemo-cafe.css">--%>
 
 <%--</head>--%>
 <%--<body>--%>

@@ -86,43 +86,43 @@
                                     ${email}
                             </label>
                             <input type="text" maxlength="40"  name="email" value="${user_data_ses['email_ses']}"
-                                   pattern="[\dA-z]([\dA-z_\-\.]*)[\dA-z_\-]@[\dA-z_\-]{2,}\.[A-z]{2,6}"
-                                   required oninvalid="this.setCustomValidity('${email_rules}')"
-                                   class="form-control">
-<%--                            <label class="form-label text-danger">--%>
-<%--                                <c:if test="${not empty user_data_ses['wrong_email_ses']}">--%>
-<%--                                    ${incorrect_data} ${email_rules}--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${not empty user_data_ses['wrong_email_exists_ses']}">--%>
-<%--                                    ${incorrect_email_exist}--%>
-<%--                                </c:if>--%>
-<%--                            </label>--%>
+                                   pattern="[\dA-z]([\dA-z_\-\.]*)[\dA-z_\-]@[\dA-z_\-]{2,}\.[A-z]{2,6}" required
+                                   oninvalid="this.setCustomValidity('${email_rules}')"
+                                   onchange="this.setAttribute('value', this.value);
+                                           this.setCustomValidity(this.validity.patternMismatch ? '${email_rules}' : '');"
+                                   class="form-control"/>
+                            <label class="form-label text-danger">
+                                <c:if test="${not empty user_data_ses['wrong_email_exists_ses']}">
+                                    ${incorrect_email_exist}
+                                </c:if>
+                            </label>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">
                                     ${login}
                             </label>
                             <input type="text" maxlength="45"  name="login" value="${user_data_ses['login_ses']}"
-                                   pattern="[\w-]{2,45}"
-                                   required oninvalid="this.setCustomValidity('${login_rules}')"
-                                   class="form-control">
-<%--                            <label class="form-label text-danger">--%>
-<%--                                <c:if test="${not empty user_data_ses.wrong_login_ses}">--%>
-<%--                                    ${incorrect_data} ${login_rules}--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${not empty user_data_ses['wrong_login_exists_ses']}">--%>
-<%--                                    ${incorrect_login_exist}--%>
-<%--                                </c:if>--%>
-<%--                            </label>--%>
+                                   pattern="[\w-]{2,45}" required
+                                   oninvalid="this.setCustomValidity('${login_rules}')"
+                                   onchange="this.setAttribute('value', this.value);
+                                           this.setCustomValidity(this.validity.patternMismatch ? '${login_rules}' : '');"
+                                   class="form-control"/>
+                            <label class="form-label text-danger">
+                                <c:if test="${not empty user_data_ses['wrong_login_exists_ses']}">
+                                    ${incorrect_login_exist}
+                                </c:if>
+                            </label>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">
                                     ${first_name}
                             </label>
                             <input type="text" name="first_name" value="${user_data_ses['first_name_ses']}"
-                                   pattern="[\wА-яЁё\s]{2,20}"
-                                   required oninvalid="this.setCustomValidity('${name_rules}')"
-                                   class="form-control">
+                                   pattern="[\wА-яЁё\s]{2,20}" required
+                                   oninvalid="this.setCustomValidity('${name_rules}')"
+                                   onchange="this.setAttribute('value', this.value);
+                                           this.setCustomValidity(this.validity.patternMismatch ? '${name_rules}' : '');"
+                                   class="form-control"/>
 <%--                            <label class="form-label text-danger">--%>
 <%--                                <c:if test="${not empty user_data_ses['wrong_first_name_ses']}">--%>
 <%--                                    ${incorrect_data} ${name_rules}--%>
@@ -134,8 +134,10 @@
                                     ${last_name}
                             </label>
                             <input type="text" name="last_name" value="${user_data_ses['last_name_ses']}"
-                                   pattern="[\wА-яЁё\s]{2,20}"
-                                   required oninvalid="this.setCustomValidity('${name_rules}')"
+                                   pattern="[\wА-яЁё\s]{2,20}" required
+                                   oninvalid="this.setCustomValidity('${name_rules}')"
+                                   onchange="this.setAttribute('value', this.value);
+                                           this.setCustomValidity(this.validity.patternMismatch ? '${name_rules}' : '');"
                                    class="form-control">
 <%--                            <label class="form-label text-danger">--%>
 <%--                                <c:if test="${not empty user_data_ses['wrong_last_name_ses']}">--%>
@@ -149,9 +151,11 @@
                             </label>
                             <input type="password" minlength="3" maxlength="15" name="pass" id="pass"
                                    value="${user_data_ses['password_ses']}"
-                                   pattern="^[\wА-я\.\-]{3,45}$"
-                                   required oninvalid="this.setCustomValidity('${password_rules}')"
-                                   class="form-control">
+                                   pattern="^[\wА-я\.\-]{3,45}$" required
+                                   oninvalid="this.setCustomValidity('${password_rules}')"
+                                   onchange="this.setAttribute('value', this.value);
+                                           this.setCustomValidity(this.validity.patternMismatch ? '${password_rules}' : '');"
+                                   class="form-control"/>
 <%--                            <label class="form-label text-danger">--%>
 <%--                                <c:if test="${not empty user_data_ses['wrong_password_ses']}">--%>
 <%--                                    ${incorrect_data} ${password_rules}<br>--%>
@@ -164,14 +168,16 @@
                             </label>
                             <input type="password" minlength="3" maxlength="15" name="repeat_password"
                                    value="${user_data_ses['repeat_password_ses']}"
-                                   pattern="^[\wА-я\.\-]{3,45}$"
-                                   required oninvalid="this.setCustomValidity('${password_rules} \'')"
-                                   class="form-control">
-<%--                            <label class="form-label text-danger">--%>
-<%--                                <c:if test="${not empty user_data_ses['mismatch_passwords_ses']}">--%>
-<%--                                    ${mismatch}--%>
-<%--                                </c:if>--%>
-<%--                            </label>--%>
+                                   pattern="^[\wА-я\.\-]{3,45}$" required
+                                   oninvalid="this.setCustomValidity('${password_rules} \'')"
+                                   onchange="this.setAttribute('value', this.value);
+                                           this.setCustomValidity(this.validity.patternMismatch ? '${password_rules}' : '');"
+                                   class="form-control"/>
+                            <label class="form-label text-danger">
+                                <c:if test="${not empty user_data_ses['mismatch_passwords_ses']}">
+                                    ${mismatch}
+                                </c:if>
+                            </label>
                         </div>
                         <button type="submit" class="btn btn-secondary">
                                 ${confirm}

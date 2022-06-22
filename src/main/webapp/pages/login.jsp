@@ -16,8 +16,8 @@
 <fmt:message key="title.login_form" var="login_form"/>
 <fmt:message key="button.sign_in" var="sign_in"/>
 
-<fmt:message key="placeholder.login" var="login"/>
-<fmt:message key="placeholder.password" var="password"/>
+<fmt:message key="placeholder.login" var="placeholder_login"/>
+<fmt:message key="placeholder.password" var="placeholder_password"/>
 <fmt:message key="reference.registration" var="registration"/>
 <fmt:message key="reference.back_to_main" var="back_to_main"/>
 <fmt:message key="message.login_rules" var="login_rules"/>
@@ -73,14 +73,17 @@
             <div>
                 <input type="text" name="login" value="${user_data_ses['login_ses']}"  maxlength="45"
                        pattern="[\w-]{2,45}" required oninvalid="this.setCustomValidity('${login_rules}')"
-                       placeholder="${login}"/>
+                       placeholder="${placeholder_login}" onchange="this.setAttribute('value', this.value);
+                        this.setCustomValidity(this.validity.patternMismatch ? '${login_rules}' : '');"/>
             </div>
             <div>
                 <input type="password" name="pass" value="${user_data_ses['password_ses']}"
                        minlength="3" maxlength="15"
                        pattern="^[\wА-я\.\-]{3,45}$"
                        required oninvalid="this.setCustomValidity('${password_rules}')"
-                       placeholder="${password}"/>
+                       placeholder="${placeholder_password}"
+                       onchange="this.setAttribute('value', this.value);
+                               this.setCustomValidity(this.validity.patternMismatch ? '${login_rules}' : '');"/>
             </div>
             <div>
                 <input type="submit" value="${sign_in}">

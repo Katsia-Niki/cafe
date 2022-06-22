@@ -47,14 +47,14 @@
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
           rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/font-awesome.css">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-klassy-cafe.css">
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/owl-carousel.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-cafe.css">
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/lightbox.css">
 </head>
@@ -73,7 +73,7 @@
                     <ul class="nav">
                         <c:choose>
                             <c:when test="${current_role eq 'ADMIN' or current_role eq 'CUSTOMER'}">
-                                <li class="submenu nav-link">
+                                <li class="submenu nav-link nav-item">
                                     <a href="javascript:">${current_role eq 'ADMIN' ? admin : customer}: ${current_login_ses}</a>
                                     <ul>
                                         <c:if test="${current_role eq 'CUSTOMER'}">
@@ -89,6 +89,8 @@
                                                     ${logout}</a></li>
                                         </c:if>
                                         <c:if test="${current_role eq 'ADMIN'}">
+                                            <li class="nav-item"><a class="nav-link" href="${path}/controller?command=go_to_account_page">
+                                                    ${account}</a></li>
                                             <li><a class="nav-link" href="${path}/controller?command=go_to_change_password_page">
                                                     ${change_password}</a></li>
                                             <li><a class="nav-link" href="${path}/controller?command=find_all_users">
@@ -97,8 +99,6 @@
                                                     ${order_management}</a></li>
                                             <li><a class="nav-link" href="${path}/controller?command=find_all_menu">
                                                     ${menu_item_management}</a></li>
-                                            <li><a class="nav-link" href="${path}/controller?command=go_to_review_management_page">
-                                                    ${review_management}</a></li>
                                             <li><a class="nav-link" href="${path}/controller?command=logout">
                                                     ${logout}</a></li>
                                         </c:if>
@@ -128,8 +128,8 @@
                                    href="${path}/controller?command=go_to_cart_page">${cart}</a>
                             </li>
                         </c:if>
-                        <li class="submenu nav-item nav-link">
-                            <a href="javascript:">${locale =='ru_RU'?ru:en}</a>
+                        <li class="submenu nav-item nav-link text-right">
+                            <a href="javascript:;">${locale =='ru_RU'?ru:en}</a>
                             <ul>
                                 <li><a href="${path}/controller?command=change_language&language=RU">${ru}</a></li>
                                 <li><a href="${path}/controller?command=change_language&language=EN">${en}</a></li>

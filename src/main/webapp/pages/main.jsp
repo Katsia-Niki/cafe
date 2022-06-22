@@ -41,16 +41,19 @@
         function preventBack() {
             window.history.forward();
         }
+
         setTimeout("preventBack()", 0);
-        window.onunload = function() {
+        window.onunload = function () {
             null
         };
     </script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
 
     <title>${title}</title>
     <!-- Additional CSS Files -->
@@ -58,26 +61,13 @@
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/font-awesome.css">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-klassy-cafe.css">
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/owl-carousel.css">
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/lightbox.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-cafe.css">
 
 </head>
-
 <body>
-
-
-
-<!-- ***** Header Area Start ***** -->
 <header>
     <jsp:include page="header/header.jsp"/>
 </header>
-<!-- ***** Header Area End ***** -->
-
-
-<!-- ***** Main Banner Area Start ***** -->
 <div id="top">
     <div class="container-fluid">
         <div class="row">
@@ -95,77 +85,19 @@
             <div class="col-lg-8">
                 <div class="main-banner header-text">
                     <div class="Modern-Slider">
-                        <!-- Item -->
                         <div class="item">
                             <div class="img-fill">
                                 <img src="${path}/assets/images/slide-01.jpg" alt="">
                             </div>
                         </div>
-                        <!-- // Item -->
-                        <!-- Item -->
-                        <div class="item">
-                            <div class="img-fill">
-                                <img src="${path}/assets/images/slide-02.jpg" alt="">
-                            </div>
-                        </div>
-                        <!-- // Item -->
-                        <!-- Item -->
-                        <div class="item">
-                            <div class="img-fill">
-                                <img src="${path}/assets/images/slide-03.jpg" alt="">
-                            </div>
-                        </div>
-                        <!-- // Item -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- ***** Main Banner Area End ***** -->
-
-<!-- ***** Footer Start ***** -->
 <footer>
     <jsp:include page="footer/footer.jsp"/>
 </footer>
-
-<!-- jQuery -->
-<script src="${pageContext.request.contextPath}/assets/js/jquery-2.1.0.min.js"></script>
-
-<!-- Bootstrap -->
-<script src="${pageContext.request.contextPath}/assets/js/popper.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
-
-<!-- Plugins -->
-<script src="${pageContext.request.contextPath}/assets/js/owl-carousel.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/accordions.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datepicker.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/scrollreveal.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/waypoints.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/jquery.counterup.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/imgfix.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/slick.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/lightbox.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/isotope.js"></script>
-
-<!-- Global Init -->
-<script src="${pageContext.request.contextPath}/assets/js/custom.js"></script>
-<%--<script>--%>
-
-<%--    $(function() {--%>
-<%--        var selectedClass = "";--%>
-<%--        $("p").click(function(){--%>
-<%--            selectedClass = $(this).attr("data-rel");--%>
-<%--            $("#portfolio").fadeTo(50, 0.1);--%>
-<%--            $("#portfolio div").not("."+selectedClass).fadeOut();--%>
-<%--            setTimeout(function() {--%>
-<%--                $("."+selectedClass).fadeIn();--%>
-<%--                $("#portfolio").fadeTo(50, 1);--%>
-<%--            }, 500);--%>
-
-<%--        });--%>
-<%--    });--%>
-
-<%--</script>--%>
 </body>
 </html>

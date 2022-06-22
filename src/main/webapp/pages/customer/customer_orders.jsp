@@ -28,6 +28,7 @@
 <fmt:message key="order.status" var="status_table"/>
 <fmt:message key="order.cost" var="order_cost_table"/>
 <fmt:message key="order.is_paid" var="is_paid_table"/>
+<fmt:message key="reference.cancel" var="cancel_table"/>
 
 <html>
 <head>
@@ -48,18 +49,6 @@
         <h6>${title_orders}</h6>
         <br>
     </div>
-<%--    <div class="row">--%>
-<%--        <div class="col-sm-3 mb-3">--%>
-<%--            <div class="mb-3">--%>
-<%--                <form method="get" action="${path}/controller">--%>
-<%--                    <input type="hidden" name="command" value="find_order_by_user_id"/></br>--%>
-<%--                    <button type="submit" class="btn btn-light">--%>
-<%--                        ${find_all}--%>
-<%--                    </button>--%>
-<%--                </form>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
     <div class="row">
         <div class="col">
             <table class="table text-secondary border-secondary">
@@ -71,6 +60,7 @@
                     <th scope="col">${pick_up_time_table}</th>
                     <th scope="col">${status_table}</th>
                     <th scope="col">${order_cost_table}</th>
+                    <th scope="col">${cancel_table}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -78,10 +68,20 @@
                     <tr>
                         <td>${element.orderId}</td>
                         <td>${element.creationDate}</td>
-                        <td>${element.paymentType}</td>
+                        <td>${element.paymentType.toString()}</td>
                         <td>${element.pickUpTime}</td>
-                        <td>${element.status}</td>
+                        <td>${element.status.toString()}</td>
                         <td>${element.orderCost}</td>
+                        <c:choose>
+                            <c:when test="${can_be_cancelled_map[element.orderId]}">
+                                <td><a class="text-secondary text-decoration-none"
+                                       href="${path}/controller?command=go_to_cancel_order_page&order_id=${element.orderId}">
+                                        ${cancel_table}</a></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td></td>
+                            </c:otherwise>
+                        </c:choose>
                     </tr>
                 </c:forEach>
                 </tbody>

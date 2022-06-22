@@ -42,9 +42,23 @@
 
 <html>
 <head>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout("preventBack()", 0);
+        window.onunload = function () {
+            null
+        };
+    </script>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="${path}/bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
     <title>
         ${title}
     </title>
@@ -79,13 +93,18 @@
                             ${user_email}
                     </label>
                     <div class="col-md-10">
-                        <input type="text" name="email" value="${user_data_ses['email_ses']}" class="form-control"
+                        <input type="text" name="email" value="${not empty user_data_ses['new_email_ses'] ? user_data_ses['new_email_ses'] : user_data_ses['email_ses']}" class="form-control"
                                pattern="[\dA-z]([\dA-z_\-\.]*)[\dA-z_\-]@[\dA-z_\-]{2,}\.[A-z]{2,6}"
-                               required oninvalid="this.setCustomValidity('${email_rules}')"/>
+                               required oninvalid="this.setCustomValidity('${email_rules}')"
+                               onchange="this.setAttribute('value', this.value);
+                                       this.setCustomValidity(this.validity.patternMismatch ? '${email_rules}' : '');"
+                               class="form-control"/>
                         <label class="form-label text-danger">
-                            <c:if test="${not empty user_data_ses['wrong_email_ses']}">
-                                ${incorrect_data} ${email_rules}
-                            </c:if>
+                            <label class="form-label text-danger">
+                                <c:if test="${not empty user_data_ses['wrong_email_ses']}">
+                                    ${incorrect_data} ${email_rules}
+                                </c:if>
+                            </label>
                             <c:if test="${not empty user_data_ses['wrong_email_exists_ses']}">
                                 ${incorrect_email_exist}
                             </c:if>
@@ -100,8 +119,15 @@
                         <input type="text" name="first_name" value="${user_data_ses['first_name_ses']}"
                                pattern="[\wА-яЁё\s]{2,20}"
                                required oninvalid="this.setCustomValidity('${name_rules}')"
-                               class="form-control">
+                               onchange="this.setAttribute('value', this.value);
+                                       this.setCustomValidity(this.validity.patternMismatch ? '${name_rules}' : '');"
+                               class="form-control"/>
                     </div>
+                    <label class="form-label text-danger">
+                        <c:if test="${not empty user_data_ses['wrong_first_name_ses']}">
+                            ${incorrect_data} ${name_rules}
+                        </c:if>
+                    </label>
                 </div>
                 <div class="row">
                     <label class="col-sm-2 col-form-label mb-3">
@@ -111,16 +137,16 @@
                         <input type="text" name="last_name" value="${user_data_ses['last_name_ses']}"
                                pattern="[\wА-яЁё\s]{2,20}"
                                required oninvalid="this.setCustomValidity('${name_rules}')"
-                               class="form-control">
+                               onchange="this.setAttribute('value', this.value);
+                                       this.setCustomValidity(this.validity.patternMismatch ? '${name_rules}' : '');"
+                               class="form-control"/>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col text-danger">
-                        <c:if test="${not empty user_data_ses['wrong_first_name_ses']}">
-                            ${incorrect_data}
-                        </c:if>
-                    </div>
-                </div>
+                <label class="form-label text-danger">
+                    <c:if test="${not empty user_data_ses['wrong_last_name_ses']}">
+                        ${incorrect_data} ${name_rules}
+                    </c:if>
+                </label>
                 <div class="row">
                     <label class="col-sm-2 col-form-label mb-3">
                             ${user_role}
@@ -134,7 +160,8 @@
                             ${user_is_active}
                     </label>
                     <div class="col-md-10">
-                        <input type="text" value="${user_data_ses['is_active_ses'] ? active : banned}" class="form-control" disabled>
+                        <input type="text" value="${user_data_ses['is_active_ses'] ? active : banned}"
+                               class="form-control" disabled>
                     </div>
                 </div>
                 <div class="row">

@@ -41,7 +41,7 @@
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/font-awesome.css">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-klassy-cafe.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/templatemo-cafe.css">
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/lightbox.css">
 </head>
