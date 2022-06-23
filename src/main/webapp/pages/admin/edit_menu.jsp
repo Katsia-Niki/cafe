@@ -92,7 +92,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col mb-3">
-                            ${edit_menu_result eq true? complete_changing: failed}
+                            ${edit_menu_result eq true? complete_changing: failed} <br><br>
                         <a class="link" href="${path}/controller?command=find_all_menu"/>
                             ${continue_editing}
                         </a>

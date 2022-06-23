@@ -20,6 +20,7 @@
 <fmt:message key="field.add_menu_item" var="add_menu_item"/>
 <fmt:message key="message.not_found_menu" var="not_found"/>
 <fmt:message key="message.banned" var="banned"/>
+<fmt:message key="message.item_added_to_cart" var="item_added_to_cart"/>
 <fmt:message key="reference.previous" var="previous"/>
 <fmt:message key="reference.next" var="next"/>
 <fmt:message key="reference.edit" var="edit"/>
@@ -100,8 +101,8 @@
                                                                                 <input type="hidden"
                                                                                        name="menu_item_id"
                                                                                        value="${menu.menuItemId}">
+                                                                                <br>
                                                                                 <div class="product_actions">
-
                                                                                     <div class="number"
                                                                                          data-step="1"
                                                                                          data-min="1" data-max="10">
@@ -114,7 +115,6 @@
                                                                                         <a href="#"
                                                                                            class="number-plus">+</a>
                                                                                     </div>
-
                                                                                     <c:choose>
                                                                                         <c:when test="${current_user_is_active == true}">
                                                                                             <button type="submit"
@@ -128,6 +128,11 @@
                                                                                     </c:choose>
                                                                                 </div>
                                                                             </form>
+                                                                            <c:if test="${message_item_added_to_cart && item_label == menu.menuItemId}">
+                                                                             <span class="text-success">
+                                                                               ${item_added_to_cart}</span>
+                                                                                <c:remove var="message_item_added_to_cart"/>
+                                                                            </c:if>
                                                                         </c:if>
                                                                         <c:if test="${current_role eq 'ADMIN'}">
                                                                             <form target="_blank" method="get"
@@ -137,6 +142,7 @@
                                                                                 <input type="hidden"
                                                                                        name="menu_item_id_to_edit"
                                                                                        value="${menu.menuItemId}">
+                                                                                <br>
                                                                                 <button class="btn btn-outline-danger my-2 my-sm-0"
                                                                                         type="submit">${edit}</button>
                                                                             </form>

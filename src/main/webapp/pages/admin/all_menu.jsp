@@ -86,7 +86,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="col-lg-12">
-                                    <section class='tabs-content' style="width: 500px">
+                                    <section class='tabs-content'>
                                         <article id='tabs-1'>
                                             <div class="row">
                                                 <div class="col-lg-12">
