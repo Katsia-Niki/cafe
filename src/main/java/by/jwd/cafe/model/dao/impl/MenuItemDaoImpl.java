@@ -65,7 +65,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     private static final String UPDATE_IMAGE = """
             UPDATE cafe.menu_item SET picture=?
             WHERE menu_item_id=?""";
-    private static final int DEFAULT_PAGE_CAPACITY = 5;
+    private static final int DEFAULT_PAGE_CAPACITY = 6;
     private static final MenuItemDaoImpl instance = new MenuItemDaoImpl();
 
     private MenuItemDaoImpl() {
@@ -138,11 +138,6 @@ public class MenuItemDaoImpl implements MenuItemDao {
             throw new DaoException("Try to add MenuItem was failed", e);
         }
         return rows == 1;
-    }
-
-    @Override
-    public boolean delete(MenuItem menuItem) throws DaoException {
-        return false;//fixme
     }
 
     @Override

@@ -197,11 +197,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean delete(User user) throws DaoException {
-        return false;                                     //fixme
-    }
-
-    @Override
     public boolean update(User user) throws DaoException {
         int rows;
         ConnectionPool pool = ConnectionPool.getInstance();

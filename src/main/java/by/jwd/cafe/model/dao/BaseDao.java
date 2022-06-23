@@ -37,15 +37,6 @@ public interface BaseDao<K, T extends AbstractEntity> {
      * @return true - if entity was deleted and false - if was not
      * @throws DaoException - if request from database was failed
      */
-    boolean delete(T t) throws DaoException;
-
-    /**
-     * Update entity in database
-     *
-     * @param t - entity extends {@link AbstractEntity}
-     * @return true - if entity was updated and false - if was not
-     * @throws DaoException - if request from database was failed
-     */
     boolean update(T t) throws DaoException;
 
     /**

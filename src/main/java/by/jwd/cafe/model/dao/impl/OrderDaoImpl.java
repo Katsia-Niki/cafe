@@ -186,11 +186,6 @@ public class OrderDaoImpl implements OrderDao {
         throw new UnsupportedOperationException("Unavailable operation to entity <Order>");
     }
 
-    @Override
-    public boolean delete(Order order) throws DaoException {
-        logger.error("Unavailable operation to entity <Order>");
-        throw new UnsupportedOperationException("Unavailable operation to entity <Order>");
-    }
 
     @Override
     public boolean update(Order order) throws DaoException {

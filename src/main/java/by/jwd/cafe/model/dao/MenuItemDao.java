@@ -11,7 +11,7 @@ import java.util.List;
 public interface MenuItemDao extends BaseDao<Integer, MenuItem> {
 
     /**
-     * Find all menu items on current page
+     * Finds all menu items on current page
      *
      * @param currentPageNumber - number of current page
      * @return list of menu items or empty list if menu items not found
@@ -20,7 +20,7 @@ public interface MenuItemDao extends BaseDao<Integer, MenuItem> {
     List<MenuItem> findAllPaginatedItems(int currentPageNumber) throws DaoException;
 
     /**
-     * Find all available menu items on current page
+     * Finds all available menu items on current page
      *
      * @param currentPageNumber - number of current page
      * @return list of menu items or empty list if menu items not found
@@ -29,7 +29,7 @@ public interface MenuItemDao extends BaseDao<Integer, MenuItem> {
     List<MenuItem> findAvailablePaginatedItems(int currentPageNumber) throws DaoException;
 
     /**
-     * Find number of all available menu items
+     * Finds number of all available menu items
      *
      * @return number of all available menu items
      * @throws DaoException - if request from database was failed
@@ -37,7 +37,7 @@ public interface MenuItemDao extends BaseDao<Integer, MenuItem> {
     int findNumberOfAvailableItems() throws DaoException;
 
     /**
-     * Find number of all menu items
+     * Finds number of all menu items
      *
      * @return number of all menu items
      * @throws DaoException - if request from database was failed
@@ -45,10 +45,10 @@ public interface MenuItemDao extends BaseDao<Integer, MenuItem> {
     int findNumberOfAllItems() throws DaoException;
 
     /**
-     * Update image of manu item
+     * Updates image of manu item
      *
-     * @param newImage - new image
-     * @param menuItemId   - manu item id
+     * @param newImage   - new image
+     * @param menuItemId - manu item id
      * @return true - if image was updated and false - if was not
      * @throws DaoException - if request from database was failed
      */
