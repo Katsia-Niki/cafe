@@ -26,6 +26,7 @@ public class AddItemToCartCommand implements Command {
         if (optionalItemToAdd.isPresent()) {
             service.addItemToCart(cart, optionalItemToAdd.get(), quantity);
             session.setAttribute(SessionAttribute.MESSAGE_ITEM_ADDED_TO_CART, true);
+            session.setAttribute(SessionAttribute.ITEM_LABEL, menuItemId);
         } else {
             session.setAttribute(SessionAttribute.MESSAGE_ITEM_ADDED_TO_CART, false);
         }
