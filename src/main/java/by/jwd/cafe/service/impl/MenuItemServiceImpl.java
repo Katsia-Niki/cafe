@@ -22,8 +22,6 @@ import static by.jwd.cafe.controller.command.SessionAttribute.*;
 
 public class MenuItemServiceImpl implements MenuItemService {
     static Logger logger = LogManager.getLogger();
-    private static final String MARKER_AVAILABLE = "available";
-    private static final String MARKER_ALL = "all";
     private static MenuItemServiceImpl instance = new MenuItemServiceImpl();
     private MenuItemDao itemDao = MenuItemDaoImpl.getInstance();
 

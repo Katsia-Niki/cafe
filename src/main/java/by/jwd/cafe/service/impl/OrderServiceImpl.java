@@ -232,7 +232,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<Integer, Boolean> createСanBeCanceledMap(List<Order> orders) {
+    public Map<Integer, Boolean> createСanBeCancelledMap(List<Order> orders) {
         LocalDateTime now = LocalDateTime.now();
         Map<Integer, Boolean> canBeCanceledMap = new HashMap<>();
         orders.stream().filter(order -> order.getPickUpTime().compareTo(now) > 0 && order.getStatus() == Order.Status.ACTIVE)
