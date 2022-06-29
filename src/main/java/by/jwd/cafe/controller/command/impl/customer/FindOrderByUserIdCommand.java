@@ -33,7 +33,7 @@ public class FindOrderByUserIdCommand implements Command {
         try {
             List<Order> orderList = service.findOrderByUserId(userId);
             if (!orderList.isEmpty()) {
-                Map<Integer, Boolean> canBeCancelledMap = service.createСanBeCanceledMap(orderList);
+                Map<Integer, Boolean> canBeCancelledMap = service.createСanBeCancelledMap(orderList);
                 request.setAttribute(CAN_BE_CANCELLED_MAP, canBeCancelledMap);
             }
             request.setAttribute(ORDER_LIST, orderList);

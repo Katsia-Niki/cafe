@@ -11,7 +11,7 @@ import static by.jwd.cafe.controller.command.SessionAttribute.*;
 
 public final class MenuItemValidatorImpl implements MenuItemValidator {
     static Logger logger = LogManager.getLogger();
-    private static final String NAME_REGEX = "[A-zА-яЁё\\s]{2,100}";
+    private static final String NAME_REGEX = "[A-zА-яЁё\\s\\-]{2,100}";
     private static final String DESCRIPTION_REGEX = "[^><]+";
     private static final String PRICE_REGEX = "\\d{1,5}\\.?\\d{0,2}";
     private static final MenuItemValidatorImpl instance = new MenuItemValidatorImpl();
@@ -41,7 +41,7 @@ public final class MenuItemValidatorImpl implements MenuItemValidator {
     @Override
     public boolean validateType(String menuItemType) {
         try {
-            MenuItemType.valueOf(menuItemType.toUpperCase());
+            MenuItemType.valueOfMenuItemType(menuItemType.toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;
         }

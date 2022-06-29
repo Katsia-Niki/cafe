@@ -26,6 +26,7 @@ public final class SessionAttribute {
     public static final String EMAIL_SESSION = "email_ses";
     public static final String IS_ACTIVE_SESSION = "is_active_ses";
     public static final String IS_PAID_SESSION = "is_paid_ses";
+    public static final String ITEM_LABEL = "item_label";
     public static final String LOCALE = "locale";
     public static final String LOGIN_SESSION = "login_ses";
     public static final String LOYALTY_POINTS_SESSION = "loyalty_points_ses";

@@ -26,26 +26,14 @@ import java.util.*;
 import static by.jwd.cafe.controller.command.RequestAttribute.*;
 import static by.jwd.cafe.controller.command.SessionAttribute.*;
 
-/**
- * The type Order service.
- */
 public class OrderServiceImpl implements OrderService {
-    /**
-     * The Logger.
-     */
     static Logger logger = LogManager.getLogger();
     private static final String DEFAULT_DATE_FROM = "2022-05-01";
     private static OrderServiceImpl instance = new OrderServiceImpl();
-    private MenuItemDao itemDao = MenuItemDaoImpl.getInstance();
 
     private OrderServiceImpl() {
     }
 
-    /**
-     * Gets instance.
-     *
-     * @return the instance
-     */
     public static OrderServiceImpl getInstance() {
         return instance;
     }
@@ -85,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
             UserDao userDao = UserDaoImpl.getInstance();
             BigDecimal userBalance = userDao.findBalanceByUserId(order.getUserId());
             BigDecimal userLoyaltyPoints = userDao.findLoyaltyPointsByUserId(order.getUserId());
-            result = orderDao.updateStatus(orderWithNewStatus, userBalance, userLoyaltyPoints); //добавить сюда баланс юзера и баллы лояльности юзера и за заказ
+            result = orderDao.updateStatus(orderWithNewStatus, userBalance, userLoyaltyPoints);
         } catch (DaoException e) {
             logger.error("Try to update order status was failed.", e);
             throw new ServiceException("Try to update order status was failed.", e);

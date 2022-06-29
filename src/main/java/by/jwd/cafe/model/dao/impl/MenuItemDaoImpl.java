@@ -200,7 +200,6 @@ public class MenuItemDaoImpl implements MenuItemDao {
         List<MenuItem> availableItems = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_AVAILABLE_PAGINATED_MENU_ITEMS)) {
-
             preparedStatement.setInt(1, DEFAULT_PAGE_CAPACITY);
             preparedStatement.setInt(2, (currentPageNumber - 1) * DEFAULT_PAGE_CAPACITY);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -210,7 +209,6 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     if (optionalItem.isPresent()) {
                         availableItems.add(optionalItem.get());
                     }
-                    logger.log(Level.INFO, "Available menu item list: " + availableItems);
                 }
             }
         } catch (SQLException e) {

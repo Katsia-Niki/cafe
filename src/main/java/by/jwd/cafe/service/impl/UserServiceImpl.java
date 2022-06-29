@@ -1,11 +1,11 @@
 package by.jwd.cafe.service.impl;
 
+import by.jwd.cafe.exception.DaoException;
+import by.jwd.cafe.exception.ServiceException;
 import by.jwd.cafe.model.dao.UserDao;
 import by.jwd.cafe.model.dao.impl.UserDaoImpl;
 import by.jwd.cafe.model.entity.User;
 import by.jwd.cafe.model.entity.UserRole;
-import by.jwd.cafe.exception.DaoException;
-import by.jwd.cafe.exception.ServiceException;
 import by.jwd.cafe.service.UserService;
 import by.jwd.cafe.util.PasswordEncryptor;
 import by.jwd.cafe.validator.UserValidator;
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static by.jwd.cafe.validator.UserValidator.WRONG_DATA_MARKER;
 import static by.jwd.cafe.controller.command.SessionAttribute.*;
+import static by.jwd.cafe.validator.UserValidator.WRONG_DATA_MARKER;
 
 public class UserServiceImpl implements UserService {
     static Logger logger = LogManager.getLogger();

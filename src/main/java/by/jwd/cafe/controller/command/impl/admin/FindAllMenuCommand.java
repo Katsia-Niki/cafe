@@ -32,7 +32,6 @@ public class FindAllMenuCommand implements Command {
         int currentPageNumber = parseIntParameter(request.getParameter(PAGE)) != 0
                 ? parseIntParameter(request.getParameter(PAGE))
                 : DEFAULT_PAGE_NUMBER;
-
         MenuItemService service = MenuItemServiceImpl.getInstance();
         Router router;
         try {

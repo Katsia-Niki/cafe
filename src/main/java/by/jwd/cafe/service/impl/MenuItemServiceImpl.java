@@ -96,7 +96,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public boolean addMenuItem(Map<String, String> menuData) throws ServiceException { //fixme
+    public boolean addMenuItem(Map<String, String> menuData) throws ServiceException {
         boolean isAdded = false;
         MenuItemValidator validator = MenuItemValidatorImpl.getInstance();
         if (!validator.validateItemData(menuData)) {
@@ -110,7 +110,6 @@ public class MenuItemServiceImpl implements MenuItemService {
         boolean isAvailable = menuData.get(MENU_ITEM_AVAILABLE_SESSION) != null
                 ? Boolean.parseBoolean(menuData.get(MENU_ITEM_AVAILABLE_SESSION))
                 : Boolean.TRUE;
-        //   String picture = menuData.get(MENU_ITEM_PICTURE_SESSION);
         MenuItem item = new MenuItem.MenuItemBuilder()
                 .withName(itemName)
                 .withDescription(description)
@@ -118,11 +117,6 @@ public class MenuItemServiceImpl implements MenuItemService {
                 .withPrice(price)
                 .withIsAvailable(isAvailable)
                 .build();
-//        Blob blob = resultSet.getBlob(PICTURE);
-//        if (blob != null) {
-//            byte[] imageContent = blob.getBytes(1, (int) blob.length());
-//            menuItem.setPicture(imageContent);
-//        }
         try {
             isAdded = itemDao.add(item);
         } catch (DaoException e) {
@@ -147,7 +141,6 @@ public class MenuItemServiceImpl implements MenuItemService {
         try {
             int menuItemId = Integer.parseInt(menuData.get(MENU_ITEM_ID_SESSION));
             MenuItemType itemType = MenuItemType.valueOfMenuItemType(menuData.get(MENU_ITEM_TYPE_SESSION).toUpperCase());
-
             MenuItem menuItem = new MenuItem.MenuItemBuilder()
                     .withMenuItemId(menuItemId)
                     .withMenuItemType(itemType)
@@ -156,7 +149,6 @@ public class MenuItemServiceImpl implements MenuItemService {
                     .withPrice(price)
                     .withIsAvailable(isAvailable)
                     .build();
-
             isUpdated = itemDao.update(menuItem);
         } catch (IllegalArgumentException e) {
             logger.info("Invalid menu item data.");
@@ -169,7 +161,7 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public boolean createImage(byte[] newImage, String menuItemId) throws ServiceException {
-        boolean isCreate = false;
+        boolean isCreate;
         try {
             int itemId = Integer.parseInt(menuItemId);
             isCreate = itemDao.updateImage(newImage, itemId);
